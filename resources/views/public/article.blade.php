@@ -3,8 +3,7 @@
 @section('title', 'Article - Ink & Paper')
 
 @section('page-content')
-    <main class="pt-24 pb-section-gap px-gutter">
-        <article class="mx-auto max-w-article-max">
+    <article class="mx-auto max-w-article-max">
             <!-- Headline -->
             <header class="mb-12">
                 <h1 class="font-display-lg text-display-lg mb-8 text-on-surface">The Architecture of Silence: Designing for

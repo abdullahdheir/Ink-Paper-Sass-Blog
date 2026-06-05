@@ -4,8 +4,7 @@
 
 @section('page-content')
     <!-- Main Content Canvas -->
-    <main class="min-h-[calc(100vh-128px)] flex items-center justify-center py-section-gap px-gutter">
-        <div class="w-full max-w-[440px]">
+    <div class="w-full max-w-[440px]">
             <!-- Login Card -->
             <div
                 class="bg-surface-container-lowest border border-outline-variant p-8 md:p-10 rounded-lg shadow-[0_20px_30px_-10px_rgba(0,0,0,0.05)] transition-all">
@@ -97,5 +96,4 @@
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaZzKZpXNwoxBOGg9qTCZOzjVtZgaq3v5K8sIDlTkB84CPOVf_AboEgvK7uVkq_-xo579Nl8Lo_BtjUxPflCR4Vgbs6kRK6ky6zyEvGrEfWMFD3oPgLRwRAb-c4f8jO73qjl1LwUEEI32HZaEuxonXTXoetuE3qdUGsu4Ec9HO4UuTL2phazkyVjlixFHaaGQ94g5tBW6pagkXvkhyBeSbasPRz9MmVa4P2sa8aFZocu96y0agSrKIXhQjp8QNtmD-Yzbod-SeXTOE" />
             </div>
         </div>
-    </main>
 @endsection

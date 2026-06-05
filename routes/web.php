@@ -46,6 +46,7 @@ Route::middleware('auth:web')->group(function () {
     // Settings pages
     Route::get('/settings/account', [PageController::class, 'accountSettings'])->name('settings.account');
     Route::get('/settings/profile', [PageController::class, 'profileSettings'])->name('settings.profile');
+    Route::put('/settings/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::get('/settings/notifications', [PageController::class, 'notificationSettings'])->name('settings.notifications');
     Route::get('/settings/security', [PageController::class, 'securitySettings'])->name('settings.security');
 
