@@ -3,7 +3,6 @@
 @section('title', 'Create Account - Ink & Paper')
 
 @section('page-content')
-    <div class="min-h-[calc(100vh-128px)] flex items-center justify-center py-section-gap px-gutter">
         <div class="w-full max-w-[440px]">
             <div
                 class="bg-surface-container-lowest border border-outline-variant p-8 md:p-10 rounded-lg shadow-[0_20px_30px_-10px_rgba(0,0,0,0.05)]">
@@ -120,5 +119,4 @@
                 </footer>
             </div>
         </div>
-    </div>
 @endsection

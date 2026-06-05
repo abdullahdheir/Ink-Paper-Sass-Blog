@@ -11,6 +11,7 @@
             </div>
         </div>
     </header>
-
-    @yield('page-content')
+    <main class="min-h-[calc(100vh-128px)] flex items-center justify-center py-section-gap px-gutter">
+        @yield('page-content')
+    </main>
 @endsection
