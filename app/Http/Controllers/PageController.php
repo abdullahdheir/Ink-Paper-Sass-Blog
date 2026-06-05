@@ -7,7 +7,8 @@ class PageController extends Controller
     // Public pages
     public function feed()
     {
-        return view('public.feed');
+        $posts = \App\Models\Post::with('category')->latest()->get();
+        return view('public.feed', compact('posts'));
     }
 
     public function article($id)

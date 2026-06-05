@@ -93,7 +93,7 @@
         </div>
     </header>
     <!-- Main Content Layout -->
-    <main class="pt-24 pb-section-gap max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-12 gap-8">
+    <main class="pt-24">
         @yield('page-content')
     </main>
     <!-- Footer -->
