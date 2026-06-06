@@ -1,4 +1,4 @@
-@extends('layouts.public')
+@extends('layouts.dashboard')
 
 @section('title', $post->title . ' - Ink & Paper')
 

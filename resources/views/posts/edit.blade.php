@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Edit Post - Ink & Paper')
+@stop
 
 @section('page-content')
     <!-- Header Section -->
