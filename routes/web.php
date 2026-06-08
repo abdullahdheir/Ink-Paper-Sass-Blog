@@ -64,5 +64,5 @@ Route::middleware('auth:web')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('posts', PostController::class);
     Route::get('tags/search', [TagController::class, 'search'])->name('tags.search');
-    Route::resource('tags', TagController::class);
+    Route::resource('tags', TagController::class)->except(['edit', 'show', 'create']);
 });

@@ -30,15 +30,15 @@
                     <button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
                         <span class="material-symbols-outlined">bookmark</span>
                     </button>
-                    <a href="{{ route('dashboard.write') }}"
-                        class="ml-2 bg-primary-container text-on-primary px-6 py-2 rounded-lg font-ui-button text-ui-button hover:opacity-90 active:scale-95 transition-all">
-                        Create Post
-                    </a>
+                    <a href="{{ route('posts.create') }}"
+                        class="bg-primary-container text-on-primary font-ui-button text-ui-button px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">Create
+                        Post</a>
                     <!-- Profile Dropdown -->
                     <div class="relative ml-2" x-data="{ open: false }" @click.outside="open = false">
                         <button @click="open = !open"
                             class="flex items-center gap-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all">
-                            <div class="w-9 h-9 rounded-full overflow-hidden border-2 border-outline-variant hover:border-primary transition-colors">
+                            <div
+                                class="w-9 h-9 rounded-full overflow-hidden border-2 border-outline-variant hover:border-primary transition-colors">
                                 <img alt="{{ auth()->user()->name ?? 'User' }}" class="w-full h-full object-cover"
                                     src="{{ auth()->user()->avatar_path ? Storage::url(auth()->user()->avatar_path) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name ?? 'U') . '&background=6750A4&color=fff&size=128' }}" />
                             </div>
@@ -54,8 +54,10 @@
                             style="display: none;">
                             <!-- User Info -->
                             <div class="px-4 py-3 border-b border-outline-variant bg-surface-container-low">
-                                <p class="font-ui-label text-ui-label font-bold text-on-surface truncate">{{ auth()->user()->name ?? 'User' }}</p>
-                                <p class="font-metadata text-metadata text-secondary truncate">{{ auth()->user()->email ?? '' }}</p>
+                                <p class="font-ui-label text-ui-label font-bold text-on-surface truncate">
+                                    {{ auth()->user()->name ?? 'User' }}</p>
+                                <p class="font-metadata text-metadata text-secondary truncate">
+                                    {{ auth()->user()->email ?? '' }}</p>
                             </div>
                             <!-- Links -->
                             <div class="py-1">

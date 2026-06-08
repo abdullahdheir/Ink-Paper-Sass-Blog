@@ -26,9 +26,9 @@
                         class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">notifications</button>
                     <button
                         class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">bookmark</button>
-                    <button
+                    <a href="{{ route('posts.create') }}"
                         class="bg-primary-container text-on-primary font-ui-button text-ui-button px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">Create
-                        Post</button>
+                        Post</a>
                     <!-- Profile Dropdown -->
                     <div class="relative" x-data="{ open: false }" @click.outside="open = false">
                         <button @click="open = !open"

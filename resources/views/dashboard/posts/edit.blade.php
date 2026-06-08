@@ -76,22 +76,73 @@
                     </section>
 
                     <!-- Tags -->
-                    <section>
+                    <section x-data="{ tags: {{ json_encode($post->tags->pluck('name')->toArray()) }}, searchQuery: '', searchResults: [] }" class="space-y-4">
                         <h3 class="font-ui-label text-ui-label text-on-surface mb-4 uppercase tracking-wider">Tags</h3>
-                        <div class="space-y-2 max-h-[200px] overflow-y-auto">
-                            @forelse($tags as $tag)
-                                <label
-                                    class="flex items-center gap-3 p-2 hover:bg-surface-container rounded cursor-pointer">
-                                    <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
-                                        class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary"
-                                        {{ in_array($tag->id, $post->tags->pluck('id')->toArray()) ? 'checked' : '' }}>
-                                    <span class="font-metadata text-metadata text-on-surface">{{ $tag->name }}</span>
-                                </label>
-                            @empty
-                                <p class="text-secondary font-metadata text-metadata">No tags available. <a
-                                        href="{{ route('manage.tags.create') }}"
-                                        class="text-primary hover:underline">Create one</a></p>
-                            @endforelse
+
+                        <!-- Selected Tags Display -->
+                        <div class="flex flex-wrap gap-2 min-h-[40px]">
+                            <template x-for="tag in tags" :key="tag">
+                                <span
+                                    class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full font-metadata text-metadata flex items-center gap-1">
+                                    <span x-text="'#' + tag"></span>
+                                    <button type="button" @click="tags = tags.filter(t => t !== tag)"
+                                        class="hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-[14px]">close</span>
+                                    </button>
+                                </span>
+                            </template>
+                            <span x-show="tags.length === 0" class="text-secondary font-metadata text-metadata">No tags
+                                selected</span>
+                        </div>
+
+                        <!-- Hidden Input for Form Submission -->
+                        <input type="hidden" name="tags[]" :value="tag" x-for="tag in tags">
+
+                        <!-- Search Input -->
+                        <div class="relative">
+                            <input x-model="searchQuery"
+                                @input="if(searchQuery.length > 0) { fetchTags() } else { searchResults = [] }"
+                                @keydown.enter.prevent="addTag()" @keydown.comma.prevent="addTag()"
+                                class="w-full bg-white border border-outline-variant rounded-lg px-4 py-2 font-metadata text-metadata focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                                placeholder="Type tag name and press Enter or Comma..." type="text" />
+
+                            <!-- Search Results Dropdown -->
+                            <div x-show="searchResults.length > 0" @click.away="searchResults = []"
+                                class="absolute w-full mt-1 bg-white border border-outline-variant rounded-lg shadow-lg max-h-[200px] overflow-y-auto z-10">
+                                <template x-for="tag in searchResults" :key="tag.id">
+                                    <div @click="selectTag(tag)"
+                                        class="px-4 py-2 hover:bg-surface-container-high cursor-pointer flex items-center justify-between">
+                                        <span x-text="'#' + tag.name"></span>
+                                        <span class="text-secondary text-sm">Press Enter to select</span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="pt-4 border-t border-outline-variant">
+                        <div class="space-y-4">
+                            <label class="flex items-center justify-between cursor-pointer group">
+                                <span
+                                    class="font-ui-label text-ui-label text-secondary group-hover:text-on-surface transition-colors">Draft
+                                    Post</span>
+                                <div class="relative inline-flex items-center">
+                                    <input {{ $post->status === 'draft' ? 'checked' : '' }} name="draft"
+                                        class="sr-only peer" type="checkbox" />
+                                    <div
+                                        class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                    </div>
+                                </div>
+                            </label>
+
+                            <div class="space-y-2">
+                                <label class="font-ui-label text-ui-label text-on-surface-variant block"
+                                    for="published_at">Publish Date</label>
+                                <input
+                                    class="w-full bg-white border border-outline-variant rounded-lg px-4 py-2 font-ui-label text-ui-label focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                                    id="published_at" name="published_at" type="datetime-local"
+                                    value="{{ $post->published_at ? $post->published_at->format('Y-m-d\TH:i') : '' }}" />
+                            </div>
                         </div>
                     </section>
                 </div>

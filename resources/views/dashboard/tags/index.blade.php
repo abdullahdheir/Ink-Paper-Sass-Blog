@@ -17,11 +17,11 @@
                     class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none font-ui-label text-ui-label"
                     placeholder="Search tags..." type="text" />
             </div>
-            <a href="{{ route('tags.create') }}"
+            <button onclick="window.openTagModal('create')"
                 class="w-full sm:w-auto font-ui-button text-ui-button px-6 py-2.5 bg-primary-container text-on-primary-container rounded-lg hover:brightness-110 transition-all flex items-center justify-center gap-2">
                 <span class="material-symbols-outlined text-[20px]">add</span>
                 Create New Tag
-            </a>
+            </button>
         </div>
     </header>
     <!-- Popular Tags Bento Grid -->
@@ -164,9 +164,9 @@
                                 <td class="px-6 py-4 text-right">
                                     <div
                                         class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <a href="{{ route('tags.edit', $tag->id) }}"
+                                        <button onclick="window.openTagModal('edit', {{ json_encode($tag) }})"
                                             class="p-1 hover:text-primary transition-colors"><span
-                                                class="material-symbols-outlined text-[20px]">edit</span></a>
+                                                class="material-symbols-outlined text-[20px]">edit</span></button>
                                         <form action="{{ route('tags.destroy', $tag->id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -181,8 +181,8 @@
                             <tr>
                                 <td colspan="7"
                                     class="px-6 py-12 text-center text-secondary font-ui-label text-ui-label">
-                                    No tags found. <a href="{{ route('tags.create') }}"
-                                        class="text-primary hover:underline">Create your first tag</a>
+                                    No tags found. <button onclick="window.openTagModal('create')"
+                                        class="text-primary hover:underline">Create your first tag</button>
                                 </td>
                             </tr>
                         @endforelse
@@ -195,4 +195,6 @@
             </div>
         </div>
     </section>
+
+    @include('dashboard.tags.tag-modal', ['action' => 'create','tag' => null,'mode'=>'create'])
 @endsection

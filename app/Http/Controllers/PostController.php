@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Tags\CreateNewTag;
 use App\Enums\PostStatus;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -35,6 +37,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -42,14 +45,14 @@ class PostController extends Controller
             'cover_image' => ['nullable', 'image', 'max:1024'],
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
-            'draft' => 'sometimes|boolean',
+            'draft' => 'sometimes|string|in:on,off',
         ]);
 
         $data = [
             'title' => $request->input('title'),
             'content' => $request->input('content'),
             'category_id' => $request->input('category_id'),
-            'status' => $request->boolean('draft', false) ? PostStatus::DRAFT : PostStatus::PUBLISHED,
+            'status' => $request->input('draft') === 'on' ? PostStatus::DRAFT : PostStatus::PUBLISHED,
             'user_id' => auth()->id(),
         ];
         DB::beginTransaction();
@@ -62,7 +65,32 @@ class PostController extends Controller
             }
 
             if ($request->filled('tags')) {
-                $post->tags()->sync($request->input('tags'));
+                $tagNames = explode(',', $request->input('tags'));
+                $tagIds = [];
+
+                foreach ($tagNames as $tagName) {
+                    $tagName = trim($tagName);
+                    if (!$tagName) continue;
+
+                    // Try to find existing tag by name
+                    $tag = Tag::where('name', $tagName)->where('user_id', auth()->id())->first();
+
+                    if ($tag) {
+                        $tagIds[] = $tag->id;
+                    } else {
+                        // Create new tag
+                        $newTag = CreateNewTag::create([
+                            'name' => $tagName,
+                            'user_id' => auth()->id(),
+                            'description' => null,
+                        ]);
+                        $tagIds[] = $newTag->id;
+                    }
+                }
+
+                if (!empty($tagIds)) {
+                    $post->tags()->sync($tagIds);
+                }
             }
             DB::commit();
         } catch (\Exception $e) {
@@ -121,7 +149,37 @@ class PostController extends Controller
         }
 
         if ($request->filled('tags')) {
-            $post->tags()->sync($request->input('tags'));
+            $tagNames = $request->input('tags');
+            if (!is_array($tagNames)) {
+                $tagNames = explode(',', $tagNames);
+            }
+
+            $tagIds = [];
+
+            foreach ($tagNames as $tagName) {
+                $tagName = trim($tagName);
+
+                if (!$tagName) continue;
+
+                // Try to find existing tag by name
+                $tag = Tag::where('name', '=', $tagName)->where('user_id', auth()->id())->first();
+
+                if ($tag) {
+                    $tagIds[] = $tag->id;
+                } else {
+                    // Create new tag
+                    $newTag = CreateNewTag::create([
+                        'name' => $tagName,
+                        'user_id' => auth()->id(),
+                        'description' => null,
+                    ]);
+                    $tagIds[] = $newTag->id;
+                }
+            }
+
+            if (!empty($tagIds)) {
+                $post->tags()->sync($tagIds);
+            }
         } else {
             $post->tags()->detach();
         }

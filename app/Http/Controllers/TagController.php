@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Tags\CreateNewTag;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -35,39 +36,17 @@ class TagController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $tag = Tag::create([
+        $tag = CreateNewTag::create([
             'name' => $request->name,
             'slug' => $request->slug,
             'description' => $request->description,
             'user_id' => auth()->id(),
         ]);
 
-        // Create tag reach record
-        $tag->reach()->create([
-            'total_view' => 0,
-            'status' => 'active',
-        ]);
-
-        return redirect()->route('manage.tags')
+        return redirect()->route('tags.index')
             ->with('success', 'Tag created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tag $tag)
-    {
-        $tag->load('posts', 'reach');
-        return view('dashboard.tags.show', compact('tag'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tag $tag)
-    {
-        return view('dashboard.tags.edit', compact('tag'));
-    }
 
     /**
      * Update the specified resource in storage.
@@ -86,7 +65,7 @@ class TagController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('manage.tags')
+        return redirect()->route('tags.index')
             ->with('success', 'Tag updated successfully.');
     }
 
@@ -97,7 +76,7 @@ class TagController extends Controller
     {
         $tag->delete();
 
-        return redirect()->route('manage.tags')
+        return redirect()->route('tags.index')
             ->with('success', 'Tag deleted successfully.');
     }
 
