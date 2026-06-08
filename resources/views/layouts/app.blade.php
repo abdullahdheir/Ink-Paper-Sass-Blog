@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>@yield('title', 'Ink & Paper')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('head')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link

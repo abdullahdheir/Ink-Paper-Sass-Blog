@@ -14,9 +14,13 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name', 155);
-            $table->string('slug', 160)->unique();
+            $table->string('slug', 160);
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unique(['slug', 'user_id']);
             $table->timestamps();
         });
+
 
         Schema::create('post_tag', function (Blueprint $table) {
             $table->foreignId('post_id')->constrained('posts')->cascadeOnDelete()->cascadeOnUpdate();

@@ -7,8 +7,12 @@ class PageController extends Controller
     // Public pages
     public function feed()
     {
-        $posts = \App\Models\Post::with('category')->latest()->get();
-        return view('public.feed', compact('posts'));
+        $posts = \App\Models\Post::with('category', 'tags')->latest()->paginate(10);
+        $trending_tags = \App\Models\Tag::with('reach')->whereHas('reach', function ($query) {
+            $query->where('status', 'trending');
+        })->take(5)->get();
+        $popular_posts = \App\Models\Post::with('category')->orderBy('created_at', 'desc')->take(3)->get();
+        return view('public.feed', compact('posts', 'trending_tags', 'popular_posts'));
     }
 
     public function article($id)
@@ -70,7 +74,14 @@ class PageController extends Controller
     // Dashboard pages
     public function dashboard()
     {
-        return view('dashboard.analytics');
+        $stats = [
+            'posts_count' => \App\Models\Post::count(),
+            'categories_count' => \App\Models\Category::count(),
+            'tags_count' => \App\Models\Tag::count(),
+            'recent_posts' => \App\Models\Post::with('category')->latest()->take(5)->get(),
+            'popular_tags' => \App\Models\Tag::withCount('posts')->orderBy('posts_count', 'desc')->take(5)->get(),
+        ];
+        return view('dashboard.analytics', compact('stats'));
     }
 
     public function analytics()

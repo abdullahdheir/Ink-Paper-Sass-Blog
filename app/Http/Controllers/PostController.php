@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PostStatus;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -14,7 +17,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('category')->get();
-        return view('posts.index', compact('posts'));
+        return view('dashboard.posts.index', compact('posts'));
     }
 
     /**
@@ -23,7 +26,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('posts.create', compact('categories'));
+        $tags = \App\Models\Tag::where('user_id', auth()->id())->get();
+        return view('dashboard.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -35,9 +39,36 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'category_id' => 'nullable|exists:categories,id',
+            'cover_image' => ['nullable', 'image', 'max:1024'],
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
+            'draft' => 'sometimes|boolean',
         ]);
 
-        Post::create($request->all());
+        $data = [
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
+            'category_id' => $request->input('category_id'),
+            'status' => $request->boolean('draft', false) ? PostStatus::DRAFT : PostStatus::PUBLISHED,
+            'user_id' => auth()->id(),
+        ];
+        DB::beginTransaction();
+        try {
+            $post = Post::create($data);
+
+            if ($request->hasFile('cover_image')) {
+                $post->cover_image = $request->file('cover_image')->store('cover_images', 'public');
+                $post->save();
+            }
+
+            if ($request->filled('tags')) {
+                $post->tags()->sync($request->input('tags'));
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Failed to create post: ' . $e->getMessage()])->withInput();
+        }
 
         return redirect()->route('posts.index')
             ->with('success', 'Post created successfully.');
@@ -49,7 +80,7 @@ class PostController extends Controller
     public function show(string $id)
     {
         $post = Post::with('category')->findOrFail($id);
-        return view('posts.show', compact('post'));
+        return view('dashboard.posts.show', compact('post'));
     }
 
     /**
@@ -57,9 +88,10 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::with('tags')->findOrFail($id);
         $categories = Category::all();
-        return view('posts.edit', compact('post', 'categories'));
+        $tags = \App\Models\Tag::where('user_id', auth()->id())->get();
+        return view('dashboard.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -71,10 +103,28 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'category_id' => 'nullable|exists:categories,id',
+            'cover_image' => ['nullable', 'image', 'max:1024'],
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ]);
 
         $post = Post::findOrFail($id);
-        $post->update($request->all());
+        $post->update([
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
+            'category_id' => $request->input('category_id'),
+        ]);
+
+        if ($request->hasFile('cover_image')) {
+            $post->cover_image = $request->file('cover_image')->store('cover_images', 'public');
+            $post->save();
+        }
+
+        if ($request->filled('tags')) {
+            $post->tags()->sync($request->input('tags'));
+        } else {
+            $post->tags()->detach();
+        }
 
         return redirect()->route('posts.index')
             ->with('success', 'Post updated successfully.');

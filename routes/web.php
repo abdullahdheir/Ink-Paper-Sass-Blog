@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 // Auth pages
@@ -62,4 +63,6 @@ Route::middleware('auth:web')->group(function () {
     // Existing resource routes
     Route::resource('categories', CategoryController::class);
     Route::resource('posts', PostController::class);
+    Route::get('tags/search', [TagController::class, 'search'])->name('tags.search');
+    Route::resource('tags', TagController::class);
 });

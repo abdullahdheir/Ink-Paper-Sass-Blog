@@ -14,11 +14,13 @@
             </div>
             <!-- Error Messages -->
             <div class="mb-6">
-                @if (session('error'))
-                    <div class="bg-error-container text-on-error p-3 rounded mb-2">
-                        {{ session('error') }}
+                @error('*')
+                    <div
+                        class="bg-error-container text-on-error-fixed p-3 rounded mb-2 flex items-center gap-2 text-sm font-medium">
+                        <span class="material-symbols-outlined text-error" data-icon="error">check_circle</span>
+                        {{ $message }}
                     </div>
-                @endif
+                @enderror
                 @if (session('status'))
                     <div
                         class="bg-success-container text-on-success-fixed p-3 rounded mb-2 flex items-center gap-2 text-sm font-medium">

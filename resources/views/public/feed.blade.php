@@ -21,16 +21,12 @@
             <div class="space-y-4">
                 <h3 class="font-ui-label text-ui-label uppercase tracking-widest text-secondary font-bold">Your Tags</h3>
                 <div class="flex flex-wrap gap-2">
-                    <a class="px-3 py-1 bg-surface-container border border-outline-variant rounded-full font-metadata text-metadata hover:bg-outline-variant transition-colors"
-                        href="#">#Development</a>
-                    <a class="px-3 py-1 bg-surface-container border border-outline-variant rounded-full font-metadata text-metadata hover:bg-outline-variant transition-colors"
-                        href="#">#DesignSystems</a>
-                    <a class="px-3 py-1 bg-surface-container border border-outline-variant rounded-full font-metadata text-metadata hover:bg-outline-variant transition-colors"
-                        href="#">#Minimalism</a>
-                    <a class="px-3 py-1 bg-surface-container border border-outline-variant rounded-full font-metadata text-metadata hover:bg-outline-variant transition-colors"
-                        href="#">#Typography</a>
-                    <a class="px-3 py-1 bg-surface-container border border-outline-variant rounded-full font-metadata text-metadata hover:bg-outline-variant transition-colors"
-                        href="#">#Future</a>
+                    @forelse($trending_tags as $tag)
+                        <a class="px-3 py-1 bg-surface-container border border-outline-variant rounded-full font-metadata text-metadata hover:bg-outline-variant transition-colors"
+                            href="#">{{ $tag->name }}</a>
+                    @empty
+                        <p class="text-secondary font-metadata text-metadata">No tags available yet.</p>
+                    @endforelse
                 </div>
             </div>
         </aside>
@@ -120,6 +116,10 @@
                         a Post</a>
                 </div>
             @endforelse
+            <!-- Pagination -->
+            <div class="pt-8 flex justify-center">
+                {{ $posts->links() }}
+            </div>
         </section>
         <!-- Right Sidebar: Trending & Who to Follow -->
         <aside class="hidden lg:block lg:col-span-3 space-y-12">
@@ -127,33 +127,24 @@
             <div class="bg-white border border-outline-variant rounded-xl p-6 space-y-6">
                 <h3 class="font-headline-md text-[20px] text-on-surface">Trending on Ink</h3>
                 <div class="space-y-6">
-                    <div class="flex gap-4">
-                        <span class="font-display-lg text-secondary opacity-30 leading-none">01</span>
-                        <div class="space-y-1">
-                            <h4
-                                class="font-ui-label text-ui-label font-bold text-on-surface leading-tight hover:text-primary cursor-pointer">
-                                The Carbon Cost of AI Writing</h4>
-                            <p class="font-metadata text-metadata text-secondary">Tech • 4 min read</p>
+                    @forelse($popular_posts as $index => $post)
+                        <div class="flex gap-4">
+                            <span
+                                class="font-display-lg text-secondary opacity-30 leading-none">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                            <div class="space-y-1">
+                                <h4
+                                    class="font-ui-label text-ui-label font-bold text-on-surface leading-tight hover:text-primary cursor-pointer">
+                                    <a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
+                                </h4>
+                                <p class="font-metadata text-metadata text-secondary">
+                                    {{ $post->category ? $post->category->name : 'Uncategorized' }} •
+                                    {{ \Illuminate\Support\Str::wordCount(strip_tags($post->content)) }} min read
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <span class="font-display-lg text-secondary opacity-30 leading-none">02</span>
-                        <div class="space-y-1">
-                            <h4
-                                class="font-ui-label text-ui-label font-bold text-on-surface leading-tight hover:text-primary cursor-pointer">
-                                Interview: The Poet in the Machine</h4>
-                            <p class="font-metadata text-metadata text-secondary">Culture • 15 min read</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <span class="font-display-lg text-secondary opacity-30 leading-none">03</span>
-                        <div class="space-y-1">
-                            <h4
-                                class="font-ui-label text-ui-label font-bold text-on-surface leading-tight hover:text-primary cursor-pointer">
-                                Reclaiming Your Time from Algorithms</h4>
-                            <p class="font-metadata text-metadata text-secondary">Life • 6 min read</p>
-                        </div>
-                    </div>
+                    @empty
+                        <p class="text-secondary font-metadata text-metadata">No trending posts yet.</p>
+                    @endforelse
                 </div>
             </div>
             <!-- Who to Follow -->
