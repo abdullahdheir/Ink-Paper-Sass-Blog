@@ -2,6 +2,10 @@
 
 @section('title', 'Creator Dashboard - Ink & Paper')
 
+@section('aside')
+    @include('layouts.partials.aside')
+@stop
+
 @section('page-content')
     <!-- Header Section -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
@@ -85,8 +89,6 @@
     <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden mb-section-gap">
         <div class="px-6 py-5 border-b border-outline-variant flex justify-between items-center">
             <h2 class="font-headline-md text-headline-md text-on-surface">Recent Posts</h2>
-            <a href="{{ route('posts.create') }}" class="text-primary font-ui-label text-ui-label hover:underline">Create
-                New Post</a>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">

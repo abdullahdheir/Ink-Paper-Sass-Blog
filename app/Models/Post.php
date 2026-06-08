@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PostStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,5 +30,15 @@ class Post extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class)->withTimestamps();
+    }
+
+    public function scopePublish()
+    {
+        return $this->where('status','=',PostStatus::PUBLISHED->value);
+    }
+
+     public function scopeDraft()
+    {
+        return $this->where('status','=',PostStatus::DRAFT->value);
     }
 }

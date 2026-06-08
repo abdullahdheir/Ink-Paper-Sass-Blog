@@ -11,13 +11,12 @@
         <div class="flex items-center justify-between mb-8">
             <div class="flex items-center gap-2 text-primary font-ui-label text-ui-label">
                 <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-                <a class="hover:underline" href="{{ route('posts.index') }}">Back to Posts</a>
+                <a class="hover:underline" onclick="window.history.back()" href="#">Back</a>
             </div>
-            <div
-                class="flex items-center gap-2 px-3 py-1 bg-surface-container-low rounded-full border border-outline-variant">
-                <span class="material-symbols-outlined text-[18px] text-primary">cloud_done</span>
-                <span class="font-metadata text-metadata text-secondary">Auto-saved</span>
-            </div>
+            <button type="submit"
+                class="bg-primary-container text-on-primary font-ui-button text-ui-button px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">
+                Update Post
+            </button>
         </div>
 
         <div class="flex">

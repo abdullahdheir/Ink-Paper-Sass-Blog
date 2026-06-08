@@ -13,7 +13,7 @@
                     <a class="text-on-surface-variant font-medium font-ui-label text-ui-label hover:text-primary transition-colors duration-200"
                         href="">Authors</a>
                     <a class="text-on-surface-variant font-medium font-ui-label text-ui-label hover:text-primary transition-colors duration-200"
-                        href="{{ route('dashboard') }}">Dashboard</a>
+                        href="{{ route('dashboard.index') }}">Dashboard</a>
                 </nav>
             </div>
             <div class="flex items-center gap-4">
@@ -31,7 +31,7 @@
                         <span class="material-symbols-outlined">bookmark</span>
                     </button>
                     <a href="{{ route('posts.create') }}"
-                        class="bg-primary-container text-on-primary font-ui-button text-ui-button px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">Create
+                        class="bg-primary-container text-on-primary font-ui-button text-ui-button px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">Publish
                         Post</a>
                     <!-- Profile Dropdown -->
                     <div class="relative ml-2" x-data="{ open: false }" @click.outside="open = false">

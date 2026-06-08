@@ -2,6 +2,10 @@
 
 @section('title', 'Dashboard Analytics - Ink & Paper')
 
+@section('aside')
+    @include('layouts.partials.aside')
+@stop
+
 @section('page-content')
     <!-- Header Section -->
     <section class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">

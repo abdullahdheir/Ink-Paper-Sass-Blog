@@ -2,138 +2,213 @@
 
 @section('title', 'Drafts - Ink & Paper')
 
+@section('aside')
+    @include('layouts.partials.aside')
+@stop
+
 @section('page-content')
-<!-- Header Section -->
-<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-<div>
-<h1 class="font-display-lg text-display-lg text-on-surface mb-2">Creator Dashboard</h1>
-<p class="text-secondary font-body-md">Manage your thoughts, analyze your impact, and craft your next story.</p>
-</div>
-<button class="flex items-center justify-center gap-2 bg-primary-container text-on-primary px-8 py-4 rounded-lg font-ui-button text-ui-button hover:opacity-90 active:scale-95 transition-all w-full md:w-auto shadow-sm">
-<span class="material-symbols-outlined">edit</span>
-                    Write a post
+    <!-- Content Area -->
+    <section class="grow">
+        <!-- Header & Stats -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div>
+                <h1 class="font-headline-md text-headline-md text-on-surface mb-2">Drafts</h1>
+                <p class="text-on-surface-variant font-ui-label text-ui-label">You have <span
+                        class="font-bold text-on-surface">8</span> unfinished stories in your workspace.</p>
+            </div>
+            <a href="{{ route('posts.create') }}"
+                class="bg-primary text-white px-6 py-3 rounded-lg font-ui-button text-ui-button flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md shadow-primary/10">
+                <span class="material-symbols-outlined" data-icon="add">add</span>
+                Start a new draft
+            </a>
+        </div>
+        <!-- Priority / Starred Section -->
+        <div class="mb-12">
+            <h2 class="font-ui-label text-ui-label font-bold text-on-surface-variant uppercase tracking-widest mb-6">Focus
+                Pieces</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Starred Draft Card 1 -->
+                <div
+                    class="group bg-surface-container-lowest border border-outline-variant p-6 rounded-xl hover:border-primary transition-all cursor-pointer relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="material-symbols-outlined text-primary" data-icon="star" data-weight="fill"
+                            style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="text-metadata font-metadata bg-surface-container px-2 py-1 rounded">Priority</span>
+                    </div>
+                    <h3 class="font-headline-md text-xl mb-2 group-hover:text-primary transition-colors">The Architectures
+                        of Digital Silence</h3>
+                    <p class="text-on-surface-variant text-sm font-body-md line-clamp-2 mb-6 italic">Exploring how
+                        minimalist design influences cognitive load in professional SaaS environments...</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+                                <div class="bg-primary h-full w-3/4 rounded-full"></div>
+                            </div>
+                            <span class="text-metadata font-metadata text-on-surface-variant">75% done</span>
+                        </div>
+                        <span class="text-metadata font-metadata text-on-surface-variant">1,240 words</span>
+                    </div>
+                </div>
+                <!-- Starred Draft Card 2 -->
+                <div
+                    class="group bg-surface-container-lowest border border-outline-variant p-6 rounded-xl hover:border-primary transition-all cursor-pointer relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="material-symbols-outlined text-primary" data-icon="star" data-weight="fill"
+                            style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="text-metadata font-metadata bg-surface-container px-2 py-1 rounded">Priority</span>
+                    </div>
+                    <h3 class="font-headline-md text-xl mb-2 group-hover:text-primary transition-colors">Rust vs Go: The
+                        2024 Performance Audit</h3>
+                    <p class="text-on-surface-variant text-sm font-body-md line-clamp-2 mb-6 italic">A deep dive into memory
+                        safety and execution speed for distributed cloud systems...</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+                                <div class="bg-primary h-full w-1/4 rounded-full"></div>
+                            </div>
+                            <span class="text-metadata font-metadata text-on-surface-variant">25% done</span>
+                        </div>
+                        <span class="text-metadata font-metadata text-on-surface-variant">450 words</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Draft List -->
+        <div>
+            <h2 class="font-ui-label text-ui-label font-bold text-on-surface-variant uppercase tracking-widest mb-6">Recent
+                Work</h2>
+            <div
+                class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden divide-y divide-outline-variant">
+                <!-- List Item 1 -->
+                <div
+                    class="flex flex-col md:flex-row md:items-center justify-between p-6 hover:bg-surface transition-colors gap-4">
+                    <div class="flex-grow">
+                        <h4 class="font-headline-md text-lg text-on-surface mb-1">Untitled Technical Proposal</h4>
+                        <div class="flex items-center gap-4 text-on-surface-variant text-metadata font-metadata">
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
+                                Edited 2 hours ago
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="article">article</span>
+                                234 words
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 rounded border border-outline hover:bg-primary-container hover:text-white hover:border-primary-container transition-all text-ui-label font-ui-button">
+                            Resume Writing
+                        </button>
+                        <button
+                            class="p-2 text-on-surface-variant hover:text-error transition-colors rounded hover:bg-error-container/10">
+                            <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                        </button>
+                        <button
+                            class="p-2 text-on-surface-variant hover:text-on-surface transition-colors rounded hover:bg-surface-container">
+                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- List Item 2 -->
+                <div
+                    class="flex flex-col md:flex-row md:items-center justify-between p-6 hover:bg-surface transition-colors gap-4">
+                    <div class="flex-grow">
+                        <h4 class="font-headline-md text-lg text-on-surface mb-1">The Ethics of AI in Creative Writing</h4>
+                        <div class="flex items-center gap-4 text-on-surface-variant text-metadata font-metadata">
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
+                                Edited 3 days ago
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="article">article</span>
+                                890 words
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 rounded border border-outline hover:bg-primary-container hover:text-white hover:border-primary-container transition-all text-ui-label font-ui-button">
+                            Resume Writing
+                        </button>
+                        <button
+                            class="p-2 text-on-surface-variant hover:text-error transition-colors rounded hover:bg-error-container/10">
+                            <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                        </button>
+                        <button
+                            class="p-2 text-on-surface-variant hover:text-on-surface transition-colors rounded hover:bg-surface-container">
+                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- List Item 3 -->
+                <div
+                    class="flex flex-col md:flex-row md:items-center justify-between p-6 hover:bg-surface transition-colors gap-4">
+                    <div class="flex-grow">
+                        <h4 class="font-headline-md text-lg text-on-surface mb-1">Travelogue: One Month in Kyoto</h4>
+                        <div class="flex items-center gap-4 text-on-surface-variant text-metadata font-metadata">
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
+                                Edited 1 week ago
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="article">article</span>
+                                3,420 words
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 rounded border border-outline hover:bg-primary-container hover:text-white hover:border-primary-container transition-all text-ui-label font-ui-button">
+                            Resume Writing
+                        </button>
+                        <button
+                            class="p-2 text-on-surface-variant hover:text-error transition-colors rounded hover:bg-error-container/10">
+                            <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                        </button>
+                        <button
+                            class="p-2 text-on-surface-variant hover:text-on-surface transition-colors rounded hover:bg-surface-container">
+                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- List Item 4 -->
+                <div
+                    class="flex flex-col md:flex-row md:items-center justify-between p-6 hover:bg-surface transition-colors gap-4 text-on-surface-variant/50">
+                    <div class="flex-grow">
+                        <h4 class="font-headline-md text-lg italic mb-1">Add a title to your draft...</h4>
+                        <div class="flex items-center gap-4 text-metadata font-metadata">
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
+                                Last saved just now
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="article">article</span>
+                                0 words
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 rounded border border-outline hover:bg-primary-container hover:text-white hover:border-primary-container transition-all text-ui-label font-ui-button">
+                            Resume Writing
+                        </button>
+                        <button class="p-2 hover:text-error transition-colors rounded hover:bg-error-container/10">
+                            <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                        </button>
+                        <button class="p-2 hover:text-on-surface transition-colors rounded hover:bg-surface-container">
+                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Load More -->
+            <div class="mt-8 text-center">
+                <button
+                    class="text-secondary font-ui-label text-ui-label hover:text-primary hover:underline transition-all">
+                    View 4 more drafts from last month
                 </button>
-</div>
-<!-- Bento Grid Stats -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-12">
-<!-- Performance Chart -->
-<div class="md:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 flex flex-col justify-between min-h-[320px]">
-<div class="flex justify-between items-center mb-6">
-<h3 class="font-headline-md text-headline-md text-on-surface">Weekly Engagement</h3>
-<div class="flex gap-2">
-<span class="px-3 py-1 bg-surface-container text-secondary rounded-full font-metadata text-metadata">Last 7 Days</span>
-</div>
-</div>
-<!-- Mock Chart Visualization -->
-<div class="flex-1 flex items-end gap-2 md:gap-4 px-2">
-<div class="flex-1 bg-outline-variant h-[40%] rounded-t opacity-40 hover:bg-primary transition-all duration-300"></div>
-<div class="flex-1 bg-outline-variant h-[65%] rounded-t opacity-40 hover:bg-primary transition-all duration-300"></div>
-<div class="flex-1 bg-primary h-[85%] rounded-t shadow-sm"></div>
-<div class="flex-1 bg-outline-variant h-[55%] rounded-t opacity-40 hover:bg-primary transition-all duration-300"></div>
-<div class="flex-1 bg-outline-variant h-[75%] rounded-t opacity-40 hover:bg-primary transition-all duration-300"></div>
-<div class="flex-1 bg-outline-variant h-[45%] rounded-t opacity-40 hover:bg-primary transition-all duration-300"></div>
-<div class="flex-1 bg-outline-variant h-[95%] rounded-t opacity-40 hover:bg-primary transition-all duration-300"></div>
-</div>
-<div class="flex justify-between mt-4 text-metadata text-secondary border-t border-outline-variant pt-4">
-<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-</div>
-</div>
-<!-- Snapshot Stats -->
-<div class="md:col-span-4 flex flex-col gap-6">
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 flex-1">
-<span class="text-secondary font-ui-label text-ui-label block mb-2 uppercase tracking-wider">Total Views</span>
-<div class="flex items-baseline gap-2">
-<span class="font-display-lg text-display-lg text-on-surface">12.4k</span>
-<span class="text-primary font-bold text-metadata">+12%</span>
-</div>
-</div>
-<div class="bg-primary-container text-on-primary rounded-xl p-6 flex-1 shadow-lg shadow-primary-container/20">
-<span class="text-on-primary/70 font-ui-label text-ui-label block mb-2 uppercase tracking-wider">New Subscribers</span>
-<div class="flex items-baseline gap-2">
-<span class="font-display-lg text-display-lg">842</span>
-<span class="text-on-primary/90 font-bold text-metadata">Steady Growth</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Table Section -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden mb-section-gap">
-<div class="px-6 py-5 border-b border-outline-variant flex justify-between items-center">
-<h2 class="font-headline-md text-headline-md text-on-surface">Recent Posts</h2>
-<button class="text-primary font-ui-label text-ui-label hover:underline">View All</button>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface-container text-on-surface-variant font-ui-label text-ui-label">
-<th class="px-6 py-4 font-semibold uppercase tracking-wider">Title</th>
-<th class="px-6 py-4 font-semibold uppercase tracking-wider">Status</th>
-<th class="px-6 py-4 font-semibold uppercase tracking-wider">Views</th>
-<th class="px-6 py-4 font-semibold uppercase tracking-wider">Likes</th>
-<th class="px-6 py-4 font-semibold uppercase tracking-wider">Date</th>
-<th class="px-6 py-4 font-semibold uppercase tracking-wider text-right">Actions</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant">
-<tr class="hover:bg-surface transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
-<img alt="Article Preview" data-alt="A minimalist abstract image of a digital circuit board with soft glowing purple lights. The composition is clean and technical, emphasizing the intersection of technology and creativity. The color palette uses deep charcoal blacks and vibrant electric violet highlights. The style is editorial and professional, suitable for a tech-focused article preview." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0O2oCkRUA2K6izDQwisH3c2lIIlUCYKg3L1uNVzOl4wu8PZ_h3PA7QTK2c1cu8XFWa5bLP9pBKI2FDnFAv2fptzz3l7eQeFqy3YY0NgwDNZhK_SJxRhEUNe_9LonkswvGE5Sk7kauCQsbA2wA0FlzT_uq53SuWonjLQXN1a_lqjmNkYKRGlW79cTEnfhtidsoEfbk2IpSahONaj_w6isjlA7_JljmMZMGyPdAyiyo7abSEeoqWd36dLVEhMitxnfC06G3W2In68bk"/>
-</div>
-<span class="font-ui-label text-ui-label font-bold text-on-surface">The Future of AI in Modern Software Architecture</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-on-tertiary-container/10 text-tertiary-container">Published</span>
-</td>
-<td class="px-6 py-4 text-secondary font-metadata text-metadata">3,402</td>
-<td class="px-6 py-4 text-secondary font-metadata text-metadata">124</td>
-<td class="px-6 py-4 text-secondary font-metadata text-metadata">Oct 24, 2023</td>
-<td class="px-6 py-4 text-right">
-<button class="material-symbols-outlined text-secondary hover:text-primary">more_vert</button>
-</td>
-</tr>
-<tr class="hover:bg-surface transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
-<img alt="Article Preview" data-alt="A clean, minimalist workspace featuring an open notebook and a classic ink pen. The lighting is bright and airy, suggesting a morning creative session. The aesthetic is monochromatic and high-contrast, perfectly aligning with the Ink &amp; Paper brand. The depth of field is shallow, focusing on the tip of the pen resting on the paper." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYOQRWucdmWRFE-1yKybjuMGVipK1oEqj4dR4JE1ih4CwhU3e1AfiopgsshsohZc1kcFgF8W5hl99_W-cedwOGmhd4VIXBbUqrjAJ8k2M9496tWl5GHFytyUor4iuymOhWomZQw0hXpUko7W-_9EbN9PV4LfyaoXrKko0ANGc-ouff0AYqCxldrCFPHq9ee4CEMdmcYvlAoZeI3ElWueQyxYJkG1ZNZm9G9R_Ir8fHmSfIH72R3DwqLc_k5ToIfhWwv0wYfY8ko7B1"/>
-</div>
-<span class="font-ui-label text-ui-label font-bold text-on-surface">Minimalist Design Systems for Intellectual Content</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-on-tertiary-container/10 text-tertiary-container">Published</span>
-</td>
-<td class="px-6 py-4 text-secondary font-metadata text-metadata">1,829</td>
-<td class="px-6 py-4 text-secondary font-metadata text-metadata">89</td>
-<td class="px-6 py-4 text-secondary font-metadata text-metadata">Oct 21, 2023</td>
-<td class="px-6 py-4 text-right">
-<button class="material-symbols-outlined text-secondary hover:text-primary">more_vert</button>
-</td>
-</tr>
-<tr class="hover:bg-surface transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
-<img alt="Article Preview" data-alt="A macro shot of lines of code displayed on a high-resolution monitor. The text is sharp and glows subtly against a dark background, with the highlight being an electric violet keyword. The overall feel is one of precision, expertise, and digital focus. The lighting is moody and controlled, suitable for developer-focused content." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5Ws3t0G5PGm7FGCVB1Mv1znA9DyExRIdcxx47n6daQqJ71IkXpCERv3061pMFFaCsPyWOFd18hVim1BhpEeP2sa0NzJAUYsQTE333S3svZD-1HgYva2BgTw5KGQO1jKlDIhzl5yeHk2V9i6KcW4TQu-gdKthZ_bWA8O0INlZIV4LobdY9khhu8Ew6iajbjOvjL2mfh3Ppl4uOB3_AzS3Mv7MBtlmnoChDXpwhdC60mlaO3pGeZdlQzWQ9fiebMNJQrZ6iMHNmBG_s"/>
-</div>
-<span class="font-ui-label text-ui-label font-bold text-on-surface">Why We Chose Tailwind CSS for Our New Platform</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-variant text-on-surface-variant">Draft</span>
-</td>
-<td class="px-6 py-4 text-secondary font-metadata text-metadata">—</td>
-<td class="px-6 py-4 text-secondary font-metadata text-metadata">—</td>
-<td class="px-6 py-4 text-secondary font-metadata text-metadata">Oct 19, 2023</td>
-<td class="px-6 py-4 text-right">
-<button class="material-symbols-outlined text-secondary hover:text-primary">more_vert</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+            </div>
+        </div>
+    </section>
 @endsection

@@ -37,8 +37,8 @@
                     <!-- Featured Article (Bento Style) -->
                     <article
                         class="group border border-outline-variant rounded-xl overflow-hidden bg-white hover:border-primary transition-colors duration-300">
-                        <div class="aspect-[16/9] overflow-hidden bg-surface-container flex items-center justify-center">
-                            <span class="material-symbols-outlined text-6xl text-on-surface-variant">article</span>
+                        <div class="aspect-video overflow-hidden bg-surface-container flex items-center justify-center">
+                            <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover" />
                         </div>
                         <div class="p-8 space-y-4">
                             <div class="flex items-center gap-3 font-metadata text-metadata text-secondary">
@@ -80,7 +80,7 @@
                     <article class="flex flex-col md:flex-row gap-8 group">
                         <div
                             class="w-full md:w-1/3 aspect-video md:aspect-square overflow-hidden rounded-lg border border-outline-variant bg-surface-container flex items-center justify-center">
-                            <span class="material-symbols-outlined text-4xl text-on-surface-variant">article</span>
+                            <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover" />
                         </div>
                         <div class="w-full md:w-2/3 space-y-3">
                             <div class="flex items-center gap-2 font-metadata text-metadata text-secondary">

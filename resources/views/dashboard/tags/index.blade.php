@@ -147,7 +147,7 @@
                                 <td class="px-6 py-4 font-metadata text-metadata text-secondary">{{ $tag->slug }}</td>
                                 <td class="px-6 py-4 font-ui-label text-ui-label">{{ $tag->posts_count }}</td>
                                 <td class="px-6 py-4 font-ui-label text-ui-label">
-                                    {{ $tag->reach ? $tag->reach->total_view : 0 }}</td>
+                                    {{ $tag->reach ? $tag->reach->total_views : 0 }}</td>
                                 <td class="px-6 py-4 font-ui-label text-ui-label">-</td>
                                 <td class="px-6 py-4">
                                     @if ($tag->reach && $tag->reach->status === 'trending')
@@ -163,7 +163,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div
-                                        class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        class="flex justify-end gap-3  transition-opacity">
                                         <button onclick="window.openTagModal('edit', {{ json_encode($tag) }})"
                                             class="p-1 hover:text-primary transition-colors"><span
                                                 class="material-symbols-outlined text-[20px]">edit</span></button>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('content');
             $table->enum('status', PostStatus::cases());
             $table->string('cover_image')->nullable();
-            $table->timestamp('published_at');
+            $table->timestamp('published_at')->nullable();
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();

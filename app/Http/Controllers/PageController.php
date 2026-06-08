@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+
 class PageController extends Controller
 {
     // Public pages
@@ -72,28 +74,7 @@ class PageController extends Controller
     }
 
     // Dashboard pages
-    public function dashboard()
-    {
-        $stats = [
-            'posts_count' => \App\Models\Post::count(),
-            'categories_count' => \App\Models\Category::count(),
-            'tags_count' => \App\Models\Tag::count(),
-            'recent_posts' => \App\Models\Post::with('category')->latest()->take(5)->get(),
-            'popular_tags' => \App\Models\Tag::withCount('posts')->orderBy('posts_count', 'desc')->take(5)->get(),
-        ];
-        return view('dashboard.analytics', compact('stats'));
-    }
-
-    public function analytics()
-    {
-        return view('dashboard.analytics');
-    }
-
-    public function drafts()
-    {
-        return view('dashboard.drafts');
-    }
-
+   
     public function write()
     {
         return view('dashboard.writing-editor');

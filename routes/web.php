@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
@@ -24,15 +25,14 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/subscription/complete', [PageController::class, 'completeSubscription'])->name('subscription.complete');
 
     // Dashboard pages
-    Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
-    Route::get('/dashboard/analytics', [PageController::class, 'analytics'])->name('dashboard.analytics');
-    Route::get('/dashboard/drafts', [PageController::class, 'drafts'])->name('dashboard.drafts');
-    Route::get('/dashboard/write', [PageController::class, 'write'])->name('dashboard.write');
-    Route::get('/dashboard/edit/{id}', [PageController::class, 'editArticle'])->name('dashboard.edit');
-    Route::get('/dashboard/analytics/{id}', [PageController::class, 'postAnalytics'])->name('dashboard.post-analytics');
-    Route::get('/dashboard/earnings', [PageController::class, 'earnings'])->name('dashboard.earnings');
-    Route::get('/dashboard/collaboration', [PageController::class, 'collaboration'])->name('dashboard.collaboration');
-
+    Route::prefix('dashboard')->name('dashboard.')->controller(DashboardController::class)->group(function () {
+        Route::get('/', 'dashboard')->name('index');
+        Route::get('/analytics', 'analytics')->name('analytics');
+        Route::get('/drafts', 'drafts')->name('drafts');
+        Route::get('/analytics/{id}', 'postAnalytics')->name('post-analytics');
+        Route::get('/earnings', 'earnings')->name('earnings');
+        Route::get('/collaboration',  'collaboration')->name('collaboration');
+    });
     // Management pages
     Route::get('/manage/categories', [PageController::class, 'categories'])->name('manage.categories');
     Route::get('/manage/categories/create', [PageController::class, 'createCategory'])->name('manage.categories.create');
@@ -62,7 +62,7 @@ Route::middleware('auth:web')->group(function () {
 
     // Existing resource routes
     Route::resource('categories', CategoryController::class);
-    Route::resource('posts', PostController::class);
+    Route::resource('posts', PostController::class)->except(['index']);
     Route::get('tags/search', [TagController::class, 'search'])->name('tags.search');
     Route::resource('tags', TagController::class)->except(['edit', 'show', 'create']);
 });

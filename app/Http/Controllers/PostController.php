@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Posts\CreateNewPost;
 use App\Actions\Tags\CreateNewTag;
 use App\Enums\PostStatus;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -18,8 +17,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('category')->get();
-        return view('dashboard.posts.index', compact('posts'));
+        return redirect()->route('dashboard.index');
     }
 
     /**
@@ -37,14 +35,13 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'category_id' => 'nullable|exists:categories,id',
             'cover_image' => ['nullable', 'image', 'max:1024'],
             'tags' => 'nullable|array',
-            'tags.*' => 'exists:tags,id',
+            'tags.*' => 'required|string|max:155',
             'draft' => 'sometimes|string|in:on,off',
         ]);
 
@@ -54,51 +51,16 @@ class PostController extends Controller
             'category_id' => $request->input('category_id'),
             'status' => $request->input('draft') === 'on' ? PostStatus::DRAFT : PostStatus::PUBLISHED,
             'user_id' => auth()->id(),
+            'cover_image' => $request->file('cover_image'),
         ];
-        DB::beginTransaction();
         try {
-            $post = Post::create($data);
-
-            if ($request->hasFile('cover_image')) {
-                $post->cover_image = $request->file('cover_image')->store('cover_images', 'public');
-                $post->save();
-            }
-
-            if ($request->filled('tags')) {
-                $tagNames = explode(',', $request->input('tags'));
-                $tagIds = [];
-
-                foreach ($tagNames as $tagName) {
-                    $tagName = trim($tagName);
-                    if (!$tagName) continue;
-
-                    // Try to find existing tag by name
-                    $tag = Tag::where('name', $tagName)->where('user_id', auth()->id())->first();
-
-                    if ($tag) {
-                        $tagIds[] = $tag->id;
-                    } else {
-                        // Create new tag
-                        $newTag = CreateNewTag::create([
-                            'name' => $tagName,
-                            'user_id' => auth()->id(),
-                            'description' => null,
-                        ]);
-                        $tagIds[] = $newTag->id;
-                    }
-                }
-
-                if (!empty($tagIds)) {
-                    $post->tags()->sync($tagIds);
-                }
-            }
-            DB::commit();
+            CreateNewPost::create($data);
         } catch (\Exception $e) {
-            DB::rollBack();
+
             return back()->withErrors(['error' => 'Failed to create post: ' . $e->getMessage()])->withInput();
         }
 
-        return redirect()->route('posts.index')
+        return redirect()->route('dashboard.index')
             ->with('success', 'Post created successfully.');
     }
 
@@ -133,7 +95,7 @@ class PostController extends Controller
             'category_id' => 'nullable|exists:categories,id',
             'cover_image' => ['nullable', 'image', 'max:1024'],
             'tags' => 'nullable|array',
-            'tags.*' => 'exists:tags,id',
+            'tags.*' => 'required|string|max:155',
         ]);
 
         $post = Post::findOrFail($id);

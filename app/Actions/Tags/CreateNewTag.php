@@ -2,6 +2,7 @@
 
 namespace App\Actions\Tags;
 
+use App\Enums\TagStatus;
 use App\Models\Tag;
 use App\Models\TagReach;
 use Illuminate\Support\Facades\DB;
@@ -23,17 +24,17 @@ class CreateNewTag
             $newTag = Tag::create([
                 'name' => $data['name'],
                 'slug' => $data['slug'] ?? Str::slug($data['name']),
-                'user_id' => auth()->id(),
+                'user_id' => $data['user_id'],
                 'description' => $data['description'] ?? null,
             ]);
 
             // Create tag reach record
             TagReach::create([
                 'tag_id' => $newTag->id,
-                'total_view' => 0,
-                'status' => 'active',
+                'total_views' => 0,
+                'status' => TagStatus::ACTIVE,
             ]);
-            
+
             return $newTag;
         });
     }

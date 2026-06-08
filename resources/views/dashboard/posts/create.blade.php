@@ -14,12 +14,11 @@
         <div class="flex items-center justify-between mb-8">
             <div class="flex items-center gap-2 text-primary font-ui-label text-ui-label">
                 <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-                <a class="hover:underline" href="{{ route('posts.index') }}">Back to Posts</a>
+                <a class="hover:underline" onclick="window.history.back()" href="#">Back</a>
             </div>
-            <button
-                class="flex items-center gap-2 px-3 py-1 bg-surface-container-low rounded-full border border-outline-variant">
-                <span class="material-symbols-outlined text-[18px] text-primary">cloud_done</span>
-                <span class="font-metadata text-metadata text-secondary">Auto-saved</span>
+            <button type="submit"
+                class="bg-primary-container text-on-primary font-ui-button text-ui-button px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">
+                Save Post
             </button>
         </div>
         <div class="flex">
@@ -87,7 +86,7 @@
                         <h3 class="font-ui-label text-ui-label text-on-surface mb-4 uppercase tracking-wider">Tags</h3>
 
                         <!-- Selected Tags Display -->
-                        <div class="flex flex-wrap gap-2 min-h-[40px]">
+                        <div class="flex flex-wrap">
                             <template x-for="tag in tags" :key="tag">
                                 <span
                                     class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full font-metadata text-metadata flex items-center gap-1">
