@@ -103,7 +103,9 @@
                         </div>
 
                         <!-- Hidden Input for Form Submission -->
-                        <input type="hidden" name="tags[]" :value="tag" x-for="tag in tags">
+                        <template x-for="tag in tags">
+                            <input type="hidden" name="tags[]" :value="tag">
+                        </template>
 
                         <!-- Search Input -->
                         <div class="relative">
