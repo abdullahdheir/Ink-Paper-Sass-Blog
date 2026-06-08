@@ -6,6 +6,5 @@ enum PostStatus: string
 {
     case PUBLISHED = 'published';
     case ARCHIVE = 'archive';
-
     case DRAFT = 'draft';
 }

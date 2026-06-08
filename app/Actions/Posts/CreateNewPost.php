@@ -22,7 +22,14 @@ class CreateNewPost
     public static function create(array $data): Post
     {
         return DB::transaction(function () use ($data) {
-            $post = Post::create($data);
+            $post = Post::create([
+                'category_id' => $data['category_id'] ?? null,
+                'title' => $data['title'],
+                'content' => $data['content'],
+                'published_at' => $data['published_at'] ?? null,
+                'status' => $data['status'],
+                'user_id' => $data['user_id'],
+            ]);
 
             if (!empty($data['cover_image'])) {
                 if ($data['cover_image'] instanceof UploadedFile) {
@@ -36,7 +43,7 @@ class CreateNewPost
             }
 
             if (!empty($data['tags'])) {
-                $tagNames = explode(',', $data['tags']);
+                $tagNames = is_array($data['tags']) ? $data['tags'] : explode(',', $data['tags']);
                 $tagIds = [];
 
                 foreach ($tagNames as $tagName) {

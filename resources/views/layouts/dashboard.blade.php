@@ -33,7 +33,7 @@
                             <div
                                 class="w-9 h-9 rounded-full overflow-hidden border-2 border-outline-variant hover:border-primary transition-colors">
                                 <img alt="{{ auth()->user()->name ?? 'User' }}" class="w-full h-full object-cover"
-                                    src="{{ auth()->user()->avatar_path ? Storage::url(auth()->user()->avatar_path) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name ?? 'U') . '&background=6750A4&color=fff&size=128' }}" />
+                                    src="{{ auth()->user()->avatar }}" />
                             </div>
                         </button>
                         <!-- Dropdown Menu -->
@@ -88,7 +88,7 @@
         </div>
     </header>
     <div class="flex min-h-screen max-w-container-max mx-auto">
-       @yield('aside')
+        @yield('aside')
         <main class="flex-1 px-gutter py-8 overflow-hidden">
             @yield('page-content')
         </main>

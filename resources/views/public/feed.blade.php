@@ -38,7 +38,8 @@
                     <article
                         class="group border border-outline-variant rounded-xl overflow-hidden bg-white hover:border-primary transition-colors duration-300">
                         <div class="aspect-video overflow-hidden bg-surface-container flex items-center justify-center">
-                            <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover" />
+                            <img src="{{ $post->cover_image_url }}" alt="{{ $post->title }}"
+                                class="w-full h-full object-cover" />
                         </div>
                         <div class="p-8 space-y-4">
                             <div class="flex items-center gap-3 font-metadata text-metadata text-secondary">
@@ -60,10 +61,12 @@
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant overflow-hidden flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-on-surface-variant">person</span>
+                                        <img src="{{ $post->user->avatar }}" alt="{{ $post->user->name ?? 'Author' }}"
+                                            class="w-full h-full object-cover" />
                                     </div>
                                     <div>
-                                        <p class="font-ui-label text-ui-label font-bold text-on-surface">Author</p>
+                                        <p class="font-ui-label text-ui-label font-bold text-on-surface">
+                                            {{ $post->user->name ?? 'Author' }}</p>
                                         <p class="font-metadata text-metadata text-secondary">
                                             {{ $post->category ? $post->category->name : 'Uncategorized' }}</p>
                                     </div>
@@ -80,7 +83,8 @@
                     <article class="flex flex-col md:flex-row gap-8 group">
                         <div
                             class="w-full md:w-1/3 aspect-video md:aspect-square overflow-hidden rounded-lg border border-outline-variant bg-surface-container flex items-center justify-center">
-                            <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover" />
+                            <img src="{{ $post->cover_image_url }}" alt="{{ $post->title }}"
+                                class="w-full h-full object-cover" />
                         </div>
                         <div class="w-full md:w-2/3 space-y-3">
                             <div class="flex items-center gap-2 font-metadata text-metadata text-secondary">
@@ -97,12 +101,24 @@
                             <p class="text-on-surface-variant font-body-md text-body-md line-clamp-2">
                                 {{ \Illuminate\Support\Str::limit(strip_tags($post->content), 150) }}
                             </p>
-                            <div class="flex items-center gap-3 pt-2">
-                                <p class="font-ui-label text-ui-label text-on-surface font-medium">Author</p>
-                                <span class="text-secondary text-metadata">•</span>
-                                <span
-                                    class="text-secondary font-metadata text-metadata">{{ \Illuminate\Support\Str::wordCount(strip_tags($post->content)) }}
-                                    min read</span>
+                            <div class="flex items-center justify-between pt-4 border-t border-outline-variant">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant overflow-hidden flex items-center justify-center">
+                                        <img src="{{ $post->user->avatar }}" alt="{{ $post->user->name ?? 'Author' }}"
+                                            class="w-full h-full object-cover" />
+                                    </div>
+                                    <div>
+                                        <p class="font-ui-label text-ui-label font-bold text-on-surface">
+                                            {{ $post->user->name ?? 'Author' }}</p>
+                                        <p class="font-metadata text-metadata text-secondary">
+                                            {{ $post->category ? $post->category->name : 'Uncategorized' }}</p>
+                                    </div>
+                                </div>
+                                <a href="{{ route('posts.show', $post->id) }}"
+                                    class="text-primary p-2 rounded-full hover:bg-primary-container/10 transition-colors">
+                                    <span class="material-symbols-outlined">arrow_forward</span>
+                                </a>
                             </div>
                         </div>
                     </article>

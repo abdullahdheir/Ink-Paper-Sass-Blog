@@ -4,7 +4,7 @@
 
 @section('page-content')
     @error('*')
-        <div class="alert alert-danger">
+        <div class="bg-error-container text-on-error-container font-ui-label text-ui-label rounded-lg p-4 mb-6">
             {{ $message }}
         </div>
     @enderror
@@ -23,14 +23,17 @@
         </div>
         <div class="flex">
             <div class="flex-1 max-w-article-max mx-auto w-full distraction-free-focus">
-                <div class="editor-container">
+                <div class="editor-container bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
                     <textarea name="title"
                         class="w-full bg-transparent border-none focus:outline-none focus:ring-0 font-display-lg text-display-lg resize-none placeholder:text-surface-variant text-on-surface mb-8 overflow-hidden"
                         oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' placeholder="Enter your title..."
-                        rows="1"></textarea>
-                    <textarea name="content"
-                        class="w-full min-h-[614px] bg-transparent border-none focus:outline-none font-body-lg text-body-lg text-on-surface leading-relaxed placeholder:text-surface-variant"
-                        placeholder="Type your story..." rows="10"></textarea>
+                        rows="1">{{ old('title') }}</textarea>
+                    <div class="mb-4">
+                        <div id="editor"
+                            class="quill-editor min-h-[614px] rounded-xl bg-white border border-outline-variant overflow-hidden"
+                            placeholder="Type your story..."></div>
+                        <input name="content" id="content-input" value="{{ old('content') }}" type="hidden">
+                    </div>
                 </div>
             </div>
 
@@ -42,7 +45,7 @@
                         <h3 class="font-ui-label text-ui-label text-on-surface mb-4 uppercase tracking-wider">Cover Image
                         </h3>
 
-                        <input type="file" name="cover_image" id="cover-input" class="hidden" accept="image/*">
+                        <input type="file" value="{{ old('cover_image') }}" name="cover_image" id="cover-input" class="hidden" accept="image/*">
 
                         <div id="drop-zone"
                             class="aspect-video w-full rounded-lg bg-surface-container border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-surface-container-high transition-all group overflow-hidden relative">
@@ -65,7 +68,8 @@
                                     class="font-ui-label text-ui-label text-secondary group-hover:text-on-surface transition-colors">Draft
                                     Post</span>
                                 <div class="relative inline-flex items-center">
-                                    <input checked="" name="draft" class="sr-only peer" type="checkbox" />
+                                    <input @checked(old('draft') == 'on') name="draft" class="sr-only peer"
+                                        type="checkbox" />
                                     <div
                                         class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
                                     </div>
@@ -77,7 +81,8 @@
                                     for="published_at">Publish Date</label>
                                 <input
                                     class="w-full bg-white border border-outline-variant rounded-lg px-4 py-2 font-ui-label text-ui-label focus:ring-1 focus:ring-primary focus:border-primary transition-all"
-                                    id="published_at" name="published_at" type="datetime-local" />
+                                    id="published_at" value="{{ old('published_at') }}" name="published_at"
+                                    type="datetime-local" />
                             </div>
                         </div>
                     </section>
@@ -134,6 +139,19 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('editor');
+            const contentInput = document.getElementById('content-input');
+            const form = document.querySelector('form');
+
+            const quill = new Quill(container, {
+                placeholder: 'Compose an epic...',
+                theme: 'snow'
+            });
+
+            quill.on('text-change', (delta, oldDelta, source) => {
+                contentInput.value = quill.root.innerHTML;
+            });
+
             // --- 1. منطق الـ Drag & Drop للـ Cover Image ---
             const dropZone = document.getElementById('drop-zone');
             const coverInput = document.getElementById('cover-input');

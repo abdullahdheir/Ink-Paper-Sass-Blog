@@ -43,15 +43,18 @@ class PostController extends Controller
             'tags' => 'nullable|array',
             'tags.*' => 'required|string|max:155',
             'draft' => 'sometimes|string|in:on,off',
+            'published_at' => 'nullable|date',
         ]);
 
         $data = [
             'title' => $request->input('title'),
             'content' => $request->input('content'),
             'category_id' => $request->input('category_id'),
-            'status' => $request->input('draft') === 'on' ? PostStatus::DRAFT : PostStatus::PUBLISHED,
+            'status' => $request->input('draft') === 'on' ? PostStatus::DRAFT->value : PostStatus::PUBLISHED->value,
             'user_id' => auth()->id(),
+            'published_at' => $request->input('published_at'),
             'cover_image' => $request->file('cover_image'),
+            'tags' => $request->array('tags'),
         ];
         try {
             CreateNewPost::create($data);
