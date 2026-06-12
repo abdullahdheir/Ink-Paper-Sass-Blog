@@ -6,36 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 155);
-            $table->string('slug', 160);
-            $table->text('description')->nullable();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->unique(['slug', 'user_id']);
-            $table->timestamps();
-        });
-
-
-        Schema::create('post_tag', function (Blueprint $table) {
-            $table->foreignId('post_id')->constrained('posts')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('tag_id')->constrained('tags')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->primary(['post_id', 'tag_id']);
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('color', 7)->default('#7C3AED');
+            $table->unsignedBigInteger('articles_count')->default(0);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('post_tag');
         Schema::dropIfExists('tags');
     }
 };

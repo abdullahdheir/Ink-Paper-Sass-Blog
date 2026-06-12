@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/create-account', [PageController::class, 'createAccount'])->name('auth.create-account');
 // Route::get('/forgot-password', [PageController::class, 'forgotPassword'])->name('auth.forgot-password');
 // Route::get('/reset-password', [PageController::class, 'resetPassword'])->name('auth.reset-password');
+Route::get('/', [PageController::class, 'feed'])->name('feed');
 
 Route::middleware('auth:web')->group(function () {
     // Public pages
-    Route::get('/', [PageController::class, 'feed'])->name('feed');
     Route::get('/article/{id}', [PageController::class, 'article'])->name('article');
     Route::get('/author/{id}', [PageController::class, 'authorProfile'])->name('author.profile');
     Route::get('/author/julian-vane', [PageController::class, 'authorProfileJulian'])->name('author.julian');

@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Enums\PostStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['title', 'content', 'status', 'category_id', 'user_id', 'published_at', 'cover_image'])]
-class Post extends Model
+#[Fillable(['title','slug', 'content', 'status', 'user_id', 'published_at', 'cover_image'])]
+class Article extends Model
 {
     protected $appends = [
         'cover_image_url',
@@ -36,14 +37,14 @@ class Post extends Model
         return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
-    public function scopePublish()
+    public function scopePublish(Builder $builder)
     {
-        return $this->where('status', '=', PostStatus::PUBLISHED->value);
+        return $builder->where('status', '=', PostStatus::PUBLISHED->value);
     }
 
-    public function scopeDraft()
+    public function scopeDraft(Builder $builder)
     {
-        return $this->where('status', '=', PostStatus::DRAFT->value);
+        return $builder->where('status', '=', PostStatus::DRAFT->value);
     }
 
     public function getCoverImageUrlAttribute(): ?string

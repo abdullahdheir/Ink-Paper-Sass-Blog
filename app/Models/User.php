@@ -8,16 +8,17 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Storage;
+use Override;
 
-#[Fillable(['name', 'email', 'password', 'username', 'bio', 'website', 'twitter', 'avatar_path'])]
+#[Fillable(['name', 'email', 'password', 'username',])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     protected $appends = [
         'avatar',
@@ -36,9 +37,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function posts(): HasMany
+    // -------------------------------------------------------------------------
+    // Relationships
+    // -------------------------------------------------------------------------
+
+    public function articles(): HasMany
     {
-        return $this->hasMany(Post::class, 'user_id');
+        return $this->hasMany(Article::class, 'user_id');
     }
 
     public function tags(): HasMany
@@ -46,8 +51,28 @@ class User extends Authenticatable
         return $this->hasMany(Tag::class, 'user_id');
     }
 
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function stats()
+    {
+        return $this->hasOne(UserStat::class);
+    }
+
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
+
+    #[Override]
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
+
     public function getAvatarAttribute(): string
     {
-        return $this->avatar_path ? Storage::url($this->avatar_path) : 'https://ui-avatars.com/api/?name=' . urlencode($this->name ?? 'U') . '&background=6750A4&color=fff&size=128';
+        return $this->profile->avatar_url;
     }
 }
