@@ -12,7 +12,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::withCount('posts')->get();
+        $categories = Category::withCount('articles')->get();
         return view('dashboard.categories.index', compact('categories'));
     }
 

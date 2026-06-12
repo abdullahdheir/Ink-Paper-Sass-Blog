@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Article;
 
 class PageController extends Controller
 {
     // Public pages
     public function feed()
     {
-        $posts = \App\Models\Post::with('category', 'tags')->latest()->paginate(10);
+        $articles = \App\Models\Article::with('category', 'tags')->latest()->paginate(10);
         $trending_tags = \App\Models\Tag::with('reach')->whereHas('reach', function ($query) {
             $query->where('status', 'trending');
         })->take(5)->get();
-        $popular_posts = \App\Models\Post::with('category')->orderBy('created_at', 'desc')->take(3)->get();
-        return view('public.feed', compact('posts', 'trending_tags', 'popular_posts'));
+        $popular_articles = \App\Models\Article::with('category')->orderBy('created_at', 'desc')->take(3)->get();
+        return view('public.feed', compact('articles', 'trending_tags', 'popular_articles'));
     }
 
     public function article($id)
@@ -74,7 +74,7 @@ class PageController extends Controller
     }
 
     // Dashboard pages
-   
+
     public function write()
     {
         return view('dashboard.writing-editor');
@@ -85,9 +85,9 @@ class PageController extends Controller
         return view('dashboard.edit-article');
     }
 
-    public function postAnalytics($id)
+    public function articleAnalytics($id)
     {
-        return view('dashboard.post-analytics');
+        return view('dashboard.article-analytics');
     }
 
     public function earnings()

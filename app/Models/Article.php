@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Enums\PostStatus;
+use App\Enums\ArticleStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['title','slug', 'content', 'status', 'user_id', 'published_at', 'cover_image'])]
+#[Fillable(['title', 'slug', 'content', 'status', 'user_id', 'published_at', 'cover_image'])]
 class Article extends Model
 {
     protected $appends = [
@@ -39,12 +39,12 @@ class Article extends Model
 
     public function scopePublish(Builder $builder)
     {
-        return $builder->where('status', '=', PostStatus::PUBLISHED->value);
+        return $builder->where('status', '=', ArticleStatus::PUBLISHED->value);
     }
 
     public function scopeDraft(Builder $builder)
     {
-        return $builder->where('status', '=', PostStatus::DRAFT->value);
+        return $builder->where('status', '=', ArticleStatus::DRAFT->value);
     }
 
     public function getCoverImageUrlAttribute(): ?string

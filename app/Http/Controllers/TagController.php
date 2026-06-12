@@ -13,7 +13,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::withCount('posts')->with('reach')->paginate(5);
+        $tags = Tag::withCount('articles')->with('reach')->paginate(5);
         return view('dashboard.tags.index', compact('tags'));
     }
 

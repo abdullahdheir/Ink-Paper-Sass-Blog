@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function dashboard()
     {
-        $posts = Post::publish()->latest()->limit(5)->get();
+        $articles = Article::publish()->latest()->limit(5)->get();
 
-        return view('dashboard.index',compact('posts'));
+        return view('dashboard.index', compact('articles'));
     }
 
     public function analytics()
@@ -21,8 +21,7 @@ class DashboardController extends Controller
 
     public function drafts()
     {
-        $posts = Post::draft()->get();
+        $articles = Article::draft()->get();
         return view('dashboard.drafts');
     }
-
 }

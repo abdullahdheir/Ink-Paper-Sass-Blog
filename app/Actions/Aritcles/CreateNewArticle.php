@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Actions\Posts;
+namespace App\Actions\Articles;
 
 use App\Actions\Tags\CreateNewTag;
-use App\Models\Post;
+use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class CreateNewPost
+class CreateNewArticle
 {
     /**
      * Create a new class instance.
@@ -19,10 +19,10 @@ class CreateNewPost
         //
     }
 
-    public static function create(array $data): Post
+    public static function create(array $data): Article
     {
         return DB::transaction(function () use ($data) {
-            $post = Post::create([
+            $article = Article::create([
                 'category_id' => $data['category_id'] ?? null,
                 'title' => $data['title'],
                 'content' => $data['content'],
@@ -33,13 +33,13 @@ class CreateNewPost
 
             if (!empty($data['cover_image'])) {
                 if ($data['cover_image'] instanceof UploadedFile) {
-                    $post->cover_image = $data['cover_image']->store('cover_images', 'public');
+                    $article->cover_image = $data['cover_image']->store('cover_images', 'public');
                 } else {
                     $coverImagePath = Storage::disk('public')->put('cover_images/' . $data['cover_image'], file_get_contents($data['cover_image']));
-                    $post->cover_image = $coverImagePath;
+                    $article->cover_image = $coverImagePath;
                 }
 
-                $post->save();
+                $article->save();
             }
 
             if (!empty($data['tags'])) {
@@ -68,11 +68,11 @@ class CreateNewPost
                 }
 
                 if (!empty($tagIds)) {
-                    $post->tags()->sync($tagIds);
+                    $article->tags()->sync($tagIds);
                 }
             }
 
-            return $post;
+            return $article;
         });
     }
 }

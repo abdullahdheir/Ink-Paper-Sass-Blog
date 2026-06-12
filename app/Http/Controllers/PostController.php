@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Posts\CreateNewPost;
+use App\Actions\Articles\CreateNewArticle;
 use App\Actions\Tags\CreateNewTag;
-use App\Enums\PostStatus;
+use App\Enums\ArticleStatus;
 use App\Models\Category;
-use App\Models\Post;
+use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = \App\Models\Tag::where('user_id', auth()->id())->get();
-        return view('dashboard.posts.create', compact('categories', 'tags'));
+        return view('dashboard.articles.create', compact('categories', 'tags'));
     }
 
     /**
@@ -50,21 +50,21 @@ class PostController extends Controller
             'title' => $request->input('title'),
             'content' => $request->input('content'),
             'category_id' => $request->input('category_id'),
-            'status' => $request->input('draft') === 'on' ? PostStatus::DRAFT->value : PostStatus::PUBLISHED->value,
+            'status' => $request->input('draft') === 'on' ? ArticleStatus::DRAFT->value : ArticleStatus::PUBLISHED->value,
             'user_id' => auth()->id(),
             'published_at' => $request->input('published_at'),
             'cover_image' => $request->file('cover_image'),
             'tags' => $request->array('tags'),
         ];
         try {
-            CreateNewPost::create($data);
+            CreateNewArticle::create($data);
         } catch (\Exception $e) {
 
-            return back()->withErrors(['error' => 'Failed to create post: ' . $e->getMessage()])->withInput();
+            return back()->withErrors(['error' => 'Failed to create article: ' . $e->getMessage()])->withInput();
         }
 
         return redirect()->route('dashboard.index')
-            ->with('success', 'Post created successfully.');
+            ->with('success', 'Article created successfully.');
     }
 
     /**
@@ -72,8 +72,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::with('category')->findOrFail($id);
-        return view('dashboard.posts.show', compact('post'));
+        $article = Article::with('category')->findOrFail($id);
+        return view('dashboard.articles.show', compact('article'));
     }
 
     /**
@@ -81,10 +81,10 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        $post = Post::with('tags')->findOrFail($id);
+        $article = Article::with('tags')->findOrFail($id);
         $categories = Category::all();
         $tags = \App\Models\Tag::where('user_id', auth()->id())->get();
-        return view('dashboard.posts.edit', compact('post', 'categories', 'tags'));
+        return view('dashboard.articles.edit', compact('article', 'categories', 'tags'));
     }
 
     /**
@@ -101,16 +101,16 @@ class PostController extends Controller
             'tags.*' => 'required|string|max:155',
         ]);
 
-        $post = Post::findOrFail($id);
-        $post->update([
+        $article = Article::findOrFail($id);
+        $article->update([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
             'category_id' => $request->input('category_id'),
         ]);
 
         if ($request->hasFile('cover_image')) {
-            $post->cover_image = $request->file('cover_image')->store('cover_images', 'public');
-            $post->save();
+            $article->cover_image = $request->file('cover_image')->store('cover_images', 'public');
+            $article->save();
         }
 
         if ($request->filled('tags')) {
@@ -143,14 +143,14 @@ class PostController extends Controller
             }
 
             if (!empty($tagIds)) {
-                $post->tags()->sync($tagIds);
+                $article->tags()->sync($tagIds);
             }
         } else {
-            $post->tags()->detach();
+            $article->tags()->detach();
         }
 
-        return redirect()->route('posts.index')
-            ->with('success', 'Post updated successfully.');
+        return redirect()->route('articles.index')
+            ->with('success', 'Article updated successfully.');
     }
 
     /**
@@ -158,10 +158,10 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        $post = Post::findOrFail($id);
-        $post->delete();
+        $article = Article::findOrFail($id);
+        $article->delete();
 
-        return redirect()->route('posts.index')
-            ->with('success', 'Post deleted successfully.');
+        return redirect()->route('articles.index')
+            ->with('success', 'Article deleted successfully.');
     }
 }

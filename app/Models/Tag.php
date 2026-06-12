@@ -15,9 +15,9 @@ class Tag extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function posts()
+    public function articles()
     {
-        return $this->belongsToMany(Post::class, 'post_tag', 'tag_id', 'post_id')->withTimestamps();
+        return $this->belongsToMany(Article::class, 'article_tag', 'tag_id', 'article_id')->withTimestamps();
     }
 
     public function reach()
