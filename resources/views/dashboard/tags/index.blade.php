@@ -41,7 +41,7 @@
                 </div>
                 <div class="grid grid-cols-3 gap-4 border-t border-outline-variant pt-6">
                     <div>
-                        <p class="font-metadata text-metadata text-secondary mb-1">Posts</p>
+                        <p class="font-metadata text-metadata text-secondary mb-1">Articles</p>
                         <p class="font-ui-label text-ui-label font-bold text-on-surface">1,284</p>
                     </div>
                     <div>
@@ -67,7 +67,7 @@
                 </div>
                 <div class="grid grid-cols-3 gap-4 border-t border-outline-variant pt-6">
                     <div>
-                        <p class="font-metadata text-metadata text-secondary mb-1">Posts</p>
+                        <p class="font-metadata text-metadata text-secondary mb-1">Articles</p>
                         <p class="font-ui-label text-ui-label font-bold text-on-surface">856</p>
                     </div>
                     <div>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="grid grid-cols-3 gap-4 border-t border-primary-fixed-dim/30 pt-6">
                         <div>
-                            <p class="font-metadata text-metadata text-primary-fixed-dim mb-1">Posts</p>
+                            <p class="font-metadata text-metadata text-primary-fixed-dim mb-1">Articles</p>
                             <p class="font-ui-label text-ui-label font-bold text-white">3.4k</p>
                         </div>
                         <div>
@@ -131,7 +131,7 @@
                         <tr class="bg-surface-container-low border-b border-outline-variant">
                             <th class="px-6 py-4 font-ui-label text-ui-label font-bold text-on-surface">Tag Name</th>
                             <th class="px-6 py-4 font-ui-label text-ui-label font-bold text-on-surface">Slug</th>
-                            <th class="px-6 py-4 font-ui-label text-ui-label font-bold text-on-surface">Post Count</th>
+                            <th class="px-6 py-4 font-ui-label text-ui-label font-bold text-on-surface">Article Count</th>
                             <th class="px-6 py-4 font-ui-label text-ui-label font-bold text-on-surface">Total Views</th>
                             <th class="px-6 py-4 font-ui-label text-ui-label font-bold text-on-surface">Avg. Engagement</th>
                             <th class="px-6 py-4 font-ui-label text-ui-label font-bold text-on-surface">Status</th>
@@ -145,7 +145,7 @@
                                 <td class="px-6 py-4 font-ui-label text-ui-label font-bold text-primary">
                                     #{{ $tag->name }}</td>
                                 <td class="px-6 py-4 font-metadata text-metadata text-secondary">{{ $tag->slug }}</td>
-                                <td class="px-6 py-4 font-ui-label text-ui-label">{{ $tag->posts_count }}</td>
+                                <td class="px-6 py-4 font-ui-label text-ui-label">{{ $tag->articles_count }}</td>
                                 <td class="px-6 py-4 font-ui-label text-ui-label">
                                     {{ $tag->reach ? $tag->reach->total_views : 0 }}</td>
                                 <td class="px-6 py-4 font-ui-label text-ui-label">-</td>
@@ -162,8 +162,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <div
-                                        class="flex justify-end gap-3  transition-opacity">
+                                    <div class="flex justify-end gap-3  transition-opacity">
                                         <button onclick="window.openTagModal('edit', {{ json_encode($tag) }})"
                                             class="p-1 hover:text-primary transition-colors"><span
                                                 class="material-symbols-outlined text-[20px]">edit</span></button>
@@ -196,5 +195,5 @@
         </div>
     </section>
 
-    @include('dashboard.tags.tag-modal', ['action' => 'create','tag' => null,'mode'=>'create'])
+    @include('dashboard.tags.tag-modal', ['action' => 'create', 'tag' => null, 'mode' => 'create'])
 @endsection

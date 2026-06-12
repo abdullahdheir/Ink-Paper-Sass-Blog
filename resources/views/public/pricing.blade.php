@@ -33,7 +33,7 @@
                 <li class="flex items-start gap-3">
                     <span class="material-symbols-outlined text-primary-container shrink-0"
                         data-icon="check_circle">check_circle</span>
-                    <span class="text-on-surface font-ui-label">Read unlimited public posts</span>
+                    <span class="text-on-surface font-ui-label">Read unlimited public articles</span>
                 </li>
                 <li class="flex items-start gap-3">
                     <span class="material-symbols-outlined text-primary-container shrink-0"
@@ -81,7 +81,7 @@
                 <li class="flex items-start gap-3">
                     <span class="material-symbols-outlined text-primary-container shrink-0" data-icon="check_circle"
                         style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                    <span class="text-on-surface font-ui-label">Unlimited drafts &amp; posts</span>
+                    <span class="text-on-surface font-ui-label">Unlimited drafts &amp; articles</span>
                 </li>
                 <li class="flex items-start gap-3">
                     <span class="material-symbols-outlined text-primary-container shrink-0" data-icon="check_circle"

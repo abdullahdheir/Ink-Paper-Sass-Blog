@@ -74,7 +74,7 @@
                 <div class="flex items-center gap-6">
                     <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-on-surface-variant text-sm">article</span>
-                        <span class="font-ui-label text-ui-label">{{ $category->posts_count ?? 0 }}</span>
+                        <span class="font-ui-label text-ui-label">{{ $category->articles_count ?? 0 }}</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-on-surface-variant text-sm">calendar_today</span>

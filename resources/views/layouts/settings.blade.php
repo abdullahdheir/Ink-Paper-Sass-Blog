@@ -19,7 +19,7 @@
                 <div
                     class="hidden sm:flex items-center bg-surface-container px-3 py-1.5 rounded-lg border border-outline-variant">
                     <span class="material-symbols-outlined text-[20px] text-on-surface-variant">search</span>
-                    <span class="ml-2 text-ui-label font-ui-label text-on-surface-variant">Search posts...</span>
+                    <span class="ml-2 text-ui-label font-ui-label text-on-surface-variant">Search articles...</span>
                 </div>
                 <div class="flex items-center gap-3">
                     <button

@@ -32,13 +32,13 @@
         </aside>
         <!-- Center Feed -->
         <section class="col-span-1 md:col-span-7 space-y-12">
-            @forelse($posts as $index => $post)
+            @forelse($articles as $index => $article)
                 @if ($index === 0)
                     <!-- Featured Article (Bento Style) -->
                     <article
                         class="group border border-outline-variant rounded-xl overflow-hidden bg-white hover:border-primary transition-colors duration-300">
                         <div class="aspect-video overflow-hidden bg-surface-container flex items-center justify-center">
-                            <img src="{{ $post->cover_image_url }}" alt="{{ $post->title }}"
+                            <img src="{{ $article->cover_image_url }}" alt="{{ $article->title }}"
                                 class="w-full h-full object-cover" />
                         </div>
                         <div class="p-8 space-y-4">
@@ -46,32 +46,33 @@
                                 <span
                                     class="bg-primary-container text-on-primary px-2 py-0.5 rounded font-bold uppercase tracking-wider">Featured</span>
                                 <span>•</span>
-                                <span>{{ $post->created_at->format('M d, Y') }}</span>
+                                <span>{{ $article->created_at->format('M d, Y') }}</span>
                                 <span>•</span>
-                                <span>{{ \Illuminate\Support\Str::wordCount(strip_tags($post->content)) }} min read</span>
+                                <span>{{ \Illuminate\Support\Str::wordCount(strip_tags($article->content)) }} min
+                                    read</span>
                             </div>
                             <h2
                                 class="font-headline-md text-headline-md text-on-surface leading-tight group-hover:text-primary transition-colors">
-                                <a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
+                                <a href="{{ route('articles.show', $article->id) }}">{{ $article->title }}</a>
                             </h2>
                             <p class="text-on-surface-variant font-body-md text-body-md line-clamp-3">
-                                {{ \Illuminate\Support\Str::limit(strip_tags($post->content), 200) }}
+                                {{ \Illuminate\Support\Str::limit(strip_tags($article->content), 200) }}
                             </p>
                             <div class="flex items-center justify-between pt-4 border-t border-outline-variant">
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant overflow-hidden flex items-center justify-center">
-                                        <img src="{{ $post->user->avatar }}" alt="{{ $post->user->name ?? 'Author' }}"
+                                        <img src="{{ $article->user->avatar }}" alt="{{ $article->user->name ?? 'Author' }}"
                                             class="w-full h-full object-cover" />
                                     </div>
                                     <div>
                                         <p class="font-ui-label text-ui-label font-bold text-on-surface">
-                                            {{ $post->user->name ?? 'Author' }}</p>
+                                            {{ $article->user->name ?? 'Author' }}</p>
                                         <p class="font-metadata text-metadata text-secondary">
-                                            {{ $post->category ? $post->category->name : 'Uncategorized' }}</p>
+                                            {{ $article->category ? $article->category->name : 'Uncategorized' }}</p>
                                     </div>
                                 </div>
-                                <a href="{{ route('posts.show', $post->id) }}"
+                                <a href="{{ route('articles.show', $article->id) }}"
                                     class="text-primary p-2 rounded-full hover:bg-primary-container/10 transition-colors">
                                     <span class="material-symbols-outlined">arrow_forward</span>
                                 </a>
@@ -80,20 +81,20 @@
                     </article>
                 @else
                     <!-- Regular Article -->
-                   <x-post :post="$post" />
+                    <x-article :article="$article" />
                 @endif
             @empty
                 <div class="text-center py-12">
                     <span class="material-symbols-outlined text-6xl text-on-surface-variant mb-4">feed</span>
-                    <p class="text-on-surface-variant font-body-md">No posts yet. Be the first to write something!</p>
-                    <a href="{{ route('posts.create') }}"
+                    <p class="text-on-surface-variant font-body-md">No articles yet. Be the first to write something!</p>
+                    <a href="{{ route('articles.create') }}"
                         class="inline-block mt-4 px-6 py-2 bg-primary-container text-on-primary rounded-lg font-ui-button hover:bg-primary transition-all">Write
-                        a Post</a>
+                        a Article</a>
                 </div>
             @endforelse
             <!-- Pagination -->
             <div class="pt-8 flex justify-center">
-                {{ $posts->links() }}
+                {{ $articles->links() }}
             </div>
         </section>
         <!-- Right Sidebar: Trending & Who to Follow -->
@@ -102,23 +103,23 @@
             <div class="bg-white border border-outline-variant rounded-xl p-6 space-y-6">
                 <h3 class="font-headline-md text-[20px] text-on-surface">Trending on Ink</h3>
                 <div class="space-y-6">
-                    @forelse($popular_posts as $index => $post)
+                    @forelse($popular_articles as $index => $article)
                         <div class="flex gap-4">
                             <span
                                 class="font-display-lg text-secondary opacity-30 leading-none">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
                             <div class="space-y-1">
                                 <h4
                                     class="font-ui-label text-ui-label font-bold text-on-surface leading-tight hover:text-primary cursor-pointer">
-                                    <a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
+                                    <a href="{{ route('articles.show', $article->id) }}">{{ $article->title }}</a>
                                 </h4>
                                 <p class="font-metadata text-metadata text-secondary">
-                                    {{ $post->category ? $post->category->name : 'Uncategorized' }} •
-                                    {{ \Illuminate\Support\Str::wordCount(strip_tags($post->content)) }} min read
+                                    {{ $article->category ? $article->category->name : 'Uncategorized' }} •
+                                    {{ \Illuminate\Support\Str::wordCount(strip_tags($article->content)) }} min read
                                 </p>
                             </div>
                         </div>
                     @empty
-                        <p class="text-secondary font-metadata text-metadata">No trending posts yet.</p>
+                        <p class="text-secondary font-metadata text-metadata">No trending articles yet.</p>
                     @endforelse
                 </div>
             </div>

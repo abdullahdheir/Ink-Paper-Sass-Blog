@@ -3,7 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,7 +62,7 @@ Route::middleware('auth:web')->group(function () {
 
     // Existing resource routes
     Route::resource('categories', CategoryController::class);
-    Route::resource('posts', PostController::class)->except(['index']);
+    Route::resource('articles', ArticleController::class)->except(['index']);
     Route::get('tags/search', [TagController::class, 'search'])->name('tags.search');
     Route::resource('tags', TagController::class)->except(['edit', 'show', 'create']);
 });

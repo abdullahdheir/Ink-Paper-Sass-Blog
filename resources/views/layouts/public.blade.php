@@ -31,9 +31,9 @@
                         <button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
                             <span class="material-symbols-outlined">bookmark</span>
                         </button>
-                        <a href="{{ route('posts.create') }}"
+                        <a href="{{ route('articles.create') }}"
                             class="bg-primary-container text-on-primary font-ui-button text-ui-button px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">Publish
-                            Post</a>
+                            Article</a>
                         <!-- Profile Dropdown -->
                         <div class="relative ml-2" x-data="{ open: false }" @click.outside="open = false">
                             <button @click="open = !open"

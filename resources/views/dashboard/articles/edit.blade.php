@@ -1,9 +1,9 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Edit Post - Ink & Paper')
+@section('title', 'Edit Article - Ink & Paper')
 
 @section('page-content')
-    <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('articles.update', $article->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -15,7 +15,7 @@
             </div>
             <button type="submit"
                 class="bg-primary-container text-on-primary font-ui-button text-ui-button px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">
-                Update Post
+                Update Article
             </button>
         </div>
 
@@ -29,7 +29,7 @@
                         <input
                             class="w-full bg-transparent border-none focus:ring-0 font-display-lg text-display-lg resize-none placeholder:text-surface-variant text-on-surface"
                             name="title" placeholder="Enter your title..." type="text"
-                            value="{{ old('title', $post->title) }}" required>
+                            value="{{ old('title', $article->title) }}" required>
                     </div>
 
                     <!-- Category Selection -->
@@ -42,7 +42,7 @@
                             <option value="">-- Select a Category --</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}"
-                                    {{ old('category_id', $post->category_id) == $category->id ? 'selected' : '' }}>
+                                    {{ old('category_id', $article->category_id) == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
                                 </option>
                             @endforeach
@@ -55,7 +55,7 @@
                             class="font-ui-label text-ui-label text-on-surface-variant block mb-2 uppercase tracking-wider">Content</label>
                         <textarea
                             class="w-full min-h-[400px] bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 font-body-lg text-body-lg text-on-surface leading-relaxed placeholder:text-surface-variant focus:ring-1 focus:ring-primary focus:border-primary transition-all resize-none"
-                            name="content" placeholder="Type your story..." rows="15" required>{{ old('content', $post->content) }}</textarea>
+                            name="content" placeholder="Type your story..." rows="15" required>{{ old('content', $article->content) }}</textarea>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                     </section>
 
                     <!-- Tags -->
-                    <section x-data="{ tags: {{ json_encode($post->tags->pluck('name')->toArray()) }}, searchQuery: '', searchResults: [] }" class="space-y-4">
+                    <section x-data="{ tags: {{ json_encode($article->tags->pluck('name')->toArray()) }}, searchQuery: '', searchResults: [] }" class="space-y-4">
                         <h3 class="font-ui-label text-ui-label text-on-surface mb-4 uppercase tracking-wider">Tags</h3>
 
                         <!-- Selected Tags Display -->
@@ -126,9 +126,9 @@
                             <label class="flex items-center justify-between cursor-pointer group">
                                 <span
                                     class="font-ui-label text-ui-label text-secondary group-hover:text-on-surface transition-colors">Draft
-                                    Post</span>
+                                    Article</span>
                                 <div class="relative inline-flex items-center">
-                                    <input {{ $post->status === 'draft' ? 'checked' : '' }} name="draft"
+                                    <input {{ $article->status === 'draft' ? 'checked' : '' }} name="draft"
                                         class="sr-only peer" type="checkbox" />
                                     <div
                                         class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
@@ -142,7 +142,7 @@
                                 <input
                                     class="w-full bg-white border border-outline-variant rounded-lg px-4 py-2 font-ui-label text-ui-label focus:ring-1 focus:ring-primary focus:border-primary transition-all"
                                     id="published_at" name="published_at" type="datetime-local"
-                                    value="{{ $post->published_at ? $post->published_at->format('Y-m-d\TH:i') : '' }}" />
+                                    value="{{ $article->published_at ? $article->published_at->format('Y-m-d\TH:i') : '' }}" />
                             </div>
                         </div>
                     </section>
@@ -152,18 +152,18 @@
 
         <!-- Form Actions -->
         <div class="flex items-center justify-between pt-6 border-t border-outline-variant mt-8">
-            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="inline">
+            <form action="{{ route('articles.destroy', $article->id) }}" method="POST" class="inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit"
                     class="text-error font-ui-button flex items-center gap-2 hover:bg-error-container/20 px-4 py-2 rounded-lg transition-colors"
-                    onclick="return confirm('Are you sure you want to delete this post?')">
+                    onclick="return confirm('Are you sure you want to delete this article?')">
                     <span class="material-symbols-outlined">delete</span>
-                    Delete Post
+                    Delete Article
                 </button>
             </form>
             <div class="flex gap-4">
-                <a href="{{ route('posts.index') }}"
+                <a href="{{ route('articles.index') }}"
                     class="px-4 py-2 font-ui-button text-ui-button border border-on-surface text-on-surface rounded-lg hover:bg-surface-container-low transition-colors">
                     Cancel
                 </a>

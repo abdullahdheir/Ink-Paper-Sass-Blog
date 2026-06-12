@@ -4,7 +4,7 @@
          <a class="flex items-center gap-3 px-4 py-3 @if (request()->routeIs('dashboard')) bg-primary-container/10 text-primary @else  text-on-surface-variant hover:bg-surface-container @endif rounded-lg font-ui-label text-ui-label"
              href="{{ route('dashboard.index') }}">
              <span class="material-symbols-outlined" data-weight="fill">dashboard</span>
-             My Posts
+             My Articles
          </a>
          <a class="flex items-center gap-3 px-4 py-3 @if (request()->routeIs('dashboard.analytics')) bg-primary-container/10 text-primary @else  text-on-surface-variant hover:bg-surface-container @endif rounded-lg font-ui-label text-ui-label transition-colors"
              href="{{ route('dashboard.analytics') }}">

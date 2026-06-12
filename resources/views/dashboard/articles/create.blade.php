@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Write Post - Ink & Paper')
+@section('title', 'Write Article - Ink & Paper')
 
 @section('page-content')
     @error('*')
@@ -8,7 +8,7 @@
             {{ $message }}
         </div>
     @enderror
-    <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <!-- Header Section -->
         <div class="flex items-center justify-between mb-8">
@@ -18,7 +18,7 @@
             </div>
             <button type="submit"
                 class="bg-primary-container text-on-primary font-ui-button text-ui-button px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">
-                Save Post
+                Save Article
             </button>
         </div>
         <div class="flex">
@@ -45,7 +45,8 @@
                         <h3 class="font-ui-label text-ui-label text-on-surface mb-4 uppercase tracking-wider">Cover Image
                         </h3>
 
-                        <input type="file" value="{{ old('cover_image') }}" name="cover_image" id="cover-input" class="hidden" accept="image/*">
+                        <input type="file" value="{{ old('cover_image') }}" name="cover_image" id="cover-input"
+                            class="hidden" accept="image/*">
 
                         <div id="drop-zone"
                             class="aspect-video w-full rounded-lg bg-surface-container border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-surface-container-high transition-all group overflow-hidden relative">
@@ -66,7 +67,7 @@
                             <label class="flex items-center justify-between cursor-pointer group">
                                 <span
                                     class="font-ui-label text-ui-label text-secondary group-hover:text-on-surface transition-colors">Draft
-                                    Post</span>
+                                    Article</span>
                                 <div class="relative inline-flex items-center">
                                     <input @checked(old('draft') == 'on') name="draft" class="sr-only peer"
                                         type="checkbox" />

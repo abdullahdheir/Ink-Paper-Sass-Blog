@@ -31,7 +31,7 @@
                 </div>
                 <div class="flex flex-col">
                     <span class="font-headline-md text-headline-md text-on-surface">24</span>
-                    <span class="font-metadata text-metadata text-secondary">Posts</span>
+                    <span class="font-metadata text-metadata text-secondary">Articles</span>
                 </div>
             </div>
             <div class="flex items-center gap-4">
@@ -143,7 +143,7 @@
             class="md:col-span-4 group border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest transition-all hover:border-primary">
             <div class="h-48 overflow-hidden bg-surface-container">
                 <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    data-alt="A candid, high-contrast black and white photograph of a design team collaborating in a bright, modern studio. The walls are adorned with large-scale typographic posters and wireframe sketches. Natural light spills across a large communal table where people are engaged in deep discussion. The mood is professional, creative, and highly focused, capturing the spirit of a high-end design agency."
+                    data-alt="A candid, high-contrast black and white photograph of a design team collaborating in a bright, modern studio. The walls are adorned with large-scale typographic articleers and wireframe sketches. Natural light spills across a large communal table where people are engaged in deep discussion. The mood is professional, creative, and highly focused, capturing the spirit of a high-end design agency."
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz9-Xs2eM1zX8ejapH0WiWscCPHBCcnKS6-VsyHvlGi5TdN6Oi-RaD9NOLDdGys1O4pUOyeeXQcWpIgiMvRUFIroln0rZ7JXrlhtXBenPejKO1VDdkOH71cEX3XyyrH9mjpx0zyNooKC_5E0_1fCceOJjmxjSudhch0WP0cAW7664aNEyEMWQ3j87oztXKQ7TswlkqD7zdZ7jtU5HcU9-6Dsw7QvziGOPFyS0LMS2r-tas6E39V5vbKgfjF9PpPr7MStG-wqarxc4O" />
             </div>
             <div class="p-6 space-y-3">

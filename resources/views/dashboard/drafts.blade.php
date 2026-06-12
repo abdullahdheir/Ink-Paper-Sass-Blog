@@ -16,7 +16,7 @@
                 <p class="text-on-surface-variant font-ui-label text-ui-label">You have <span
                         class="font-bold text-on-surface">8</span> unfinished stories in your workspace.</p>
             </div>
-            <a href="{{ route('posts.create') }}"
+            <a href="{{ route('articles.create') }}"
                 class="bg-primary text-white px-6 py-3 rounded-lg font-ui-button text-ui-button flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md shadow-primary/10">
                 <span class="material-symbols-outlined" data-icon="add">add</span>
                 Start a new draft

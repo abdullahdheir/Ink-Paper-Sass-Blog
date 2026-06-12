@@ -139,23 +139,24 @@
             </div>
             <div class="mt-auto p-4 bg-primary-container rounded-lg text-on-primary">
                 <div class="font-bold mb-1">Growth Pro-Tip</div>
-                <p class="text-sm opacity-90 leading-relaxed">Posts with 'High-Contrast' visuals are performing 40% better
+                <p class="text-sm opacity-90 leading-relaxed">Articles with 'High-Contrast' visuals are performing 40%
+                    better
                     this month. Consider adding more editorial photography.</p>
             </div>
         </div>
     </div>
-    <!-- Post Performance Section -->
+    <!-- Article Performance Section -->
     <section class="bg-white border border-outline-variant rounded-xl overflow-hidden mb-section-gap">
         <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center">
-            <h2 class="font-headline-md text-[24px] text-on-surface">Post Performance</h2>
-            <button class="text-primary font-ui-label text-ui-label hover:underline">View All Posts</button>
+            <h2 class="font-headline-md text-[24px] text-on-surface">Article Performance</h2>
+            <button class="text-primary font-ui-label text-ui-label hover:underline">View All Articles</button>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead
                     class="bg-surface-container-low text-on-surface-variant font-ui-label text-ui-label uppercase tracking-tight">
                     <tr>
-                        <th class="px-8 py-4 font-semibold">Post Title</th>
+                        <th class="px-8 py-4 font-semibold">Article Title</th>
                         <th class="px-6 py-4 font-semibold">Published</th>
                         <th class="px-6 py-4 font-semibold">Views</th>
                         <th class="px-6 py-4 font-semibold">Read Ratio</th>
@@ -164,7 +165,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant">
-                    <!-- Post 1 -->
+                    <!-- Article 1 -->
                     <tr class="hover:bg-surface-container-lowest transition-colors">
                         <td class="px-8 py-6">
                             <div class="flex items-center gap-4">
@@ -189,7 +190,7 @@
                         <td class="px-6 py-6 font-ui-label text-on-surface">128</td>
                         <td class="px-6 py-6 font-bold text-on-surface">$412.50</td>
                     </tr>
-                    <!-- Post 2 -->
+                    <!-- Article 2 -->
                     <tr class="hover:bg-surface-container-lowest transition-colors">
                         <td class="px-8 py-6">
                             <div class="flex items-center gap-4">
@@ -215,7 +216,7 @@
                         <td class="px-6 py-6 font-ui-label text-on-surface">45</td>
                         <td class="px-6 py-6 font-bold text-on-surface">$228.10</td>
                     </tr>
-                    <!-- Post 3 -->
+                    <!-- Article 3 -->
                     <tr class="hover:bg-surface-container-lowest transition-colors">
                         <td class="px-8 py-6">
                             <div class="flex items-center gap-4">
