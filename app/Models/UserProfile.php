@@ -15,6 +15,10 @@ class UserProfile extends Model
         'twitter',
     ];
 
+    protected $appends = [
+        'avatar_url',
+    ];
+    
     protected $hidden = [
         'avatar_path',
     ];
