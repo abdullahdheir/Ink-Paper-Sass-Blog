@@ -45,11 +45,4 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
-
-    #[Override]
-    public function afterCreating(Closure $callback)
-    {
-        return parent::afterCreating($callback);
-    }
-
 }

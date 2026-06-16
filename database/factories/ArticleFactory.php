@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,18 +11,25 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ArticleFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
+        $title = $this->faker->sentence(6);
+
         return [
-            'title' => $this->faker->title,
-            'slug' =>$this->faker->slug,
-            'content' => $this->faker->realText,
-            'user_id'=>$this->faker->numberBetween(1,10),
+            'user_id'    => $this->faker->numberBetween(1,10), // creates a user if none passed
+            'title'      => $title,
+            'slug'       => \Illuminate\Support\Str::slug($title) . '-' . $this->faker->unique()->numberBetween(1, 99999),
+            'excerpt'    => $this->faker->sentence(15),
+            'content'    => $this->faker->paragraphs(5, true),
+            'status'     => 'draft',
         ];
+    }
+
+    public function published(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status'       => 'published',
+            'published_at' => now(),
+        ]);
     }
 }

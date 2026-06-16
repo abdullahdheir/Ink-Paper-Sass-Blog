@@ -62,12 +62,13 @@
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant overflow-hidden flex items-center justify-center">
-                                        <img src="{{ $article->user->avatar }}" alt="{{ $article->user->name ?? 'Author' }}"
+                                        <img src="{{ $article->author->avatar }}"
+                                            alt="{{ $article->author->name ?? 'Author' }}"
                                             class="w-full h-full object-cover" />
                                     </div>
                                     <div>
                                         <p class="font-ui-label text-ui-label font-bold text-on-surface">
-                                            {{ $article->user->name ?? 'Author' }}</p>
+                                            {{ $article->author->name ?? 'Author' }}</p>
                                         <p class="font-metadata text-metadata text-secondary">
                                             {{ $article->category ? $article->category->name : 'Uncategorized' }}</p>
                                     </div>
