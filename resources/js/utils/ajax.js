@@ -198,7 +198,7 @@ const ajax = {
         _request("DELETE", endpoint, null, options),
 
     // ── Multipart upload (avatar, cover image) ───────────────────────────────
-    upload(endpoint, formData, options = {}) {
+    async upload(endpoint, formData, options = {}) {
         // Don't set Content-Type — browser sets it with boundary automatically
         const headers = {
             Accept: "application/json",
@@ -209,29 +209,28 @@ const ajax = {
 
         _incrementLoading();
 
-        return fetch(endpoint, {
-            method: "POST",
-            headers,
-            body: formData,
-            credentials: "same-origin",
-            signal: options.signal ?? null,
-        })
-            .then(async (res) => {
-                _decrementLoading();
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok)
-                    throw new ajaxError(
-                        res.status,
-                        data?.message ?? `HTTP ${res.status}`,
-                        data?.errors ?? {},
-                        data,
-                    );
-                return data;
-            })
-            .catch((err) => {
-                _decrementLoading();
-                throw err;
+        try {
+            const res = await fetch(endpoint, {
+                method: "POST",
+                headers,
+                body: formData,
+                credentials: "same-origin",
+                signal: options.signal ?? null,
             });
+            _decrementLoading();
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok)
+                throw new ajaxError(
+                    res.status,
+                    data?.message ?? `HTTP ${res.status}`,
+                    data?.errors ?? {},
+                    data,
+                );
+            return await data;
+        } catch (err) {
+            _decrementLoading();
+            throw err;
+        }
     },
 
     onLoadingStart,
