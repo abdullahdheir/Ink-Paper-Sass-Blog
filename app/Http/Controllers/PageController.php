@@ -7,16 +7,7 @@ use App\Models\Article;
 class PageController extends Controller
 {
     // Public pages
-    public function feed()
-    {
-        $articles = \App\Models\Article::with('category', 'tags')->latest()->paginate(10);
-        $trending_tags = \App\Models\Tag::with('reach')->whereHas('reach', function ($query) {
-            $query->where('status', 'trending');
-        })->take(5)->get();
-        $popular_articles = \App\Models\Article::with('category')->orderBy('created_at', 'desc')->take(3)->get();
-        return view('public.feed', compact('articles', 'trending_tags', 'popular_articles'));
-    }
-
+   
     public function article($id)
     {
         return view('public.article');

@@ -4,11 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\SubscriptionPlan;
 use App\Observers\UserObserver;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,7 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Override;
 
-#[Fillable(['name', 'email', 'password', 'username',])]
+#[Fillable(['name', 'email', 'password', 'username', 'subscription_plan', 'is_verified', 'is_active', 'email_verified_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -36,6 +36,9 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'subscription_plan' => SubscriptionPlan::class,
+            'is_verified' => 'boolean',
+            'is_active' => 'boolean',
             'password' => 'hashed',
         ];
     }
@@ -59,7 +62,7 @@ class User extends Authenticatable
         return $this->hasOne(UserProfile::class);
     }
 
-    public function stats()
+    public function stat()
     {
         return $this->hasOne(UserStat::class);
     }

@@ -1,40 +1,35 @@
-<article class="flex flex-col md:flex-row gap-8 group">
+<article class="flex flex-col md:flex-row gap-8 items-start group">
     <div
-        class="w-full md:w-1/3 aspect-video md:aspect-square overflow-hidden rounded-lg border border-outline-variant bg-surface-container flex items-center justify-center">
-        <img src="{{ $article->cover_image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover" />
+        class="w-full md:w-80 h-52 shrink-0 overflow-hidden rounded-lg border border-outline-variant bg-surface-container-low">
+        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            data-alt="{{ $article->excerpt }}" src="{{ $article->cover_url }}" />
     </div>
-    <div class="w-full md:w-2/3 space-y-3">
-        <div class="flex items-center gap-2 font-metadata text-metadata text-secondary">
-            @if ($article->category)
-                <span class="text-primary font-bold">{{ $article->category->name }}</span>
-                <span>•</span>
+    <div class="flex-1 space-y-4">
+        <div class="flex items-center gap-3">
+            @if ($article->category_id)
+                <span
+                    class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full font-metadata text-metadata uppercase tracking-widest">{{ $aritcle->category->name }}</span>
             @endif
-            <span>{{ $article->created_at->format('M d, Y') }}</span>
+            <span
+                class="font-metadata text-metadata text-secondary">{{ $article->published_at?->format('M d YYYY') . ' . ' . $article->reading_time }}
+                min
+                read</span>
         </div>
-        <h3 class="font-headline-md text-[24px] leading-snug text-on-surface group-hover:text-primary transition-colors">
-            <a href="{{ route('articles.show', $article->id) }}">{{ $article->title }}</a>
-        </h3>
-        <p class="text-on-surface-variant font-body-md text-body-md line-clamp-2">
-            {{ \Illuminate\Support\Str::limit(strip_tags($article->content), 150) }}
-        </p>
-        <div class="flex items-center justify-between pt-4 border-t border-outline-variant">
-            <div class="flex items-center gap-3">
-                <div
-                    class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant overflow-hidden flex items-center justify-center">
-                    <img src="{{ $article->author->avatar }}" alt="{{ $article->author->name ?? 'Author' }}"
-                        class="w-full h-full object-cover" />
-                </div>
-                <div>
-                    <p class="font-ui-label text-ui-label font-bold text-on-surface">
-                        {{ $article->author->name ?? 'Author' }}</p>
-                    <p class="font-metadata text-metadata text-secondary">
-                        {{ $article->category ? $article->category->name : 'Uncategorized' }}</p>
-                </div>
-            </div>
-            <a href="{{ route('articles.show', $article->id) }}"
-                class="text-primary p-2 rounded-full hover:bg-primary-container/10 transition-colors">
-                <span class="material-symbols-outlined">arrow_forward</span>
-            </a>
+        <h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
+            {{ $article->title }}</h3>
+        <p class="font-body-md text-body-md text-on-surface-variant line-clamp-3">{!! $article->content !!}</p>
+        <div class="flex items-center gap-6 pt-2">
+            <button class="flex items-center gap-2 font-ui-label text-ui-label text-secondary hover:text-on-surface">
+                <span class="material-symbols-outlined text-[18px]" data-icon="thumb_up">thumb_up</span>
+                {{ $article->likes_count }}
+            </button>
+            <button class="flex items-center gap-2 font-ui-label text-ui-label text-secondary hover:text-on-surface">
+                <span class="material-symbols-outlined text-[18px]" data-icon="chat_bubble">chat_bubble</span>
+                {{ $article->comments_count }}
+            </button>
+            <button class="ml-auto p-2 text-secondary hover:text-primary transition-colors">
+                <span class="material-symbols-outlined" data-icon="bookmark_add">bookmark_add</span>
+            </button>
         </div>
     </div>
 </article>

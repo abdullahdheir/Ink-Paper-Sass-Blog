@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,13 +13,14 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/create-account', [PageController::class, 'createAccount'])->name('auth.create-account');
 // Route::get('/forgot-password', [PageController::class, 'forgotPassword'])->name('auth.forgot-password');
 // Route::get('/reset-password', [PageController::class, 'resetPassword'])->name('auth.reset-password');
-Route::get('/', [PageController::class, 'feed'])->name('feed');
+Route::controller(PublicController::class)->group(function () {
+    Route::get('/', 'feed')->name('feed');
+    Route::get('/authors/{author}',  'authorProfile')->name('authors.profile');
+});
 
 Route::middleware('auth:web')->group(function () {
     // Public pages
     Route::get('/article/{id}', [PageController::class, 'article'])->name('article');
-    Route::get('/author/{id}', [PageController::class, 'authorProfile'])->name('author.profile');
-    Route::get('/author/julian-vane', [PageController::class, 'authorProfileJulian'])->name('author.julian');
     Route::get('/category/{slug}', [PageController::class, 'categoryHub'])->name('category.hub');
     Route::get('/tag/{slug}', [PageController::class, 'tagArchive'])->name('tag.archive');
     Route::get('/search', [PageController::class, 'search'])->name('search');

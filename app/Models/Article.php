@@ -42,26 +42,6 @@ class Article extends Model
     }
 
     // -------------------------------------------------------------------------
-    // Boot
-    // -------------------------------------------------------------------------
-
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function (Article $article) {
-            $article->slug         = $article->slug ?? static::generateSlug($article->title);
-            $article->reading_time = static::estimateReadingTime($article->content);
-        });
-
-        static::updating(function (Article $article) {
-            if ($article->isDirty('content')) {
-                $article->reading_time = static::estimateReadingTime($article->content);
-            }
-        });
-    }
-
-    // -------------------------------------------------------------------------
     // Relationships
     // -------------------------------------------------------------------------
 
