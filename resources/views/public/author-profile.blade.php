@@ -63,22 +63,22 @@
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-section-gap">
             <div class="bg-white border border-outline-variant p-6 rounded-lg text-center">
                 <span
-                    class="block font-display-lg text-display-lg text-primary">{{ $author->stats->followers_count ?? 0 }}</span>
+                    class="block font-display-lg text-display-lg text-primary">{{ Number::abbreviate($author->stats->followers_count ?? 0) }}</span>
                 <span class="font-ui-label text-ui-label text-secondary uppercase tracking-wider">Followers</span>
             </div>
             <div class="bg-white border border-outline-variant p-6 rounded-lg text-center">
                 <span
-                    class="block font-display-lg text-display-lg text-on-surface">{{ $author->stats->total_views ?? 0 }}</span>
+                    class="block font-display-lg text-display-lg text-on-surface">{{ Number::abbreviate($author->stats->total_views ?? 0) }}</span>
                 <span class="font-ui-label text-ui-label text-secondary uppercase tracking-wider">Total Views</span>
             </div>
             <div class="bg-white border border-outline-variant p-6 rounded-lg text-center">
                 <span
-                    class="block font-display-lg text-display-lg text-on-surface">{{ $author->stats->articles_count ?? 0 }}</span>
+                    class="block font-display-lg text-display-lg text-on-surface">{{ Number::abbreviate($author->stats->articles_count ?? 0) }}</span>
                 <span class="font-ui-label text-ui-label text-secondary uppercase tracking-wider">Articles</span>
             </div>
             <div class="bg-white border border-outline-variant p-6 rounded-lg text-center">
                 <span
-                    class="block font-display-lg text-display-lg text-on-surface">{{ $author->stats->average_rating ?? 0 }}</span>
+                    class="block font-display-lg text-display-lg text-on-surface">{{ Number::abbreviate($author->stats->average_rating ?? 0) }}</span>
                 <span class="font-ui-label text-ui-label text-secondary uppercase tracking-wider">Avg Rating</span>
             </div>
         </section>
