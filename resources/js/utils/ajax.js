@@ -257,14 +257,14 @@ export const articles = {
         ajax.get(`/search?q=${encodeURIComponent(q)}&page=${page}`),
 };
 
-export const users = {
-    profile: (username) => ajax.get(`/users/${username}`),
-    follow: (username) => ajax.post(`/users/${username}/follow`),
-    unfollow: (username) => ajax.delete(`/users/${username}/follow`),
+export const authors = {
+    profile: (username) => ajax.get(`/authors/${username}`),
+    follow: (username) => ajax.post(`/authors/${username}/follow`),
+    unfollow: (username) => ajax.delete(`/authors/${username}/follow`),
     followers: (username, page = 1) =>
-        ajax.get(`/users/${username}/followers?page=${page}`),
+        ajax.get(`/authors/${username}/followers?page=${page}`),
     following: (username, page = 1) =>
-        ajax.get(`/users/${username}/following?page=${page}`),
+        ajax.get(`/authors/${username}/following?page=${page}`),
 };
 
 export const notifications = {

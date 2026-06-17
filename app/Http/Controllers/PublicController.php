@@ -19,11 +19,4 @@ class PublicController extends Controller
         $popular_articles = Article::with('category')->orderBy('created_at', 'desc')->take(3)->get();
         return view('public.feed', compact('articles', 'trending_tags', 'popular_articles'));
     }
-
-    public function authorProfile(Request $request, User $author)
-    {
-        AuthorViewed::dispatch($author);
-        $articles = Article::published()->where('user_id', '=', $author->id)->with('category', 'tags')->latest()->paginate(1)->withQueryString();
-        return view('public.author-profile', compact('author', 'articles'));
-    }
 }

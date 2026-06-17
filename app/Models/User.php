@@ -109,7 +109,7 @@ class User extends Authenticatable
             'follows',
             'follower_id',
             'following_id'
-        )->withTimestamps();
+        )->withTimestamps('created_at',false);
     }
 
     /** Users that follow THIS user */

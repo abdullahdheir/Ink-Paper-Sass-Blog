@@ -48,7 +48,7 @@
                 <div class="flex gap-4 pt-4 border-t border-outline-variant">
                     <x-follow-button :author="$author" />
                     <button
-                        class="border border-on-surface text-on-surface px-8 py-3 rounded-lg font-ui-button text-ui-button hover:bg-surface-container transition-all"
+                        class="cursor-pointer border border-on-surface text-on-surface px-8 py-3 rounded-lg font-ui-button text-ui-button hover:bg-surface-container transition-all"
                         onclick="share({
         title: '{{ addslashes($author->name) }} on {{ config('app.name') }}',
         text:  '{{ addslashes($author->profile->bio ?? '') }}',

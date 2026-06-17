@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
@@ -15,10 +16,17 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/reset-password', [PageController::class, 'resetPassword'])->name('auth.reset-password');
 Route::controller(PublicController::class)->group(function () {
     Route::get('/', 'feed')->name('feed');
-    Route::get('/authors/{author}',  'authorProfile')->name('authors.profile');
 });
 
 Route::middleware('auth:web')->group(function () {
+    // Authors Routes
+    Route::prefix('authors/{author}')->name('authors.')->group(function () {
+        Route::get('', [AuthorController::class, 'profile'])->name('profile')->withoutMiddleware('auth:web');
+        Route::post('/follow', [AuthorController::class, 'follow'])->name('follow');
+        Route::delete('/follow', [AuthorController::class, 'unfollow'])->name('unfollow');
+        Route::get('/followers', [AuthorController::class, 'followers'])->name('followers');
+        Route::get('/following', [AuthorController::class, 'following'])->name('following');
+    });
     // Public pages
     Route::get('/article/{id}', [PageController::class, 'article'])->name('article');
     Route::get('/category/{slug}', [PageController::class, 'categoryHub'])->name('category.hub');
