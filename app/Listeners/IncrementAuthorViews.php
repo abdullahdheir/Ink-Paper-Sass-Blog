@@ -25,7 +25,7 @@ class IncrementAuthorViews
         $author = $event->author;
         $authors = Cookie::get('viewed_authors', []);
         $authors = is_array($authors) ? $authors : unserialize($authors);
-        
+
         if (in_array($author->id, $authors)) {
             return; // Author already viewed in this session, do not increment
         }

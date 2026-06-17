@@ -1,3 +1,5 @@
+@props(['article'])
+
 <article class="flex flex-col md:flex-row gap-8 items-start group">
     <div
         class="w-full md:w-80 h-52 shrink-0 overflow-hidden rounded-lg border border-outline-variant bg-surface-container-low">

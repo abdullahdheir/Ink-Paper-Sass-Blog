@@ -46,9 +46,7 @@
                     </a> --}}
                 </div>
                 <div class="flex gap-4 pt-4 border-t border-outline-variant">
-                    <button
-                        class="bg-primary-container text-on-primary px-8 py-3 rounded-lg font-ui-button text-ui-button hover:opacity-90 transition-all">Follow
-                        Author</button>
+                    <x-follow-button :author="$author" />
                     <button
                         class="border border-on-surface text-on-surface px-8 py-3 rounded-lg font-ui-button text-ui-button hover:bg-surface-container transition-all"
                         onclick="share({
@@ -65,22 +63,22 @@
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-section-gap">
             <div class="bg-white border border-outline-variant p-6 rounded-lg text-center">
                 <span
-                    class="block font-display-lg text-display-lg text-primary">{{ $author->stat->followers_count ?? 0 }}</span>
+                    class="block font-display-lg text-display-lg text-primary">{{ $author->stats->followers_count ?? 0 }}</span>
                 <span class="font-ui-label text-ui-label text-secondary uppercase tracking-wider">Followers</span>
             </div>
             <div class="bg-white border border-outline-variant p-6 rounded-lg text-center">
                 <span
-                    class="block font-display-lg text-display-lg text-on-surface">{{ $author->stat->total_views ?? 0 }}</span>
+                    class="block font-display-lg text-display-lg text-on-surface">{{ $author->stats->total_views ?? 0 }}</span>
                 <span class="font-ui-label text-ui-label text-secondary uppercase tracking-wider">Total Views</span>
             </div>
             <div class="bg-white border border-outline-variant p-6 rounded-lg text-center">
                 <span
-                    class="block font-display-lg text-display-lg text-on-surface">{{ $author->stat->articles_count ?? 0 }}</span>
+                    class="block font-display-lg text-display-lg text-on-surface">{{ $author->stats->articles_count ?? 0 }}</span>
                 <span class="font-ui-label text-ui-label text-secondary uppercase tracking-wider">Articles</span>
             </div>
             <div class="bg-white border border-outline-variant p-6 rounded-lg text-center">
                 <span
-                    class="block font-display-lg text-display-lg text-on-surface">{{ $author->stat->average_rating ?? 0 }}</span>
+                    class="block font-display-lg text-display-lg text-on-surface">{{ $author->stats->average_rating ?? 0 }}</span>
                 <span class="font-ui-label text-ui-label text-secondary uppercase tracking-wider">Avg Rating</span>
             </div>
         </section>
