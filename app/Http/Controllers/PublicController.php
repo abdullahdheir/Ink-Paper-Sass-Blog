@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\AuthorViewed;
 use App\Models\Article;
 use App\Models\Tag;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class PublicController extends Controller
