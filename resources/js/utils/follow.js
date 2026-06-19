@@ -2,17 +2,18 @@
  * resources/js/utils/follow.js
  */
 
-import { authors } from './ajax.js';
+import { authors } from "./ajax.js";
 
 /**
  * Called by onclick="toggleFollow(this)" on the follow button.
  * @param {HTMLButtonElement} btn
+ * @param {boolean} loading
  */
-export async function toggleFollow(btn) {
-    const username   = btn.dataset.username;
-    const isFollowing = btn.dataset.following === 'true';
+export async function toggleFollow(btn, loading = true) {
+    const username = btn.dataset.username;
+    const isFollowing = btn.dataset.following === "true";
 
-    _setLoading(btn, true);
+    if (loading) _setLoading(btn, true);
 
     try {
         if (isFollowing) {
@@ -25,12 +26,12 @@ export async function toggleFollow(btn) {
     } catch (err) {
         // Not logged in → redirect to login
         if (err.status === 401) {
-            window.location.href = '/login';
+            window.location.href = "/login";
             return;
         }
-        console.error('[follow]', err.message);
+        console.error("[follow]", err.message);
     } finally {
-        _setLoading(btn, false);
+        if (loading) _setLoading(btn, false);
     }
 }
 
@@ -38,24 +39,36 @@ export async function toggleFollow(btn) {
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ *
+ * @param {HTMLButtonElement} btn
+ * @param {boolean} loading
+ */
 function _setLoading(btn, loading) {
-    const spinner = btn.querySelector('.follow-spinner');
-    const label   = btn.querySelector('.follow-label');
+    const spinner = btn.querySelector(".follow-spinner");
+    const label = btn.querySelector(".follow-label");
 
-    btn.disabled          = loading;
-    spinner.classList.toggle('hidden', !loading);
-    label.style.opacity   = loading ? '0' : '1';
+    btn.disabled = loading;
+    spinner.classList.toggle("hidden", !loading);
+    label.style.opacity = loading ? "0" : "1";
 }
 
+/**
+ *
+ * @param {HTMLButtonElement} btn
+ * @param {boolean} isFollowing
+ */
 function _setState(btn, isFollowing) {
-    const label = btn.querySelector('.follow-label');
+    const label = btn.querySelector(".follow-label");
 
-    btn.dataset.following = isFollowing ? 'true' : 'false';
-    label.textContent     = isFollowing ? 'Following' : 'Follow Author';
+    btn.dataset.following = isFollowing ? "true" : "false";
+    label.textContent = isFollowing ? "Following" : "Follow";
 
     // Swap styles
-    btn.classList.toggle('bg-primary-container', !isFollowing);
-    btn.classList.toggle('bg-surface-container', isFollowing);
-    btn.classList.toggle('text-on-primary',       !isFollowing);
-    btn.classList.toggle('text-on-surface',        isFollowing);
+    if (btn.hasAttribute("data-button")) {
+        btn.classList.toggle("bg-primary-container", !isFollowing);
+        btn.classList.toggle("bg-surface-container", isFollowing);
+        btn.classList.toggle("text-on-primary", !isFollowing);
+        btn.classList.toggle("text-on-surface", isFollowing);
+    }
 }

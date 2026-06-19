@@ -4,7 +4,7 @@
     $isFollowing = auth()->check() && auth()->user()->isFollowing($author);
 @endphp
 
-<button id="follow-btn-{{ $author->id }}" data-username="{{ $author->username }}"
+<button id="follow-btn-{{ $author->id }}" data-button="true" data-username="{{ $author->username }}"
     data-following="{{ $isFollowing ? 'true' : 'false' }}" onclick="toggleFollow(this)"
     class="follow-btn relative flex items-center gap-2 cursor-pointer @if($isFollowing)bg-surface-container text-on-surface @else  bg-primary-container text-on-primary @endif px-8 py-3 rounded-lg font-ui-button text-ui-button hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
 
@@ -17,6 +17,6 @@
 
     {{-- Label --}}
     <span class="follow-label">
-        {{ $isFollowing ? 'Following' : 'Follow Author' }}
+        {{ $isFollowing ? 'Following' : 'Follow' }}
     </span>
 </button>

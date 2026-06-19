@@ -17,7 +17,8 @@
                 {{ $article->reading_time }} min read</span>
         </div>
         <h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
-            <a href="{{ route('article',$article->id) }}">{{ $article->title }}</a></h3>
+            <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
+        </h3>
         <p class="font-body-md text-body-md text-on-surface-variant line-clamp-3">{!! $article->content !!}</p>
         <div class="flex items-center gap-6 pt-2">
             <button class="flex items-center gap-2 font-ui-label text-ui-label text-secondary hover:text-on-surface">

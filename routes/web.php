@@ -28,7 +28,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/following', [AuthorController::class, 'following'])->name('following');
     });
     // Public pages
-    Route::get('/article/{id}', [PageController::class, 'article'])->name('article');
+    Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article');
     Route::get('/category/{slug}', [PageController::class, 'categoryHub'])->name('category.hub');
     Route::get('/tag/{slug}', [PageController::class, 'tagArchive'])->name('tag.archive');
     Route::get('/search', [PageController::class, 'search'])->name('search');

@@ -38,6 +38,6 @@ class IncrementAuthorViews
 
         $authors[] = $author->id;
 
-        Cookie::queue('viewed_authors', serialize($authors), 60 * 24); // Store the cookie for 1 day
+        Cookie::queue('viewed_authors', serialize($authors), 60); // Store the cookie for 1 day
     }
 }

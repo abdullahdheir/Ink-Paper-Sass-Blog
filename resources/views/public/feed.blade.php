@@ -53,7 +53,7 @@
                             </div>
                             <h2
                                 class="font-headline-md text-headline-md text-on-surface leading-tight group-hover:text-primary transition-colors">
-                                <a href="{{ route('articles.show', $article->id) }}">{{ $article->title }}</a>
+                                <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
                             </h2>
                             <p class="text-on-surface-variant font-body-md text-body-md line-clamp-3">
                                 {{ \Illuminate\Support\Str::limit(strip_tags($article->content), 200) }}
@@ -73,7 +73,7 @@
                                             {{ $article->category ? $article->category->name : 'Uncategorized' }}</p>
                                     </div>
                                 </div>
-                                <a href="{{ route('articles.show', $article->id) }}"
+                                <a href="{{ route('articles.show', $article->slug) }}"
                                     class="text-primary p-2 rounded-full hover:bg-primary-container/10 transition-colors">
                                     <span class="material-symbols-outlined">arrow_forward</span>
                                 </a>

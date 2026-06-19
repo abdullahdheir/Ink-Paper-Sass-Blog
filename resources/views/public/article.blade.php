@@ -4,84 +4,48 @@
 
 @section('page-content')
     <article class="mx-auto max-w-article-max">
-            <!-- Headline -->
-            <header class="mb-12">
-                <h1 class="font-display-lg text-display-lg mb-8 text-on-surface">The Architecture of Silence: Designing for
-                    Focused Cognition</h1>
-                <!-- Author Bio -->
-                <div class="flex items-center justify-between py-6 border-y border-outline-variant">
-                    <div class="flex items-center gap-4">
-                        <img class="w-12 h-12 rounded-full grayscale"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrB-fTH_sGc-EoJs3tiJjk17n12cNKJM223VhyTD5FfEtDknySO7GKIj0HvaJ3d-MoqtVOP8Yfk-dObjmX9mmt7mFiMRgqqpHWCsYFFpmpKBTaBXmgoB4M75gSnf4MJhP1WCx3DUb1E9iLnP1S039Q9dKb0JB_82yuO9S-WADZqyUPUVc_7lpe6Od7eVj2dcesczICWUxGQu7qeDZM0cH-Zqb8erGsQU-AEaICg0K2DynpHlKKOtRY0rPe9qhTIpUEN05vqmFz9_FG" />
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="font-ui-label text-ui-label font-bold text-on-surface">Julian Thorne</span>
-                                <span class="text-secondary-fixed-dim">•</span>
-                                <button
-                                    class="text-primary font-ui-label text-ui-label font-semibold hover:underline">Follow</button>
-                            </div>
-                            <p class="font-metadata text-metadata text-secondary">Oct 24, 2024 · 12 min read</p>
+        <!-- Headline -->
+        <header class="mb-12">
+            <h1 class="font-display-lg text-display-lg mb-8 text-on-surface">{{ $article->title }}</h1>
+            <!-- Author Bio -->
+            <div class="flex items-center justify-between py-6 border-y border-outline-variant">
+                <div class="flex items-center gap-4">
+                    <img class="w-12 h-12 rounded-full grayscale" src="{{ $article->author->avatar }}" />
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span
+                                class="font-ui-label text-ui-label font-bold text-on-surface">{{ $article->author->name }}</span>
+                            <span class="text-secondary-fixed-dim">•</span>
+                            <button data-following="{{ $article->author->is_followed_by_auth_user ? 'true' : 'false' }}"
+                                data-username="{{ $article->author->username }}" onclick="toggleFollow(this,false)"
+                                class="text-primary font-ui-label text-ui-label font-semibold hover:underline cursor-pointer">
+                                <span class="follow-label">
+                                    {{ $article->author->is_followed_by_auth_user ? 'Following' : 'Follow' }}
+                                </span>
+                            </button>
                         </div>
-                    </div>
-                    <div class="flex gap-2">
-                        <button
-                            class="material-symbols-outlined text-secondary hover:text-primary transition-colors">share</button>
-                        <button
-                            class="material-symbols-outlined text-secondary hover:text-primary transition-colors">more_horiz</button>
+                        <p class="font-metadata text-metadata text-secondary">
+                            {{ $article->published_at ? $article->published_at?->format('M d YYYY') . ' .' : '' }}
+                            {{ $article->reading_time }} min read</p>
                     </div>
                 </div>
-            </header>
-            <!-- Content -->
-            <div class="space-y-8">
-                <p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
-                    In an era defined by the constant hum of notification-driven anxiety, the true luxury of the modern
-                    interface is not feature density, but intentional absence. We have spent decades filling every pixel
-                    with utility, forgetting that the primary purpose of reading is a solitary, quiet dialogue between the
-                    ink and the mind.
-                </p>
-                <h2 class="font-headline-md text-headline-md mt-12 mb-4 text-on-surface">The Psychology of White Space</h2>
-                <p class="font-body-md text-body-md text-on-surface">
-                    When we strip away the secondary sidebars, the flashing banners, and the sticky social widgets, we allow
-                    the reader's cognitive load to reset. This isn't just a stylistic choice; it's a neurological necessity
-                    for deep comprehension. The grid must breathe.
-                </p>
-                <div class="my-12">
-                    <img class="w-full rounded-lg border border-outline-variant"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe9z5-CMxvCeCQThs7kHzXQ5geJGBesnpuQA7xMHfACS22Pxtkz4R7KK9r2bvlMMQw0dcote6RP0On5Tfiu4fPCTiAUZD7FMlSMV5mGUEbKYzWeebVMGq3fVli3vncJYSUj8lHI5od9K87xxH50MrEwLkFtOqVf7isIQFSMFZNyPWjKcLqU9cy4ueAsQnu3Q-sn7a3GaYWe-h3MpWxNwyaLxKSk3xhfxcVEi_H6xbFghZghxTOkCJnEq6APCaOSL0cc2jtB8-DzQ59" />
-                    <p class="font-metadata text-metadata text-center mt-4 text-secondary italic">Figure 1.1: The visual
-                        representation of cognitive breathing room in physical architecture.</p>
-                </div>
-                <blockquote class="pl-6 border-l-4 border-primary my-12 italic">
-                    <p class="font-body-lg text-body-lg text-on-surface">"True design is reached not when there is nothing
-                        left to add, but when there is nothing left to take away from the core message."</p>
-                </blockquote>
-                <h3 class="font-ui-label text-ui-label font-bold uppercase tracking-wider text-primary">Intentional
-                    Constraints</h3>
-                <p class="font-body-md text-body-md text-on-surface">
-                    Standardizing column widths to 720px is more than a convention. It respects the physiological limits of
-                    the human eye, ensuring that the transition from the end of one line to the beginning of the next
-                    remains fluid and effortless. Any wider, and the brain begins to work too hard just to track the
-                    sequence.
-                </p>
-                <div class="p-8 bg-surface-container rounded-lg border border-outline-variant my-12">
-                    <h4 class="font-ui-label text-ui-label font-bold mb-4">Key Takeaways for Designers</h4>
-                    <ul class="space-y-3 font-body-md text-body-md text-on-surface">
-                        <li class="flex items-start gap-3">
-                            <span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
-                            Prioritize monochromatic foundations for reading areas.
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
-                            Use 8px-based spacing for a rigorous vertical rhythm.
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
-                            Introduce a single high-energy digital accent (e.g., Electric Violet).
-                        </li>
-                    </ul>
+                <div class="flex gap-2">
+                    <button
+                        onclick="share({
+        title: '{{ addslashes($article->title) }} on {{ config('app.name') }}',
+        text:  '{{ addslashes($article->excerpt) }}',
+        url:   '{{ route('articles.show', $article->slug) }}'
+    })"
+                        class="cursor-pointer material-symbols-outlined text-secondary
+                        hover:text-primary transition-colors">share</button>
                 </div>
             </div>
-        </article>
+        </header>
+        <!-- Content -->
+        <div class="space-y-8 mb-8">
+            {!! $article->content !!}
+        </div>
+    </article>
     </main>
     <!-- Floating Engagement Bar -->
     <div class="fixed bottom-10 left-1/2 -translate-x-1/2 z-40">
@@ -90,19 +54,26 @@
             <div class="flex items-center gap-2 group cursor-pointer">
                 <span
                     class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">favorite</span>
-                <span class="font-ui-label text-ui-label text-secondary group-hover:text-primary">1.2k</span>
+                <span
+                    class="font-ui-label text-ui-label text-secondary group-hover:text-primary">{{ Number::abbreviate($article->likes_count) }}</span>
             </div>
             <div class="w-px h-6 bg-outline-variant"></div>
             <div class="flex items-center gap-2 group cursor-pointer">
                 <span
                     class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">chat_bubble</span>
-                <span class="font-ui-label text-ui-label text-secondary group-hover:text-primary">84</span>
+                <span
+                    class="font-ui-label text-ui-label text-secondary group-hover:text-primary">{{ Number::abbreviate($article->comments_count) }}</span>
             </div>
             <div class="w-px h-6 bg-outline-variant"></div>
             <button
                 class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">bookmark</button>
             <button
-                class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">ios_share</button>
+                onclick="share({
+        title: '{{ addslashes($article->title) }} on {{ config('app.name') }}',
+        text:  '{{ addslashes($article->excerpt) }}',
+        url:   '{{ route('articles.show', $article->slug) }}'
+    })"
+                class="cursor-pointer material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">ios_share</button>
         </div>
     </div>
 @endsection

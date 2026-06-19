@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Articles\CreateNewArticle;
 use App\Actions\Tags\CreateNewTag;
 use App\Enums\ArticleStatus;
+use App\Events\ArticleViewed;
 use App\Models\Category;
 use App\Models\Article;
 use App\Models\Tag;
@@ -70,10 +71,12 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        $article = Article::with('category')->findOrFail($id);
-        return view('dashboard.articles.show', compact('article'));
+        $article = Article::where('slug', '=', $slug)->firstOrFail();
+        $article->load('category', 'tags');
+        ArticleViewed::dispatch($article);
+        return view('public.article', compact('article'));
     }
 
     /**

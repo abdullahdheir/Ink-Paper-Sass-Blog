@@ -29,6 +29,10 @@ class Article extends Model
         'allow_comments',
         'published_at',
         'scheduled_at',
+        'views_count',
+        'likes_count',
+        'comments_count',
+        'bookmarks_count',
     ];
 
     protected function casts(): array
