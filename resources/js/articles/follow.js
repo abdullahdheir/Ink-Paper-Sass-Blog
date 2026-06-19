@@ -1,8 +1,9 @@
 /**
- * resources/js/utils/follow.js
+ * resources/js/articles/follow.js
  */
 
-import { authors } from "./ajax.js";
+import { authors } from "../utils/ajax";
+
 
 /**
  * Called by onclick="toggleFollow(this)" on the follow button.
@@ -25,10 +26,6 @@ export async function toggleFollow(btn, loading = true) {
         }
     } catch (err) {
         // Not logged in → redirect to login
-        if (err.status === 401) {
-            window.location.href = "/login";
-            return;
-        }
         console.error("[follow]", err.message);
     } finally {
         if (loading) _setLoading(btn, false);

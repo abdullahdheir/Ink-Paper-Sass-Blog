@@ -81,7 +81,12 @@ class Article extends Model
 
     public function bookmarkedBy()
     {
-        return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps();
+        return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps('created_at', null);
+    }
+
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class, 'article_id');
     }
 
     public function collaborators()
@@ -148,12 +153,6 @@ class Article extends Model
         return $this->bookmarkedBy()->where('user_id', $user->id)->exists();
     }
 
-    public function incrementViews(): void
-    {
-        $this->increment('views_count');
-        $this->author->stats()->increment('total_views');
-    }
-
     public function publish(): void
     {
         $this->update([
@@ -162,11 +161,6 @@ class Article extends Model
         ]);
 
         $this->author->stats()->increment('articles_count');
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
     }
 
     // -------------------------------------------------------------------------

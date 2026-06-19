@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use App\Actions\Articles\CreateNewArticle;
 use App\Actions\Tags\CreateNewTag;
 use App\Enums\ArticleStatus;
+use App\Enums\ResponseStatus;
 use App\Events\ArticleViewed;
 use App\Models\Category;
 use App\Models\Article;
 use App\Models\Tag;
+use App\Services\ArticleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Number;
+use Throwable;
 
 class ArticleController extends Controller
 {
+    public function __construct(protected ArticleService $articleService) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -86,7 +92,7 @@ class ArticleController extends Controller
     {
         $article = Article::with('tags')->findOrFail($id);
         $categories = Category::all();
-        $tags = \App\Models\Tag::where('user_id', auth()->id())->get();
+        $tags = Tag::where('user_id', auth()->id())->get();
         return view('dashboard.articles.edit', compact('article', 'categories', 'tags'));
     }
 
@@ -166,5 +172,45 @@ class ArticleController extends Controller
 
         return redirect()->route('articles.index')
             ->with('success', 'Article deleted successfully.');
+    }
+
+    public function like(Article $article)
+    {
+        try {
+            $this->articleService->like($article, auth()->user());
+            return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'Successfully liked the article.', [], ['count' => Number::abbreviate($article->likes_count)]);
+        } catch (Throwable $err) {
+            return $this->respondGeneral(ResponseStatus::ERROR, $err->getCode() ?: 400, $err->getMessage());
+        }
+    }
+
+    public function unLike(Article $article)
+    {
+        try {
+            $this->articleService->unLike($article, auth()->user());
+            return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'Successfully unliked the article.', [], ['count' => Number::abbreviate($article->likes_count)]);
+        } catch (Throwable $err) {
+            return $this->respondGeneral(ResponseStatus::ERROR, $err->getCode() ?: 400, $err->getMessage());
+        }
+    }
+
+    public function bookmark(Article $article)
+    {
+        try {
+            $this->articleService->bookmark($article, auth()->user());
+            return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'Successfully bookmarked the article.', [], ['count' => Number::abbreviate($article->bookmarks_count)]);
+        } catch (Throwable $err) {
+            return $this->respondGeneral(ResponseStatus::ERROR, $err->getCode() ?: 400, $err->getMessage());
+        }
+    }
+
+    public function unBookmark(Article $article)
+    {
+        try {
+            $this->articleService->unBookmark($article, auth()->user());
+            return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'Successfully unbookmark the article.', [], ['count' => Number::abbreviate($article->bookmarks_count)]);
+        } catch (Throwable $err) {
+            return $this->respondGeneral(ResponseStatus::ERROR, $err->getCode() ?: 400, $err->getMessage());
+        }
     }
 }

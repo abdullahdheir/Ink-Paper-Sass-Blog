@@ -3,6 +3,10 @@
 @section('title', 'Article - Ink & Paper')
 
 @section('page-content')
+    @php
+        $isLiked = auth()->user()->hasLiked($article);
+        $isBookmarked = auth()->user()->hasBookmarked($article);
+    @endphp
     <article class="mx-auto max-w-article-max">
         <!-- Headline -->
         <header class="mb-12">
@@ -51,22 +55,30 @@
     <div class="fixed bottom-10 left-1/2 -translate-x-1/2 z-40">
         <div
             class="flex items-center gap-6 px-6 py-3 bg-white rounded-full border border-outline-variant shadow-[0_20px_30px_rgba(26,26,26,0.05)] backdrop-blur-sm">
-            <div class="flex items-center gap-2 group cursor-pointer">
+            <button class="flex items-center gap-2 group cursor-pointer" data-liked="{{ $isLiked ? 'true' : 'false' }}"
+                onclick="toggleLike(this,{{ $article->id }})">
                 <span
-                    class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">favorite</span>
+                    class="material-symbols-outlined {{ $isLiked ? 'text-red-500 ' : '' }}group-hover:text-primary transition-colors">favorite</span>
                 <span
-                    class="font-ui-label text-ui-label text-secondary group-hover:text-primary">{{ Number::abbreviate($article->likes_count) }}</span>
-            </div>
+                    class="font-ui-label count text-ui-label text-secondary group-hover:text-primary">{{ Number::abbreviate($article->likes_count) }}</span>
+            </button>
             <div class="w-px h-6 bg-outline-variant"></div>
-            <div class="flex items-center gap-2 group cursor-pointer">
+            <button class="flex items-center gap-2 group cursor-pointer" id="comment-btn">
                 <span
                     class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">chat_bubble</span>
                 <span
                     class="font-ui-label text-ui-label text-secondary group-hover:text-primary">{{ Number::abbreviate($article->comments_count) }}</span>
-            </div>
+            </button>
             <div class="w-px h-6 bg-outline-variant"></div>
-            <button
-                class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">bookmark</button>
+            <button class="flex items-center gap-2 group cursor-pointer"
+                data-bookmarked="{{ $isBookmarked ? 'true' : 'false' }}"
+                onclick="toggleBookmark(this,{{ $article->id }})">
+                <span
+                    class="material-symbols-outlined {{ $isBookmarked ? 'text-yellow-500 ' : '' }}group-hover:text-primary transition-colors">bookmark</span>
+                <span
+                    class="font-ui-label text-ui-label count text-secondary group-hover:text-primary">{{ Number::abbreviate($article->bookmarks_count) }}</span>
+            </button>
+            <div class="w-px h-6 bg-outline-variant"></div>
             <button
                 onclick="share({
         title: '{{ addslashes($article->title) }} on {{ config('app.name') }}',

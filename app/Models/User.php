@@ -158,7 +158,7 @@ class User extends Authenticatable
 
     public function bookmarks()
     {
-        return $this->belongsToMany(Article::class, 'bookmarks')->withTimestamps();
+        return $this->hasMany(Bookmark::class, 'user_id');
     }
 
     public function hasLiked(Model $likeable): bool

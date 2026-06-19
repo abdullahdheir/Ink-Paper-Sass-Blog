@@ -252,7 +252,9 @@ export const articles = {
     destroy: (id) => ajax.delete(`/articles/${id}`),
     publish: (id) => ajax.patch(`/articles/${id}/publish`),
     like: (id) => ajax.post(`/articles/${id}/like`),
+    unlike: (id) => ajax.delete(`/articles/${id}/like`),
     bookmark: (id) => ajax.post(`/articles/${id}/bookmark`),
+    unbookmark: (id) => ajax.delete(`/articles/${id}/bookmark`),
     search: (q, page = 1) =>
         ajax.get(`/search?q=${encodeURIComponent(q)}&page=${page}`),
 };

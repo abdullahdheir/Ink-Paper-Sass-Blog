@@ -27,8 +27,18 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/followers', [AuthorController::class, 'followers'])->name('followers');
         Route::get('/following', [AuthorController::class, 'following'])->name('following');
     });
+
+    // Articles Routes
+    Route::prefix('articles')->name('articles.')->group(function () {
+        Route::resource('', ArticleController::class)->except(['index', 'show']);
+        Route::get('{slug}', [ArticleController::class, 'show'])->name('show');
+        Route::post('{article}/like', [ArticleController::class, 'like'])->name('like');
+        Route::delete('{article}/like', [ArticleController::class, 'unLike'])->name('unLike');
+        Route::post('{article}/bookmark', [ArticleController::class, 'bookmark'])->name('bookmark');
+        Route::delete('{article}/bookmark', [ArticleController::class, 'unBookmark'])->name('unBookmark');
+    });
+
     // Public pages
-    Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article');
     Route::get('/category/{slug}', [PageController::class, 'categoryHub'])->name('category.hub');
     Route::get('/tag/{slug}', [PageController::class, 'tagArchive'])->name('tag.archive');
     Route::get('/search', [PageController::class, 'search'])->name('search');
@@ -72,7 +82,7 @@ Route::middleware('auth:web')->group(function () {
 
     // Existing resource routes
     Route::resource('categories', CategoryController::class);
-    Route::resource('articles', ArticleController::class)->except(['index']);
+
     Route::get('tags/search', [TagController::class, 'search'])->name('tags.search');
     Route::resource('tags', TagController::class)->except(['edit', 'show', 'create']);
 });
