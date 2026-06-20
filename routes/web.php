@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
@@ -32,11 +33,17 @@ Route::middleware('auth:web')->group(function () {
     Route::prefix('articles')->name('articles.')->group(function () {
         Route::resource('', ArticleController::class)->except(['index', 'show']);
         Route::get('{slug}', [ArticleController::class, 'show'])->name('show');
-        Route::post('{article}/like', [ArticleController::class, 'like'])->name('like');
-        Route::delete('{article}/like', [ArticleController::class, 'unLike'])->name('unLike');
-        Route::post('{article}/bookmark', [ArticleController::class, 'bookmark'])->name('bookmark');
-        Route::delete('{article}/bookmark', [ArticleController::class, 'unBookmark'])->name('unBookmark');
+        Route::prefix('{article}')->group(function () {
+            Route::post('like', [ArticleController::class, 'like'])->name('like');
+            Route::delete('like', [ArticleController::class, 'unLike'])->name('unLike');
+            Route::post('bookmark', [ArticleController::class, 'bookmark'])->name('bookmark');
+            Route::delete('bookmark', [ArticleController::class, 'unBookmark'])->name('unBookmark');
+            Route::get('comments', [ArticleController::class, 'comments'])->name('comments');
+        });
     });
+
+    Route::resource('comments', CommentController::class)->except(['show', 'edit', 'create']);
+    Route::post('comments/{comment}/like', [CommentController::class, 'like'])->name('like');
 
     // Public pages
     Route::get('/category/{slug}', [PageController::class, 'categoryHub'])->name('category.hub');

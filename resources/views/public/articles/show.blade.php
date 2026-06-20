@@ -51,19 +51,20 @@
         </div>
     </article>
     </main>
+    @include('public.articles.partials.comments-drawer')
     <!-- Floating Engagement Bar -->
     <div class="fixed bottom-10 left-1/2 -translate-x-1/2 z-40">
         <div
             class="flex items-center gap-6 px-6 py-3 bg-white rounded-full border border-outline-variant shadow-[0_20px_30px_rgba(26,26,26,0.05)] backdrop-blur-sm">
             <button class="flex items-center gap-2 group cursor-pointer" data-liked="{{ $isLiked ? 'true' : 'false' }}"
-                onclick="toggleLike(this,{{ $article->id }})">
+                onclick="toggleArticleLike(this,{{ $article->id }})">
                 <span
                     class="material-symbols-outlined {{ $isLiked ? 'text-red-500 ' : '' }}group-hover:text-primary transition-colors">favorite</span>
                 <span
                     class="font-ui-label count text-ui-label text-secondary group-hover:text-primary">{{ Number::abbreviate($article->likes_count) }}</span>
             </button>
             <div class="w-px h-6 bg-outline-variant"></div>
-            <button class="flex items-center gap-2 group cursor-pointer" id="comment-btn">
+            <button class="flex items-center gap-2 group cursor-pointer" onclick="openCommentsDrawer({{ $article->id }})">
                 <span
                     class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">chat_bubble</span>
                 <span

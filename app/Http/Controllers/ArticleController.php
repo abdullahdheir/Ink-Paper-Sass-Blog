@@ -79,10 +79,10 @@ class ArticleController extends Controller
      */
     public function show(string $slug)
     {
-        $article = Article::where('slug', '=', $slug)->firstOrFail();
+        $article = Article::published()->where('slug', '=', $slug)->firstOrFail();
         $article->load('category', 'tags');
         ArticleViewed::dispatch($article);
-        return view('public.article', compact('article'));
+        return view('public.articles.show', compact('article'));
     }
 
     /**
@@ -212,5 +212,12 @@ class ArticleController extends Controller
         } catch (Throwable $err) {
             return $this->respondGeneral(ResponseStatus::ERROR, $err->getCode() ?: 400, $err->getMessage());
         }
+    }
+
+    public function comments(Article $article)
+    {
+        $comments = $article->comments()->latest()->get();
+        $commentsView = view('public.articles.partials.comments-list',compact('comments'))->render();
+        return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'Successfully fetch the article comments.', [], ['comments' => $commentsView]);
     }
 }

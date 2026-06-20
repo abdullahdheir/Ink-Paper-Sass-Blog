@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ArticleStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Database\Factories\ArticleFactory;
@@ -42,6 +43,7 @@ class Article extends Model
             'allow_comments' => 'boolean',
             'published_at'   => 'datetime',
             'scheduled_at'   => 'datetime',
+            'status'         => ArticleStatus::class,
         ];
     }
 
@@ -100,8 +102,8 @@ class Article extends Model
 
     public function scopePublished(Builder $query)
     {
-        return $query->where('status', 'published')
-            ->where('published_at', '<=', now());
+        return $query->where('status', ArticleStatus::PUBLISHED)
+            ->where('published_at', '<=', now()->toIso8601String());
     }
 
     public function scopeDraft(Builder $query)

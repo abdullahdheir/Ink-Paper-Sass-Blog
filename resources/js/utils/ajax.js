@@ -277,8 +277,7 @@ export const notifications = {
 
 export const comments = {
     index: (articleId) => ajax.get(`/articles/${articleId}/comments`),
-    store: (articleId, data) =>
-        ajax.post(`/articles/${articleId}/comments`, data),
+    store: (data) => ajax.post(`/comments`, data),
     destroy: (id) => ajax.delete(`/comments/${id}`),
     like: (id) => ajax.post(`/comments/${id}/like`),
 };
