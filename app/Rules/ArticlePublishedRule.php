@@ -17,7 +17,7 @@ class ArticlePublishedRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $article = Article::where('id', '=', $value)->where('status', '=', ArticleStatus::PUBLISHED)->first();
+        $article = Article::published()->where('id', '=', $value)->first();
 
         if (! $article) $fail('The article must be published to can users comment on it.');
     }
