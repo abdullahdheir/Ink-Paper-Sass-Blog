@@ -2,7 +2,6 @@
 
 namespace App\Rules;
 
-use App\Enums\ArticleStatus;
 use App\Models\Article;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
