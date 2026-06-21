@@ -59,14 +59,14 @@
             <button class="flex items-center gap-2 group cursor-pointer" data-liked="{{ $isLiked ? 'true' : 'false' }}"
                 onclick="toggleArticleLike(this,{{ $article->id }})">
                 <span
-                    class="material-symbols-outlined {{ $isLiked ? 'text-red-500 ' : '' }}group-hover:text-primary transition-colors">favorite</span>
+                    class="material-symbols-outlined {{ $isLiked ? 'text-red-500 fill ' : '' }}transition-colors">favorite</span>
                 <span
                     class="font-ui-label count text-ui-label text-secondary group-hover:text-primary">{{ Number::abbreviate($article->likes_count) }}</span>
             </button>
             <div class="w-px h-6 bg-outline-variant"></div>
             <button class="flex items-center gap-2 group cursor-pointer" onclick="openCommentsDrawer({{ $article->id }})">
                 <span
-                    class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">chat_bubble</span>
+                    class="material-symbols-outlined text-on-surface-variant transition-colors">chat_bubble</span>
                 <span
                     class="font-ui-label text-ui-label text-secondary group-hover:text-primary">{{ Number::abbreviate($article->comments_count) }}</span>
             </button>
@@ -75,9 +75,9 @@
                 data-bookmarked="{{ $isBookmarked ? 'true' : 'false' }}"
                 onclick="toggleBookmark(this,{{ $article->id }})">
                 <span
-                    class="material-symbols-outlined {{ $isBookmarked ? 'text-yellow-500 ' : '' }}group-hover:text-primary transition-colors">bookmark</span>
+                    class="material-symbols-outlined {{ $isBookmarked ? 'text-yellow-500 fill ' : '' }} transition-colors">bookmark</span>
                 <span
-                    class="font-ui-label text-ui-label count text-secondary group-hover:text-primary">{{ Number::abbreviate($article->bookmarks_count) }}</span>
+                    class="font-ui-label text-ui-label count text-secondary">{{ Number::abbreviate($article->bookmarks_count) }}</span>
             </button>
             <div class="w-px h-6 bg-outline-variant"></div>
             <button
