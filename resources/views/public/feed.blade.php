@@ -111,7 +111,7 @@
                             <div class="space-y-1">
                                 <h4
                                     class="font-ui-label text-ui-label font-bold text-on-surface leading-tight hover:text-primary cursor-pointer">
-                                    <a href="{{ route('articles.show', $article->id) }}">{{ $article->title }}</a>
+                                    <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
                                 </h4>
                                 <p class="font-metadata text-metadata text-secondary">
                                     {{ $article->category ? $article->category->name : 'Uncategorized' }} •

@@ -24,6 +24,7 @@ class ArticleObserver
     {
         if ($article->status === ArticleStatus::PUBLISHED) {
             $article->author()->stats()->increment('articles_count');
+            $article->tags()->get()->map(fn($t) => $t->incrementArticlesCount());
         }
     }
 
@@ -45,10 +46,12 @@ class ArticleObserver
         if ($article->isDirty('status')) {
             if ($article->status === ArticleStatus::PUBLISHED) {
                 $article->author()->stats()->increment('articles_count');
+                $article->tags()->get()->map(fn($t) => $t->incrementArticlesCount());
             }
 
             if ($article->getOriginal('status') === ArticleStatus::PUBLISHED && $article->status !== ArticleStatus::PUBLISHED) {
                 $article->author()->stats()->decrement('articles_count');
+                $article->tags()->get()->map(fn($t) => $t->decrementArticlesCount());
             }
         }
     }
@@ -59,6 +62,7 @@ class ArticleObserver
     public function deleted(Article $article): void
     {
         $article->author()->stats()->decrement('articles_count');
+        $article->tags()->get()->map(fn($t) => $t->decrementArticlesCount());
     }
 
     /**
@@ -67,6 +71,7 @@ class ArticleObserver
     public function restored(Article $article): void
     {
         $article->author()->stats()->increment('articles_count');
+        $article->tags()->get()->map(fn($t) => $t->incrementArticlesCount());
     }
 
     /**
@@ -76,6 +81,7 @@ class ArticleObserver
     {
         if (! $article->trashed()) {
             $article->author()->stats()->decrement('articles_count');
+            $article->tags()->get()->map(fn($t) => $t->decrementArticlesCount());
         }
     }
 }

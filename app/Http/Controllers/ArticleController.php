@@ -33,7 +33,7 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $tags = Tag::where('user_id', auth()->id())->get();
+        $tags = Tag::all();
         return view('dashboard.articles.create', compact('categories', 'tags'));
     }
 

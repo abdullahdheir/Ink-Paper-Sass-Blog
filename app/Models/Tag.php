@@ -4,20 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-#[Fillable(['name', 'slug', 'descrption', 'user_id'])]
+#[Fillable(['name', 'slug', 'color', 'articles_count'])]
 class Tag extends Model
 {
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
     public function articles()
     {
-        return $this->belongsToMany(Article::class, 'article_tag', 'tag_id', 'article_id')->withTimestamps();
+        return $this->belongsToMany(Article::class, 'article_tag');
     }
 
     public function reach()
@@ -28,5 +21,15 @@ class Tag extends Model
     public function incrementView()
     {
         return $this->reach()->increment('total_view', 1);
+    }
+
+    public function incrementArticlesCount()
+    {
+        return $this->increment('articles_count');
+    }
+
+    public function decrementArticlesCount()
+    {
+        return $this->decrement('articles_count');
     }
 }

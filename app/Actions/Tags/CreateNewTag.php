@@ -24,7 +24,7 @@ class CreateNewTag
             $newTag = Tag::create([
                 'name' => $data['name'],
                 'slug' => $data['slug'] ?? Str::slug($data['name']),
-                'user_id' => $data['user_id'],
+                // 'user_id' => $data['user_id'],
                 'description' => $data['description'] ?? null,
             ]);
 
