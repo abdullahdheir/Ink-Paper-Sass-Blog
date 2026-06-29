@@ -83,7 +83,7 @@ class TagController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('q');
-        $tags = Tag::where('user_id', auth()->id())->where('name', 'LIKE', "%{$query}%")->get();
+        $tags = Tag::where('name', 'LIKE', "%{$query}%")->get();
         return response()->json($tags);
     }
 }

@@ -51,7 +51,7 @@ class CreateNewArticle
                     if (!$tagName) continue;
 
                     // Try to find existing tag by name
-                    $tag = Tag::where('name', $tagName)->where('user_id', $data['user_id'])->first();
+                    $tag = Tag::where('name', $tagName)->first();
 
                     if ($tag) {
                         $tagIds[] = $tag->id;
@@ -59,8 +59,6 @@ class CreateNewArticle
                         // Create new tag
                         $newTag = CreateNewTag::create([
                             'name' => $tagName,
-                            'user_id' => $data['user_id'],
-                            'description' => null,
                         ]);
 
                         $tagIds[] = $newTag->id;
