@@ -269,7 +269,7 @@
                 <div>
                     {{-- Upload zone --}}
                     <div id="cover-zone"
-                        class="relative group cursor-pointer border-2 border-dashed border-outline-variant bg-white rounded-xl p-12 flex flex-col items-center justify-center text-center transition-colors hover:border-primary hover:bg-surface-container-low">
+                        class="relative group cursor-pointer border-2 border-dashed border-outline-variant bg-white rounded-xl p-12 flex flex-col items-center justify-center text-center transition-colors hover:border-primary hover:bg-surface-container-low {{ isset($article) && $article->cover_url ? 'has-image' : '' }}">
                         <div
                             class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mb-4 group-hover:bg-primary-fixed transition-colors">
                             <span
@@ -282,8 +282,10 @@
                     </div>
 
                     {{-- Preview --}}
-                    <div id="cover-preview" class="relative rounded-xl overflow-hidden">
-                        <img id="cover-img" src="" alt="Cover" class="w-full h-56 object-cover">
+                    <div id="cover-preview"
+                        class="relative rounded-xl overflow-hidden {{ isset($article) && $article->cover_url ? 'show' : '' }}">
+                        <img id="cover-img" src="{{ isset($article) ? $article->cover_url : '' }}" alt="Cover"
+                            class="w-full h-56 object-cover">
                         <div
                             class="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                             <button type="button" onclick="changeCover()"
