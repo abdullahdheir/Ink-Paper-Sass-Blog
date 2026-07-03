@@ -96,7 +96,7 @@ class ArticleService
                 $article->save();
             }
 
-            if (isset($data['tags']) && !empty($data['tags'])) {
+            if (!empty($data['tags'])) {
                 $tagNames = $data['tags'];
                 if (!is_array($tagNames)) {
                     $tagNames = explode(',', $tagNames);

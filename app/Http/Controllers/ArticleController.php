@@ -36,8 +36,9 @@ class ArticleController extends Controller
     {
         $categories = Category::all();
         $statuses = ArticleStatus::cases();
+        $tags = Tag::all();
 
-        return view('dashboard.articles.editor', compact('categories', 'statuses'));
+        return view('dashboard.articles.editor', compact('categories', 'statuses', 'tags'));
     }
 
     /**
@@ -94,8 +95,9 @@ class ArticleController extends Controller
     {
         $article = Article::with('tags')->where('user_id', '=', auth()->id())->findOrFail($id);
         $categories = Category::all();
+        $tags = Tag::all();
         $statuses = ArticleStatus::cases();
-        return view('dashboard.articles.editor', compact('article', 'statuses', 'categories'));
+        return view('dashboard.articles.editor', compact('article', 'statuses', 'categories', 'tags'));
     }
 
     /**

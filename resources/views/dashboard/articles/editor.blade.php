@@ -428,7 +428,8 @@
                 <div class="bg-white rounded-xl border border-outline-variant p-5 shadow-sm">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="text-sm font-semibold text-on-surface">Tags</h3>
-                        <span id="tag-counter" class="text-xs text-secondary">0 / 5</span>
+                        <span id="tag-counter"
+                            class="text-xs text-secondary">{{ isset($article) ? $article->tags->count() : 0 }} / 5</span>
                     </div>
                     <select id="tags-select" name="tags[]" multiple>
                         @foreach ($tags ?? [] as $tag)

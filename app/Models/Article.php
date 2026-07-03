@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ArticleStatus;
+use App\Models\Scopes\OwnedByAuthScope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Mews\Purifier\Facades\Purifier;
 
+#[ScopedBy(OwnedByAuthScope::class)]
 class Article extends Model
 {
     /** @use HasFactory<ArticleFactory> */
@@ -66,7 +68,7 @@ class Article extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class, 'article_tag');
     }
 
     public function comments()
