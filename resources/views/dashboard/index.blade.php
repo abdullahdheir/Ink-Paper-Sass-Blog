@@ -95,18 +95,18 @@
                 <thead>
                     <tr class="bg-surface-container text-on-surface-variant font-ui-label text-ui-label">
                         <th class="px-6 py-4 font-semibold uppercase tracking-wider">Title</th>
-                        <th class="px-6 py-4 font-semibold uppercase tracking-wider">Category</th>
+                        <th class="px-6 py-4 font-semibold uppercase tracking-wider">Status</th>
                         <th class="px-6 py-4 font-semibold uppercase tracking-wider">Created At</th>
                         <th class="px-6 py-4 font-semibold uppercase tracking-wider text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant">
                     @forelse($articles as $article)
-                        <tr class="hover:bg-surface transition-colors">
+                        <tr class="hover:bg-surface transition-colors cursor-pointer" onclick="window.location='{{ route('articles.edit', $article->id) }}'">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
                                     <div
-                                        class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                        class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden shrink-0 flex items-center justify-center">
                                         <span class="material-symbols-outlined text-on-surface-variant">article</span>
                                     </div>
                                     <span
@@ -115,7 +115,7 @@
                             </td>
                             <td class="px-6 py-4">
                                 <span
-                                    class="text-secondary font-metadata text-metadata">{{ $article->category ? $article->category->name : '-' }}</span>
+                                    class="text-secondary font-metadata text-metadata">{{ $article->status->getLabel() ?: '-' }}</span>
                             </td>
                             <td class="px-6 py-4 text-secondary font-metadata text-metadata">
                                 {{ $article->created_at->format('M d, Y') }}</td>
@@ -141,6 +141,13 @@
                         </tr>
                     @endforelse
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="px-6 py-4">
+                            {{ $articles->links() }}
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>

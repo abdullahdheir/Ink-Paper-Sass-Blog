@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use App\Enums\ArticleStatus;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Database\Factories\ArticleFactory;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Mews\Purifier\Facades\Purifier;
 
 class Article extends Model
 {
@@ -96,9 +99,19 @@ class Article extends Model
         return $this->hasMany(Collaboration::class);
     }
 
+    public function seo()
+    {
+        return $this->morphOne(Seo::class, 'seoable');
+    }
+
     // -------------------------------------------------------------------------
     // Scopes
     // -------------------------------------------------------------------------
+
+    public function scopeOwnedByAuth(Builder $query)
+    {
+        return $query->where('user_id', auth()->id());
+    }
 
     public function scopePublished(Builder $query)
     {
@@ -106,7 +119,7 @@ class Article extends Model
             ->where('published_at', '<=', now()->toIso8601String());
     }
 
-    public function scopeDraft(Builder $query)
+    public function scopeDrafts(Builder $query)
     {
         return $query->where('status', 'draft');
     }
@@ -145,6 +158,11 @@ class Article extends Model
         return route('articles.show', $this->slug);
     }
 
+    public function getContentAttribute(string $value): string
+    {
+        return str_replace('<p><br></p>', '', $value);
+    }
+
     public function isLikedBy(User $user): bool
     {
         return $this->likes()->where('user_id', $user->id)->exists();
@@ -163,6 +181,42 @@ class Article extends Model
         ]);
 
         $this->author->stats()->increment('articles_count');
+    }
+
+    public function unpublish(): void
+    {
+        $this->update([
+            'status'       => 'draft',
+            'published_at' => null,
+        ]);
+
+        $this->author->stats()->decrement('articles_count');
+    }
+
+    /**
+     * Automatically clean content when saving.
+     * Removes empty Quill paragraphs and sanitizes HTML.
+     */
+    public function setContentAttribute(string $value): void
+    {
+        $clean = Purifier::clean($value);
+
+        // 1. Remove empty Quill paragraphs: <p><br></p>
+        $clean = preg_replace('/<p>\s*<br\s*\/?>\s*<\/p>/i', '', $clean);
+
+        // 2. Remove empty paragraphs: <p></p> or <p> </p>
+        $clean = preg_replace('/<p>\s*<\/p>/i', '', $clean);
+
+        // 3. Remove multiple consecutive <br> tags
+        $clean = preg_replace('/(<br\s*\/?>){2,}/i', '<br>', $clean);
+
+        // 4. Remove ** markdown leftover (Quill sometimes passes raw markdown from AI)
+        $clean = preg_replace('/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $clean);
+
+        // 5. Trim whitespace
+        $clean = trim($clean);
+
+        $this->attributes['content'] = $clean;
     }
 
     // -------------------------------------------------------------------------

@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        $articles = Article::published()->latest()->limit(5)->get();
+        $articles = Article::ownedByAuth()->latest()->paginate(5);
 
         return view('dashboard.index', compact('articles'));
     }
@@ -21,7 +21,7 @@ class DashboardController extends Controller
 
     public function drafts()
     {
-        $articles = Article::draft()->get();
-        return view('dashboard.drafts');
+        $articles = Article::ownedByAuth()->drafts()->latest()->paginate(5);
+        return view('dashboard.drafts', compact('articles'));
     }
 }

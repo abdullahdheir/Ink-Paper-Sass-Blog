@@ -79,135 +79,42 @@
                 Work</h2>
             <div
                 class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden divide-y divide-outline-variant">
-                <!-- List Item 1 -->
-                <div
-                    class="flex flex-col md:flex-row md:items-center justify-between p-6 hover:bg-surface transition-colors gap-4">
-                    <div class="flex-grow">
-                        <h4 class="font-headline-md text-lg text-on-surface mb-1">Untitled Technical Proposal</h4>
-                        <div class="flex items-center gap-4 text-on-surface-variant text-metadata font-metadata">
-                            <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
-                                Edited 2 hours ago
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="article">article</span>
-                                234 words
-                            </span>
+                @foreach ($articles as $article)
+                    <!-- List Item 1 -->
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between p-6 hover:bg-surface transition-colors gap-4">
+                        <div class="grow">
+                            <h4 class="font-headline-md text-lg text-on-surface mb-1">Untitled Technical Proposal</h4>
+                            <div class="flex items-center gap-4 text-on-surface-variant text-metadata font-metadata">
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
+                                    Edited 2 hours ago
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]" data-icon="article">article</span>
+                                    234 words
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button
+                                class="flex items-center gap-2 px-4 py-2 rounded border border-outline hover:bg-primary-container hover:text-white hover:border-primary-container transition-all text-ui-label font-ui-button">
+                                Resume Writing
+                            </button>
+                            <button
+                                class="p-2 text-on-surface-variant hover:text-error transition-colors rounded hover:bg-error-container/10">
+                                <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                            </button>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <button
-                            class="flex items-center gap-2 px-4 py-2 rounded border border-outline hover:bg-primary-container hover:text-white hover:border-primary-container transition-all text-ui-label font-ui-button">
-                            Resume Writing
-                        </button>
-                        <button
-                            class="p-2 text-on-surface-variant hover:text-error transition-colors rounded hover:bg-error-container/10">
-                            <span class="material-symbols-outlined" data-icon="delete">delete</span>
-                        </button>
-                        <button
-                            class="p-2 text-on-surface-variant hover:text-on-surface transition-colors rounded hover:bg-surface-container">
-                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-                        </button>
-                    </div>
-                </div>
-                <!-- List Item 2 -->
-                <div
-                    class="flex flex-col md:flex-row md:items-center justify-between p-6 hover:bg-surface transition-colors gap-4">
-                    <div class="flex-grow">
-                        <h4 class="font-headline-md text-lg text-on-surface mb-1">The Ethics of AI in Creative Writing</h4>
-                        <div class="flex items-center gap-4 text-on-surface-variant text-metadata font-metadata">
-                            <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
-                                Edited 3 days ago
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="article">article</span>
-                                890 words
-                            </span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <button
-                            class="flex items-center gap-2 px-4 py-2 rounded border border-outline hover:bg-primary-container hover:text-white hover:border-primary-container transition-all text-ui-label font-ui-button">
-                            Resume Writing
-                        </button>
-                        <button
-                            class="p-2 text-on-surface-variant hover:text-error transition-colors rounded hover:bg-error-container/10">
-                            <span class="material-symbols-outlined" data-icon="delete">delete</span>
-                        </button>
-                        <button
-                            class="p-2 text-on-surface-variant hover:text-on-surface transition-colors rounded hover:bg-surface-container">
-                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-                        </button>
-                    </div>
-                </div>
-                <!-- List Item 3 -->
-                <div
-                    class="flex flex-col md:flex-row md:items-center justify-between p-6 hover:bg-surface transition-colors gap-4">
-                    <div class="flex-grow">
-                        <h4 class="font-headline-md text-lg text-on-surface mb-1">Travelogue: One Month in Kyoto</h4>
-                        <div class="flex items-center gap-4 text-on-surface-variant text-metadata font-metadata">
-                            <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
-                                Edited 1 week ago
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="article">article</span>
-                                3,420 words
-                            </span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <button
-                            class="flex items-center gap-2 px-4 py-2 rounded border border-outline hover:bg-primary-container hover:text-white hover:border-primary-container transition-all text-ui-label font-ui-button">
-                            Resume Writing
-                        </button>
-                        <button
-                            class="p-2 text-on-surface-variant hover:text-error transition-colors rounded hover:bg-error-container/10">
-                            <span class="material-symbols-outlined" data-icon="delete">delete</span>
-                        </button>
-                        <button
-                            class="p-2 text-on-surface-variant hover:text-on-surface transition-colors rounded hover:bg-surface-container">
-                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-                        </button>
-                    </div>
-                </div>
-                <!-- List Item 4 -->
-                <div
-                    class="flex flex-col md:flex-row md:items-center justify-between p-6 hover:bg-surface transition-colors gap-4 text-on-surface-variant/50">
-                    <div class="flex-grow">
-                        <h4 class="font-headline-md text-lg italic mb-1">Add a title to your draft...</h4>
-                        <div class="flex items-center gap-4 text-metadata font-metadata">
-                            <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
-                                Last saved just now
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="article">article</span>
-                                0 words
-                            </span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <button
-                            class="flex items-center gap-2 px-4 py-2 rounded border border-outline hover:bg-primary-container hover:text-white hover:border-primary-container transition-all text-ui-label font-ui-button">
-                            Resume Writing
-                        </button>
-                        <button class="p-2 hover:text-error transition-colors rounded hover:bg-error-container/10">
-                            <span class="material-symbols-outlined" data-icon="delete">delete</span>
-                        </button>
-                        <button class="p-2 hover:text-on-surface transition-colors rounded hover:bg-surface-container">
-                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-                        </button>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <!-- Load More -->
-            <div class="mt-8 text-center">
-                <button
+            <div class="mt-8 text-center">{{ $articles->links() }}
+                {{-- <button
                     class="text-secondary font-ui-label text-ui-label hover:text-primary hover:underline transition-all">
                     View 4 more drafts from last month
-                </button>
+                </button> --}}
             </div>
         </div>
     </section>

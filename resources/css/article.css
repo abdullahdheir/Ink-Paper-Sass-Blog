@@ -1,0 +1,37 @@
+/* resources/css/app.css */
+.prose-article h1 { font-size: 2rem; font-weight: 700; margin: 2rem 0 1rem; font-family: 'Source Serif 4', serif; }
+.prose-article h2 { font-size: 1.5rem; font-weight: 600; margin: 1.75rem 0 0.75rem; font-family: 'Source Serif 4', serif; }
+.prose-article h3 { font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+.prose-article p  { font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.25rem; color: #1a1c1c; }
+.prose-article strong { font-weight: 700; }
+.prose-article em     { font-style: italic; }
+.prose-article blockquote {
+    border-left: 3px solid #7c3aed;
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    color: #4a4455;
+    font-style: italic;
+    font-size: 1.2rem;
+}
+.prose-article ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
+.prose-article ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1.25rem; }
+.prose-article li { margin-bottom: 0.4rem; line-height: 1.7; }
+.prose-article pre {
+    background: #1a1c1c; color: #f3f3f3;
+    border-radius: 0.75rem; padding: 1.25rem;
+    overflow-x: auto; margin: 1.5rem 0;
+    font-size: 0.9rem;
+}
+.prose-article code {
+    background: #eaddff; color: #630ed4;
+    padding: 2px 6px; border-radius: 4px;
+    font-size: 0.875rem;
+}
+.prose-article a { color: #630ed4; text-decoration: underline; }
+.prose-article a:hover { opacity: 0.75; }
+.prose-article img {
+    width: 100%; border-radius: 0.75rem;
+    margin: 1.5rem 0; object-fit: cover;
+}
+.prose-article .ql-align-center { text-align: center; }
+.prose-article .ql-align-right  { text-align: right; }

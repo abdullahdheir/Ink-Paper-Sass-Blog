@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
@@ -20,6 +21,11 @@ Route::controller(PublicController::class)->group(function () {
 });
 
 Route::middleware('auth:web')->group(function () {
+
+    Route::prefix('ai')->name('ai.')->group(function () {
+        Route::post('generate-article', [AiController::class, 'generateArticle'])->name('article.generate');
+    });
+
     // Authors Routes
     Route::prefix('authors/{author}')->name('authors.')->group(function () {
         Route::get('', [AuthorController::class, 'profile'])->name('profile')->withoutMiddleware('auth:web');
@@ -31,14 +37,22 @@ Route::middleware('auth:web')->group(function () {
 
     // Articles Routes
     Route::prefix('articles')->name('articles.')->group(function () {
-        Route::resource('', ArticleController::class)->except(['index', 'show']);
+        Route::post('', [ArticleController::class, 'store'])->name('store');
+        Route::get('create', [ArticleController::class, 'create'])->name('create');
+        Route::post('autosave', [ArticleController::class, 'newAutoSave'])->name('autosave.new');
         Route::get('{slug}', [ArticleController::class, 'show'])->name('show');
         Route::prefix('{article}')->group(function () {
+            Route::put('', [ArticleController::class, 'update'])->name('update');
+            Route::patch('', [ArticleController::class, 'update'])->name('update');
+            Route::delete('', [ArticleController::class, 'destroy'])->name('destroy');
+            Route::get('edit', [ArticleController::class, 'edit'])->name('edit');
+            Route::get('preview', [ArticleController::class, 'preview'])->name('preview');
             Route::post('like', [ArticleController::class, 'like'])->name('like');
             Route::delete('like', [ArticleController::class, 'unLike'])->name('unLike');
             Route::post('bookmark', [ArticleController::class, 'bookmark'])->name('bookmark');
             Route::delete('bookmark', [ArticleController::class, 'unBookmark'])->name('unBookmark');
             Route::get('comments', [ArticleController::class, 'comments'])->name('comments');
+            Route::post('autosave', [ArticleController::class, 'autoSave'])->name('autosave');
         });
     });
 

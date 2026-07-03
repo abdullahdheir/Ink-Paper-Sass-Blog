@@ -13,7 +13,13 @@
 
 @import 'quill/dist/quill.core.css';
 @import 'quill/dist/quill.snow.css';
+@import 'tom-select/dist/css/tom-select.css';
 @import './font.css';
+@import './article.css';
+
+button{
+    cursor: pointer;
+}
 
 .ql-toolbar.ql-snow {
     border: 1px solid rgba(148, 163, 184, 0.3);

@@ -2,6 +2,16 @@
 
 @section('title', 'Article - Ink & Paper')
 
+@section('meta')
+    <meta name="description" content="{{ $article->seo_description ?? $article->excerpt }}">
+    <meta name="keywords" content="{{ $article->seo_keywords ?? '' }}">
+    <meta property="og:title" content="{{ $article->seo_title ?? $article->title }}">
+    <meta property="og:description" content="{{ $article->seo_description ?? $article->excerpt }}">
+    <meta property="og:image" content="{{ $article->cover_url ?? asset('images/default-cover.jpg') }}">
+    <meta property="og:url" content="{{ route('articles.show', $article->slug) }}">
+    <meta name="twitter:card" content="summary_large_image">
+@stop
+
 @section('page-content')
     @php
         $isLiked = auth()->user()->hasLiked($article);
@@ -47,10 +57,9 @@
         </header>
         <!-- Content -->
         <div class="space-y-8 mb-8">
-            {!! $article->content !!}
+            {!! Str::inlineMarkdown($article->content) !!}
         </div>
     </article>
-    </main>
     @include('public.articles.partials.comments-drawer')
     <!-- Floating Engagement Bar -->
     <div class="fixed bottom-10 left-1/2 -translate-x-1/2 z-40">
@@ -65,8 +74,7 @@
             </button>
             <div class="w-px h-6 bg-outline-variant"></div>
             <button class="flex items-center gap-2 group cursor-pointer" onclick="openCommentsDrawer({{ $article->id }})">
-                <span
-                    class="material-symbols-outlined text-on-surface-variant transition-colors">chat_bubble</span>
+                <span class="material-symbols-outlined text-on-surface-variant transition-colors">chat_bubble</span>
                 <span
                     class="font-ui-label text-ui-label text-secondary group-hover:text-primary">{{ Number::abbreviate($article->comments_count) }}</span>
             </button>
