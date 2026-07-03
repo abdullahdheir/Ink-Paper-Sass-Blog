@@ -22,57 +22,45 @@
                 Start a new draft
             </a>
         </div>
-        <!-- Priority / Starred Section -->
+        @if($focusPieces->isNotEmpty())
+            <!-- Priority / Starred Section -->
         <div class="mb-12">
             <h2 class="font-ui-label text-ui-label font-bold text-on-surface-variant uppercase tracking-widest mb-6">Focus
                 Pieces</h2>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Starred Draft Card 1 -->
-                <div
-                    class="group bg-surface-container-lowest border border-outline-variant p-6 rounded-xl hover:border-primary transition-all cursor-pointer relative">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="material-symbols-outlined text-primary" data-icon="star" data-weight="fill"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="text-metadata font-metadata bg-surface-container px-2 py-1 rounded">Priority</span>
-                    </div>
-                    <h3 class="font-headline-md text-xl mb-2 group-hover:text-primary transition-colors">The Architectures
-                        of Digital Silence</h3>
-                    <p class="text-on-surface-variant text-sm font-body-md line-clamp-2 mb-6 italic">Exploring how
-                        minimalist design influences cognitive load in professional SaaS environments...</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
-                                <div class="bg-primary h-full w-3/4 rounded-full"></div>
-                            </div>
-                            <span class="text-metadata font-metadata text-on-surface-variant">75% done</span>
+                @foreach ($focusPieces as $f)
+                    @php
+                        $words = str_word_count(strip_tags($f->content ?? ''));
+                        $percent = (int) min(100, $words > 0 ? round(($words / 1200) * 100) : 0);
+                        $excerpt = $f->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($f->content ?? ''), 120);
+                    @endphp
+                    <div class="group bg-surface-container-lowest border border-outline-variant p-6 rounded-xl hover:border-primary transition-all cursor-pointer relative"
+                        onclick="window.location= '{{ route('articles.edit', $article->id) }}'">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="material-symbols-outlined text-primary" data-icon="star" data-weight="fill"
+                                style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="text-metadata font-metadata bg-surface-container px-2 py-1 rounded">Priority</span>
                         </div>
-                        <span class="text-metadata font-metadata text-on-surface-variant">1,240 words</span>
-                    </div>
-                </div>
-                <!-- Starred Draft Card 2 -->
-                <div
-                    class="group bg-surface-container-lowest border border-outline-variant p-6 rounded-xl hover:border-primary transition-all cursor-pointer relative">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="material-symbols-outlined text-primary" data-icon="star" data-weight="fill"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="text-metadata font-metadata bg-surface-container px-2 py-1 rounded">Priority</span>
-                    </div>
-                    <h3 class="font-headline-md text-xl mb-2 group-hover:text-primary transition-colors">Rust vs Go: The
-                        2024 Performance Audit</h3>
-                    <p class="text-on-surface-variant text-sm font-body-md line-clamp-2 mb-6 italic">A deep dive into memory
-                        safety and execution speed for distributed cloud systems...</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
-                                <div class="bg-primary h-full w-1/4 rounded-full"></div>
+                        <h3 class="font-headline-md text-xl mb-2 group-hover:text-primary transition-colors">
+                            {{ $f->title ?: 'Untitled' }}</h3>
+                        <p class="text-on-surface-variant text-sm font-body-md line-clamp-2 mb-6 italic">{{ $excerpt }}
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+                                    <div class="bg-primary h-full" style="width: {{ $percent }}%"></div>
+                                </div>
+                                <span class="text-metadata font-metadata text-on-surface-variant">{{ $percent }}%
+                                    done</span>
                             </div>
-                            <span class="text-metadata font-metadata text-on-surface-variant">25% done</span>
+                            <span class="text-metadata font-metadata text-on-surface-variant">{{ number_format($words) }}
+                                words</span>
                         </div>
-                        <span class="text-metadata font-metadata text-on-surface-variant">450 words</span>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
+        @endif
         <!-- Draft List -->
         <div>
             <h2 class="font-ui-label text-ui-label font-bold text-on-surface-variant uppercase tracking-widest mb-6">Recent
