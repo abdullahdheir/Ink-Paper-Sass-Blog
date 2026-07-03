@@ -194,7 +194,9 @@ class User extends Authenticatable
 
     public function scopeAuthors(Builder $query)
     {
-        return $query->whereIn('role', ['author', 'editor', 'admin']);
+        return $query->whereHas('articles', function ($query) {
+            $query->where('status', 'published');
+        });
     }
 
     public function scopeActive(Builder $query)

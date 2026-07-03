@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PublicController extends Controller
@@ -23,14 +24,36 @@ class PublicController extends Controller
     public function search(Request $request)
     {
         $query = trim($request->query('q', ''));
+        $type = in_array($request->query('type', 'all'), ['all', 'articles', 'authors', 'tags']) ? $request->query('type', 'all') : 'all';
 
-        $results = Article::published()
-            ->when($query !== '', fn($queryBuilder) => $queryBuilder->search($query))
-            ->with(['author.profile', 'category'])
-            ->latest()
-            ->paginate(12)
-            ->appends(['q' => $query]);
+        $articleQuery = Article::published()->with(['author.profile', 'category']);
+        $authorQuery = User::authors()->active()->with(['profile', 'stats'])->withCount(['publishedArticles']);
+        $tagQuery = Tag::withCount('articles');
 
-        return view('public.search-results', compact('results', 'query'));
+        if ($query !== '') {
+            $articleQuery->search($query);
+
+            $authorQuery->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('name', 'like', "%{$query}%")
+                    ->orWhere('username', 'like', "%{$query}%")
+                    ->orWhereHas('profile', fn($profile) => $profile->where('bio', 'like', "%{$query}%"));
+            });
+
+            $tagQuery->where('name', 'like', "%{$query}%");
+        }
+
+        $articleResults = $articleQuery->latest()
+            ->paginate(8, ['*'], 'page_articles')
+            ->appends(['q' => $query, 'type' => $type]);
+
+        $authorResults = $authorQuery->latest()
+            ->paginate(8, ['*'], 'page_authors')
+            ->appends(['q' => $query, 'type' => $type]);
+
+        $tagResults = $tagQuery->latest()
+            ->paginate(12, ['*'], 'page_tags')
+            ->appends(['q' => $query, 'type' => $type]);
+
+        return view('public.search-results', compact('query', 'type', 'articleResults', 'authorResults', 'tagResults'));
     }
 }

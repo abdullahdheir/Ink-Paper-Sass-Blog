@@ -8,43 +8,138 @@
         <section class="mb-12">
             <p class="text-metadata font-metadata text-secondary mb-2 uppercase tracking-widest">Search results</p>
             <h1 class="font-display-lg text-display-lg text-on-surface mb-6 italic">
-                @if ($query !== '')
+                {{-- @if ($query !== '')
                     Showing {{ $results->total() }} result{{ $results->total() === 1 ? '' : 's' }} for <span
                         class="text-primary not-italic">"{{ $query }}"</span>
                 @else
                     Find the stories, authors, and ideas you care about.
-                @endif
+                @endif --}}
             </h1>
             <div class="flex gap-8 border-b border-outline-variant">
-                <button class="text-primary font-bold border-b-2 border-primary pb-4 font-ui-label text-ui-label">All
-                    Results</button>
-                <button
-                    class="text-on-surface-variant font-medium pb-4 hover:text-on-surface transition-colors font-ui-label text-ui-label">Articles</button>
-                <button
-                    class="text-on-surface-variant font-medium pb-4 hover:text-on-surface transition-colors font-ui-label text-ui-label">Authors</button>
-                <button
-                    class="text-on-surface-variant font-medium pb-4 hover:text-on-surface transition-colors font-ui-label text-ui-label">Tags</button>
+                @foreach ([
+            'all' => ['label' => 'All Results', 'count' => $articleResults->total() + $authorResults->total() + $tagResults->total()],
+            'articles' => ['label' => 'Articles', 'count' => $articleResults->total()],
+            'authors' => ['label' => 'Authors', 'count' => $authorResults->total()],
+            'tags' => ['label' => 'Tags', 'count' => $tagResults->total()],
+        ] as $tabKey => $tabData)
+                    <a href="{{ route('search', ['q' => $query, 'type' => $tabKey]) }}"
+                        class="pb-4 font-ui-label text-ui-label transition-colors {{ $type === $tabKey ? 'text-primary font-bold border-b-2 border-primary' : 'text-on-surface-variant hover:text-on-surface' }}">
+                        {{ $tabData['label'] }}
+                        <span
+                            class="ml-2 text-metadata font-metadata text-on-surface-variant">({{ $tabData['count'] }})</span>
+                    </a>
+                @endforeach
             </div>
         </section>
         <!-- Main Layout: Sidebar & Content -->
         <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
             <!-- Main Content Area -->
             <div class="md:col-span-8 space-y-12">
-                @forelse($results as $article)
-                    <x-article :article="$article" />
-                    <div class="border-t border-outline-variant opacity-50"></div>
-                @empty
-                    <div class="rounded-xl border border-outline-variant bg-surface-container-low p-8 text-center">
-                        <p class="font-ui-label text-ui-label text-secondary mb-3">No results found.</p>
-                        <p class="text-on-surface-variant">Try a different keyword or search for a topic, author, or tag.
-                        </p>
-                    </div>
-                @endforelse
+                @if ($type === 'all' || $type === 'articles')
+                    <section class="space-y-8">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-ui-label text-ui-label font-bold text-on-surface">Articles</h2>
+                            <span class="text-metadata font-metadata text-secondary">{{ $articleResults->total() }}
+                                result{{ $articleResults->total() === 1 ? '' : 's' }}</span>
+                        </div>
 
-                @if ($results->hasPages())
-                    <div class="flex items-center justify-center gap-4 pt-12">
-                        {{ $results->links() }}
-                    </div>
+                        @forelse($articleResults as $article)
+                            <x-article :article="$article" />
+                            <div class="border-t border-outline-variant opacity-50"></div>
+                        @empty
+                            <div class="rounded-xl border border-outline-variant bg-surface-container-low p-8 text-center">
+                                <p class="font-ui-label text-ui-label text-secondary mb-3">No articles found.</p>
+                                <p class="text-on-surface-variant">Try a different keyword or choose another tab.</p>
+                            </div>
+                        @endforelse
+
+                        @if ($articleResults->hasPages())
+                            <div class="flex items-center justify-center gap-4 pt-12">
+                                {{ $articleResults->links() }}
+                            </div>
+                        @endif
+                    </section>
+                @endif
+
+                @if ($type === 'all' || $type === 'authors')
+                    <section class="space-y-8">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-ui-label text-ui-label font-bold text-on-surface">Authors</h2>
+                            <span class="text-metadata font-metadata text-secondary">{{ $authorResults->total() }}
+                                result{{ $authorResults->total() === 1 ? '' : 's' }}</span>
+                        </div>
+
+                        @forelse($authorResults as $author)
+                            <article
+                                class="group rounded-3xl border border-outline-variant p-6 bg-surface-container-low transition hover:border-primary">
+                                <div class="flex items-center gap-4">
+                                    <img class="w-20 h-20 rounded-full object-cover"
+                                        src="{{ optional($author->profile)->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($author->name) . '&background=6750A4&color=fff&size=128' }}"
+                                        alt="{{ $author->name }}" />
+                                    <div class="flex-1">
+                                        <a href="{{ route('authors.profile',['author' => $author->username]) }}"
+                                            class="font-headline-md text-headline-md text-on-surface hover:text-primary transition-colors">{{ $author->name }}</a>
+                                        <p class="text-metadata font-metadata text-secondary mt-2 line-clamp-2">
+                                            {{ optional($author->profile)->bio ?? 'No bio available yet.' }}</p>
+                                        <div class="mt-3 flex flex-wrap gap-3 text-xs text-secondary">
+                                            <span>{{ $author->published_articles_count ?? 0 }} published articles</span>
+                                            <span>{{ optional($author->stats)->followers_count ?? 0 }} followers</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        @empty
+                            <div class="rounded-xl border border-outline-variant bg-surface-container-low p-8 text-center">
+                                <p class="font-ui-label text-ui-label text-secondary mb-3">No authors found.</p>
+                                <p class="text-on-surface-variant">Try a different keyword or choose another tab.</p>
+                            </div>
+                        @endforelse
+
+                        @if ($authorResults->hasPages())
+                            <div class="flex items-center justify-center gap-4 pt-12">
+                                {{ $authorResults->links() }}
+                            </div>
+                        @endif
+                    </section>
+                @endif
+
+                @if ($type === 'all' || $type === 'tags')
+                    <section class="space-y-8">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-ui-label text-ui-label font-bold text-on-surface">Tags</h2>
+                            <span class="text-metadata font-metadata text-secondary">{{ $tagResults->total() }}
+                                result{{ $tagResults->total() === 1 ? '' : 's' }}</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            @forelse($tagResults as $tag)
+                                <a href="{{ route('tag.archive', $tag->slug) }}"
+                                    class="group block rounded-3xl border border-outline-variant p-6 bg-surface-container-low hover:border-primary transition-colors">
+                                    <div class="flex items-center justify-between gap-4 mb-4">
+                                        <span
+                                            class="font-headline-sm text-headline-sm text-on-surface">#{{ $tag->name }}</span>
+                                        <span
+                                            class="text-metadata font-metadata text-secondary">{{ $tag->articles_count ?? $tag->articles()->count() }}
+                                            articles</span>
+                                    </div>
+                                    <p class="text-on-surface-variant text-body-md line-clamp-3">Browse stories tagged with
+                                        {{ $tag->name }}.</p>
+                                </a>
+                            @empty
+                                <div
+                                    class="rounded-xl border border-outline-variant bg-surface-container-low p-8 text-center col-span-full">
+                                    <p class="font-ui-label text-ui-label text-secondary mb-3">No tags found.</p>
+                                    <p class="text-on-surface-variant">Try a different keyword or choose another tab.</p>
+                                </div>
+                            @endforelse
+                        </div>
+
+                        @if ($tagResults->hasPages())
+                            <div class="flex items-center justify-center gap-4 pt-12">
+                                {{ $tagResults->links() }}
+                            </div>
+                        @endif
+                    </section>
                 @endif
             </div>
             <!-- Sidebar Section -->
