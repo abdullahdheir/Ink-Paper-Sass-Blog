@@ -1,11 +1,11 @@
 @props(['article'])
 
 <article class="flex flex-col md:flex-row gap-8 items-start group">
-    <div
+    <a href="{{ route('articles.show', $article->slug) }}"
         class="w-full md:w-80 h-52 shrink-0 overflow-hidden rounded-lg border border-outline-variant bg-surface-container-low">
         <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             data-alt="{{ $article->excerpt }}" src="{{ $article->cover_url }}" />
-    </div>
+    </a>
     <div class="flex-1 space-y-4">
         <div class="flex items-center gap-3">
             @if ($article->category_id)
