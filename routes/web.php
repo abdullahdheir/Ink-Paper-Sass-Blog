@@ -47,6 +47,8 @@ Route::middleware('auth:web')->group(function () {
             Route::delete('', [ArticleController::class, 'destroy'])->name('destroy');
             Route::get('edit', [ArticleController::class, 'edit'])->name('edit');
             Route::get('preview', [ArticleController::class, 'preview'])->name('preview');
+            Route::post('publish', [ArticleController::class, 'publish'])->name('publish');
+            Route::post('unpublish', [ArticleController::class, 'unpublish'])->name('unpublish');
             Route::post('like', [ArticleController::class, 'like'])->name('like');
             Route::delete('like', [ArticleController::class, 'unLike'])->name('unLike');
             Route::post('bookmark', [ArticleController::class, 'bookmark'])->name('bookmark');

@@ -95,7 +95,7 @@ class ArticleController extends Controller
         $article = Article::with('tags')->where('user_id', '=', auth()->id())->findOrFail($id);
         $categories = Category::all();
         $statuses = ArticleStatus::cases();
-        return view('dashboard.articles.editor', compact('article', 'statuses','categories'));
+        return view('dashboard.articles.editor', compact('article', 'statuses', 'categories'));
     }
 
     /**
@@ -119,6 +119,26 @@ class ArticleController extends Controller
 
         return redirect()->route('articles.index')
             ->with('success', 'Article deleted successfully.');
+    }
+
+    public function publish(Article $article)
+    {
+        try {
+            $article->publish();
+            return redirect()->route('dashboard.drafts')->with('success', 'Article published successfully.');
+        } catch (Throwable $err) {
+            return redirect()->back()->withErrors(['error' => $err->getMessage()]);
+        }
+    }
+
+    public function unpublish(Article $article)
+    {
+        try {
+            $article->unpublish();
+            return redirect()->route('dashboard.drafts')->with('success', 'Article moved back to drafts.');
+        } catch (Throwable $err) {
+            return redirect()->back()->withErrors(['error' => $err->getMessage()]);
+        }
     }
 
     public function like(Article $article)

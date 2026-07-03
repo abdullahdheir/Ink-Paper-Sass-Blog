@@ -22,6 +22,10 @@ class DashboardController extends Controller
     public function drafts()
     {
         $articles = Article::ownedByAuth()->drafts()->latest()->paginate(5);
-        return view('dashboard.drafts', compact('articles'));
+
+        // Featured drafts to show in the "Focus Pieces" section
+        $focusPieces = Article::ownedByAuth()->drafts()->where('is_featured', true)->latest()->take(2)->get();
+
+        return view('dashboard.drafts', compact('articles', 'focusPieces'));
     }
 }

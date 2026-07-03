@@ -80,31 +80,50 @@
             <div
                 class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden divide-y divide-outline-variant">
                 @foreach ($articles as $article)
-                    <!-- List Item 1 -->
                     <div
                         class="flex flex-col md:flex-row md:items-center justify-between p-6 hover:bg-surface transition-colors gap-4">
                         <div class="grow">
-                            <h4 class="font-headline-md text-lg text-on-surface mb-1">Untitled Technical Proposal</h4>
+                            <h4 class="font-headline-md text-lg text-on-surface mb-1">{{ $article->title ?: 'Untitled' }}
+                            </h4>
                             <div class="flex items-center gap-4 text-on-surface-variant text-metadata font-metadata">
                                 <span class="flex items-center gap-1">
                                     <span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
-                                    Edited 2 hours ago
-                                </span>
+                                    Edited {{ $article->updated_at->diffForHumans() }}</span>
                                 <span class="flex items-center gap-1">
                                     <span class="material-symbols-outlined text-[14px]" data-icon="article">article</span>
-                                    234 words
+                                    {{ str_word_count(strip_tags($article->content)) }} words
                                 </span>
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
-                            <button
+                            <a href="{{ route('articles.edit', $article->id) }}"
                                 class="flex items-center gap-2 px-4 py-2 rounded border border-outline hover:bg-primary-container hover:text-white hover:border-primary-container transition-all text-ui-label font-ui-button">
                                 Resume Writing
-                            </button>
-                            <button
-                                class="p-2 text-on-surface-variant hover:text-error transition-colors rounded hover:bg-error-container/10">
-                                <span class="material-symbols-outlined" data-icon="delete">delete</span>
-                            </button>
+                            </a>
+
+                            @if ($article->status instanceof \BackedEnum ? $article->status->value === 'draft' : $article->status === 'draft')
+                                <form action="{{ route('articles.publish', $article->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-4 py-2 rounded bg-primary text-white hover:opacity-90 transition-all text-ui-label font-ui-button">Publish</button>
+                                </form>
+                            @else
+                                <form action="{{ route('articles.unpublish', $article->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-4 py-2 rounded border border-outline hover:bg-surface-container text-ui-label font-ui-button">Unpublish</button>
+                                </form>
+                            @endif
+
+                            <form action="{{ route('articles.destroy', $article->id) }}" method="POST"
+                                onsubmit="return confirm('Delete this draft?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="p-2 text-on-surface-variant hover:text-error transition-colors rounded hover:bg-error-container/10">
+                                    <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 @endforeach
