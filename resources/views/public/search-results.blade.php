@@ -8,12 +8,15 @@
         <section class="mb-12">
             <p class="text-metadata font-metadata text-secondary mb-2 uppercase tracking-widest">Search results</p>
             <h1 class="font-display-lg text-display-lg text-on-surface mb-6 italic">
-                {{-- @if ($query !== '')
-                    Showing {{ $results->total() }} result{{ $results->total() === 1 ? '' : 's' }} for <span
+                @if ($query !== '')
+                    @php
+                        $resultCount = $articleResults->total() + $authorResults->total() + $tagResults->total();
+                    @endphp
+                    Showing {{ $resultCount }} result{{ $resultCount === 1 ? '' : 's' }} for <span
                         class="text-primary not-italic">"{{ $query }}"</span>
                 @else
                     Find the stories, authors, and ideas you care about.
-                @endif --}}
+                @endif
             </h1>
             <div class="flex gap-8 border-b border-outline-variant">
                 @foreach ([
@@ -77,7 +80,7 @@
                                         src="{{ optional($author->profile)->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($author->name) . '&background=6750A4&color=fff&size=128' }}"
                                         alt="{{ $author->name }}" />
                                     <div class="flex-1">
-                                        <a href="{{ route('authors.profile',['author' => $author->username]) }}"
+                                        <a href="{{ route('authors.profile', ['author' => $author->username]) }}"
                                             class="font-headline-md text-headline-md text-on-surface hover:text-primary transition-colors">{{ $author->name }}</a>
                                         <p class="text-metadata font-metadata text-secondary mt-2 line-clamp-2">
                                             {{ optional($author->profile)->bio ?? 'No bio available yet.' }}</p>
