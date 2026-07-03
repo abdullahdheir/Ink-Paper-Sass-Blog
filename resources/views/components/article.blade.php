@@ -13,7 +13,7 @@
                     class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full font-metadata text-metadata uppercase tracking-widest">{{ $article->category->name }}</span>
             @endif
             <span
-                class="font-metadata text-metadata text-secondary">{{ $article->published_at ? $article->published_at?->format('M d YYYY') . ' .' : '' }}
+                class="font-metadata text-metadata text-secondary">{{ $article->published_at ? $article->published_at?->format('M d Y') . ' .' : '' }}
                 {{ $article->reading_time }} min read</span>
         </div>
         <h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
