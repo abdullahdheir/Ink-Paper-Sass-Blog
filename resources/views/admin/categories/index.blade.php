@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin')
 
 @section('title', 'Category Management - Ink & Paper')
 
@@ -10,7 +10,7 @@
             <p class="font-body-md text-on-surface-variant">Organize your content structure, monitor performance metrics, and
                 refine your editorial taxonomy for maximum audience engagement.</p>
         </div>
-        <a href="{{ route('categories.create') }}"
+        <a href="{{ route('admin.categories.create') }}"
             class="bg-primary text-on-primary px-6 py-3 rounded-lg font-ui-button text-ui-button shadow-sm hover:opacity-90 active:scale-95 transition-all flex items-center gap-2 whitespace-nowrap">
             <span class="material-symbols-outlined">add</span>
             Create Category
@@ -51,12 +51,12 @@
                     <div class="flex justify-between items-start mb-4">
                         <h2 class="font-headline-md text-2xl font-bold text-on-surface">{{ $category->name }}</h2>
                         <div class="flex gap-2">
-                            <a href="{{ route('categories.edit', $category->id) }}"
+                            <a href="{{ route('admin.categories.edit', $category->id) }}"
                                 class="p-2 hover:bg-surface-variant rounded transition-colors text-on-surface-variant"
                                 title="Edit">
                                 <span class="material-symbols-outlined">edit</span>
                             </a>
-                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline">
+                            <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
@@ -91,7 +91,7 @@
                 <p class="font-ui-label text-ui-label">No Categories Found</p>
                 <p class="font-metadata text-metadata text-on-surface-variant mt-1">Create your first category to get
                     started</p>
-                <a href="{{ route('categories.create') }}"
+                <a href="{{ route('admin.categories.create') }}"
                     class="mt-4 bg-primary text-on-primary px-4 py-2 rounded-lg font-ui-button text-ui-button">Create
                     Category</a>
             </div>
@@ -135,10 +135,10 @@
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
-                                    <a href="{{ route('categories.edit', $category->id) }}"
+                                    <a href="{{ route('admin.categories.edit', $category->id) }}"
                                         class="text-on-surface-variant hover:text-primary"><span
                                             class="material-symbols-outlined">edit</span></a>
-                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
+                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
                                         class="inline">
                                         @csrf
                                         @method('DELETE')

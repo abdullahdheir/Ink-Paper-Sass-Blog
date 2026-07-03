@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AiController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ArticleController;
@@ -11,6 +10,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
+
+require_once __DIR__ . '/admin.php';
 
 // Auth pages
 // Route::get('/sign-in', [PageController::class, 'signIn'])->name('auth.sign-in');
@@ -76,16 +77,6 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/earnings', 'earnings')->name('earnings');
         Route::get('/collaboration',  'collaboration')->name('collaboration');
     });
-    // Management pages
-    Route::get('/manage/categories', [PageController::class, 'categories'])->name('manage.categories');
-    Route::get('/manage/categories/create', [PageController::class, 'createCategory'])->name('manage.categories.create');
-    Route::get('/manage/categories/{id}/edit', [PageController::class, 'editCategory'])->name('manage.categories.edit');
-    Route::get('/manage/tags', [PageController::class, 'tags'])->name('manage.tags');
-    Route::get('/manage/tags/create', [PageController::class, 'createTag'])->name('manage.tags.create');
-    Route::get('/manage/content', [PageController::class, 'content'])->name('manage.content');
-    Route::get('/manage/members', [PageController::class, 'members'])->name('manage.members');
-    Route::get('/manage/members/sarah', [PageController::class, 'memberSarah'])->name('manage.members.sarah');
-    Route::get('/manage/invite', [PageController::class, 'invite'])->name('manage.invite');
 
     // Settings pages
     Route::get('/settings/account', [PageController::class, 'accountSettings'])->name('settings.account');
@@ -104,7 +95,7 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/design-system', [PageController::class, 'designSystem'])->name('design-system');
 
     // Existing resource routes
-    Route::resource('categories', CategoryController::class);
+    // Route::resource('categories', CategoryController::class);
 
     Route::get('tags/search', [TagController::class, 'search'])->name('tags.search');
     Route::resource('tags', TagController::class)->except(['edit', 'create']);
@@ -119,5 +110,5 @@ Route::middleware('auth:web')->group(function () {
         Route::post('mark-all-as-read', 'markAllAsRead')->name('mark-all-as-read');
         Route::delete('{notification}', 'destroy')->name('destroy');
         Route::delete('', 'deleteAll')->name('delete-all');
-});
+    });
 });

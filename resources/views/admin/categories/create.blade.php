@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin')
 
 @section('title', 'Create New Category - Ink & Paper')
 
@@ -8,7 +8,7 @@
         <!-- Header Section -->
         <div class="mb-12">
             <nav class="flex items-center gap-2 mb-4 text-on-surface-variant font-metadata text-metadata">
-                <a class="hover:text-primary" href="{{ route('categories.index') }}">Categories</a>
+                <a class="hover:text-primary" href="{{ route('admin.categories.index') }}">Categories</a>
                 <span class="material-symbols-outlined text-[14px]">chevron_right</span>
                 <span class="text-on-surface">New Category</span>
             </nav>
@@ -20,7 +20,7 @@
 
         <!-- Form Container -->
         <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-8 shadow-sm">
-            <form action="{{ route('categories.store') }}" method="POST" class="space-y-8">
+            <form action="{{ route('admin.categories.store') }}" method="POST" class="space-y-8">
                 @csrf
 
                 @if ($errors->any())
@@ -45,8 +45,6 @@
                     <div class="space-y-2">
                         <label class="font-ui-label text-ui-label text-on-surface" for="slug">Slug</label>
                         <div class="relative">
-                            <span
-                                class="absolute left-4 top-1/2 -translate-y-1/2 text-outline font-ui-label text-ui-label">ink-paper.com/</span>
                             <input
                                 class="w-full pl-32 pr-4 py-3 bg-surface border border-outline-variant/50 rounded text-on-surface font-ui-label text-ui-label focus:border-primary outline-none transition-all"
                                 id="slug" name="slug" placeholder="category-slug" type="text">
@@ -85,7 +83,7 @@
 
                 <!-- Form Actions -->
                 <div class="pt-6 flex flex-col-reverse md:flex-row gap-4 border-t border-outline-variant/30">
-                    <a href="{{ route('categories.index') }}"
+                    <a href="{{ route('admin.categories.index') }}"
                         class="w-full md:w-auto px-8 py-3 border border-on-surface rounded text-on-surface font-ui-button text-ui-button hover:bg-surface-container-high transition-colors text-center">
                         Cancel
                     </a>

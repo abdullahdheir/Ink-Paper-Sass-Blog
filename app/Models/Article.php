@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ArticleStatus;
 use App\Models\Scopes\OwnedByAuthScope;
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,7 @@ use Mews\Purifier\Facades\Purifier;
 class Article extends Model
 {
     /** @use HasFactory<ArticleFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory, HasSlug, SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -224,12 +225,6 @@ class Article extends Model
     // Static Helpers
     // -------------------------------------------------------------------------
 
-    public static function generateSlug(string $title): string
-    {
-        $slug = Str::slug($title);
-        $count = static::where('slug', 'LIKE', "{$slug}%")->count();
-        return $count ? "{$slug}-{$count}" : $slug;
-    }
 
     public static function estimateReadingTime(string $content): int
     {

@@ -27,6 +27,10 @@ class ArticleObserver
             $article->author->stats()->increment('articles_count');
             $article->tags()->get()->map(fn($t) => $t->incrementArticlesCount());
         }
+
+        if ($article->category_id) {
+            $article->category->increment('articles_count');
+        }
     }
 
     /**
@@ -61,6 +65,10 @@ class ArticleObserver
                 $article->tags()->get()->map(fn($t) => $t->decrementArticlesCount());
             }
         }
+
+        if ($article->category_id) {
+            $article->category->increment('articles_count');
+        }
     }
 
     /**
@@ -70,6 +78,9 @@ class ArticleObserver
     {
         $article->author->stats()->decrement('articles_count');
         $article->tags()->get()->map(fn($t) => $t->decrementArticlesCount());
+        if ($article->category_id) {
+            $article->category->decrement('articles_count');
+        }
     }
 
     /**
@@ -79,6 +90,10 @@ class ArticleObserver
     {
         $article->author->stats()->increment('articles_count');
         $article->tags()->get()->map(fn($t) => $t->incrementArticlesCount());
+
+        if ($article->category_id) {
+            $article->category->increment('articles_count');
+        }
     }
 
     /**
@@ -89,6 +104,10 @@ class ArticleObserver
         if (! $article->trashed()) {
             $article->author->stats()->decrement('articles_count');
             $article->tags()->get()->map(fn($t) => $t->decrementArticlesCount());
+
+            if ($article->category_id) {
+                $article->category->decrement('articles_count');
+            }
         }
     }
 }
