@@ -29,7 +29,6 @@
                         <div class="flex items-center gap-2">
                             <span
                                 class="font-ui-label text-ui-label font-bold text-on-surface">{{ $article->author->name }}</span>
-                            <span class="text-secondary-fixed-dim">•</span>
                             @if ($article->user_id != auth()->id())
                                 <button data-following="{{ $article->author->is_followed_by_auth_user ? 'true' : 'false' }}"
                                     data-username="{{ $article->author->username }}" onclick="toggleFollow(this,false)"
@@ -38,7 +37,7 @@
                                         {{ $article->author->is_followed_by_auth_user ? 'Following' : 'Follow' }}
                                     </span>
                                 </button>
-                            @endif)
+                            @endif
                         </div>
                         <p class="font-metadata text-metadata text-secondary">
                             {{ $article->published_at ? $article->published_at?->format('M d Y') . ' .' : '' }}

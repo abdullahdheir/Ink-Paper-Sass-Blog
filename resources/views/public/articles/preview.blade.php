@@ -15,7 +15,6 @@
                         <div class="flex items-center gap-2">
                             <span
                                 class="font-ui-label text-ui-label font-bold text-on-surface">{{ $article->author->name }}</span>
-                            <span class="text-secondary-fixed-dim">•</span>
                         </div>
                         <p class="font-metadata text-metadata text-secondary">
                             {{ $article->published_at ? $article->published_at?->format('M d Y') . ' .' : '' }}
