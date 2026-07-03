@@ -70,21 +70,21 @@
                 }
 
                 // Check for new notifications and show toasts
-                data.data.forEach(notif => {
-                    if (!trackedNotificationIds.has(notif.id)) {
-                        trackedNotificationIds.add(notif.id);
-                        // Show toast for new notification (if window.showNotificationToast is available)
-                        if (window.showNotificationToast) {
-                            window.showNotificationToast(notif);
-                        }
-                    }
-                });
+                // data.data.forEach(notif => {
+                //     if (!trackedNotificationIds.has(notif.id)) {
+                //         trackedNotificationIds.add(notif.id);
+                //         // Show toast for new notification (if window.showNotificationToast is available)
+                //         if (window.showNotificationToast) {
+                //             window.showNotificationToast(notif);
+                //         }
+                //     }
+                // });
 
                 list.innerHTML = data.data.map(notif => `
                 <div class="p-3 border-b border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer notification-item" data-id="${notif.id}">
                     <div class="flex justify-between items-start gap-2">
                         <div class="flex-1">
-                            <p class="font-ui-label text-ui-label text-on-surface">${notif.type.replace(/_/g, ' ')}</p>
+                            <p class="font-ui-label text-ui-label text-on-surface">${notif.data.type.replace(/_/g, ' ')}</p>
                             <p class="text-sm text-on-surface-variant mt-1">${notif.data.article_title || notif.data.follower_name || 'New notification'}</p>
                             <p class="text-xs text-secondary mt-1">${new Date(notif.created_at).toLocaleDateString()}</p>
                         </div>
