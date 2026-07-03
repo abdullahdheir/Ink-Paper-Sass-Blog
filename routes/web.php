@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/reset-password', [PageController::class, 'resetPassword'])->name('auth.reset-password');
 Route::controller(PublicController::class)->group(function () {
     Route::get('/', 'feed')->name('feed');
+    Route::get('/search', 'search')->name('search');
 });
 
 Route::middleware('auth:web')->group(function () {
@@ -64,7 +65,6 @@ Route::middleware('auth:web')->group(function () {
     // Public pages
     Route::get('/category/{slug}', [PageController::class, 'categoryHub'])->name('category.hub');
     Route::get('/tag/{slug}', [PageController::class, 'tagArchive'])->name('tag.archive');
-    Route::get('/search', [PageController::class, 'search'])->name('search');
     Route::get('/subscription/complete', [PageController::class, 'completeSubscription'])->name('subscription.complete');
 
     // Dashboard pages

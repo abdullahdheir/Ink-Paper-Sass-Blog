@@ -18,4 +18,19 @@ class PublicController extends Controller
         $popular_articles = $query->take(3)->get();
         return view('public.feed', compact('articles', 'trending_tags', 'popular_articles'));
     }
+
+
+    public function search(Request $request)
+    {
+        $query = trim($request->query('q', ''));
+
+        $results = Article::published()
+            ->when($query !== '', fn($queryBuilder) => $queryBuilder->search($query))
+            ->with(['author.profile', 'category'])
+            ->latest()
+            ->paginate(12)
+            ->appends(['q' => $query]);
+
+        return view('public.search-results', compact('results', 'query'));
+    }
 }

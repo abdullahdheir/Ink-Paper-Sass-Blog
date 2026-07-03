@@ -19,7 +19,7 @@
         <h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
             <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
         </h3>
-        <p class="font-body-md text-body-md text-on-surface-variant line-clamp-3">{!! $article->content !!}</p>
+        <p class="font-body-md text-body-md text-on-surface-variant line-clamp-3">{!! $article->excerpt !!}</p>
         <div class="flex items-center gap-6 pt-2">
             <button class="flex items-center gap-2 font-ui-label text-ui-label text-secondary hover:text-on-surface">
                 <span class="material-symbols-outlined text-[18px]" data-icon="thumb_up">thumb_up</span>
