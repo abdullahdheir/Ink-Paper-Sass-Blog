@@ -32,4 +32,9 @@ class Tag extends Model
     {
         return $this->decrement('articles_count');
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

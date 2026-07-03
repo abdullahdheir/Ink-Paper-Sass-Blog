@@ -25,6 +25,34 @@ class TagController extends Controller
         return view('dashboard.tags.create');
     }
 
+    public function show(Tag $tag)
+    {
+        // Articles for this tag (published)
+        $articles = $tag->articles()
+            ->published()
+            ->with(['author.profile', 'category'])
+            ->latest()
+            ->paginate(10)
+            ->appends(request()->only('page'));
+
+        // Related tags (other popular tags)
+        $relatedTags = Tag::withCount('articles')
+            ->where('id', '!=', $tag->id)
+            ->orderByDesc('tags.articles_count')
+            ->take(8)
+            ->get();
+
+        // Trending articles within this tag (by views)
+        $trending = $tag->articles()
+            ->published()
+            ->with('author')
+            ->orderByDesc('views_count')
+            ->take(3)
+            ->get();
+
+        return view('public.tags.show', compact('tag', 'articles', 'relatedTags', 'trending'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */

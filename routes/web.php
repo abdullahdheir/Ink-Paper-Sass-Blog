@@ -64,7 +64,6 @@ Route::middleware('auth:web')->group(function () {
 
     // Public pages
     Route::get('/category/{slug}', [PageController::class, 'categoryHub'])->name('category.hub');
-    Route::get('/tag/{slug}', [PageController::class, 'tagArchive'])->name('tag.archive');
     Route::get('/subscription/complete', [PageController::class, 'completeSubscription'])->name('subscription.complete');
 
     // Dashboard pages
@@ -107,5 +106,5 @@ Route::middleware('auth:web')->group(function () {
     Route::resource('categories', CategoryController::class);
 
     Route::get('tags/search', [TagController::class, 'search'])->name('tags.search');
-    Route::resource('tags', TagController::class)->except(['edit', 'show', 'create']);
+    Route::resource('tags', TagController::class)->except(['edit', 'create']);
 });
