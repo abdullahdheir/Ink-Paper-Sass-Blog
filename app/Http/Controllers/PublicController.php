@@ -54,6 +54,21 @@ class PublicController extends Controller
             ->paginate(12, ['*'], 'page_tags')
             ->appends(['q' => $query, 'type' => $type]);
 
-        return view('public.search-results', compact('query', 'type', 'articleResults', 'authorResults', 'tagResults'));
+        // Top authors for sidebar (most published articles)
+        $topAuthors = User::authors()
+            ->active()
+            ->with('profile')
+            ->withCount('publishedArticles')
+            ->orderByDesc('published_articles_count')
+            ->take(3)
+            ->get();
+
+        // Related tags for sidebar
+        $relatedTags = Tag::withCount('articles')
+            ->orderByDesc('tags.articles_count')
+            ->take(8)
+            ->get();
+
+        return view('public.search-results', compact('query', 'type', 'articleResults', 'authorResults', 'tagResults', 'topAuthors', 'relatedTags'));
     }
 }

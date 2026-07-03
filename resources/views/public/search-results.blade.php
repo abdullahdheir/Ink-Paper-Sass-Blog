@@ -153,42 +153,23 @@
                         class="font-ui-label text-ui-label font-bold text-on-surface uppercase tracking-wider mb-6 pb-2 border-b border-outline">
                         Top Authors</h3>
                     <div class="space-y-6">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <img alt="Julianna Dreyfus" class="w-10 h-10 rounded-full bg-surface-container-high"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBObcYMsoxzX_vZLLwyznuD0SLSL6KVHBjKk671grYYfq1_W6lJsir7IwSnT1u_PDtdwzySBCC3dSVSd0TP3ZhJfkb6jsbx_NPN-6xewCw3wVy8RDlFjPLot7FD5nh8v1DvmJsHvkGx5RQ_XCIh9RNBArv1PV8vB5FCI6-dMdaxcZjbmRVblWXZOf3A7zAh2oDSLbi3tOrUH1SALj-gUByZb-5CKH4j1Lpfc3zJfXkIvLTu30_AS2X6YiWiY-0BjNrMswDz-wppXpGb" />
-                                <div>
-                                    <p class="font-ui-label text-ui-label text-on-surface font-bold">Julianna Dreyfus</p>
-                                    <p class="text-metadata font-metadata text-secondary">12 articles on Minimalism</p>
+                        @foreach ($topAuthors as $author)
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <img alt="{{ $author->name }}"
+                                        class="w-10 h-10 rounded-full bg-surface-container-high object-cover"
+                                        src="{{ optional($author->profile)->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($author->name) . '&background=6750A4&color=fff&size=128' }}" />
+                                    <div>
+                                        <p class="font-ui-label text-ui-label text-on-surface font-bold">
+                                            {{ $author->name }}</p>
+                                        <p class="text-metadata font-metadata text-secondary">
+                                            {{ $author->published_articles_count ?? 0 }} articles</p>
+                                    </div>
                                 </div>
+                                <a href="{{ route('authors.profile', ['author' => $author->username]) }}"
+                                    class="text-primary hover:underline font-ui-label text-metadata font-bold">View</a>
                             </div>
-                            <button
-                                class="text-primary hover:underline font-ui-label text-metadata font-bold">Follow</button>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <img alt="Marcus Kael" class="w-10 h-10 rounded-full bg-surface-container-high"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6ZEB2ZQT18lj1r5A3xxUhgG44jBdHw-_cDCKZnjc3dRSW0otrAODrrrHpcpdQb5LjlZDr6iLJG1z4BB9Ze_WPj0FY6XoPP5uHSDzeDUnGRTPu-MOr50pbxvqyWuN0D34TajLxV9CibA27tYXc0aMaFWwmAikt9S1AsJWBKnqoQULQUPpiw7vXPgxBByrvVS4yW-JonLVXUfCbfwKKqfyr8aPhvzzJxl9M6RVCTIy97VJ4-jK2d403l58dV5iNWVKTk1WRhty6N4Oj" />
-                                <div>
-                                    <p class="font-ui-label text-ui-label text-on-surface font-bold">Marcus Kael</p>
-                                    <p class="text-metadata font-metadata text-secondary">8 articles on Bauhaus</p>
-                                </div>
-                            </div>
-                            <button
-                                class="text-primary hover:underline font-ui-label text-metadata font-bold">Follow</button>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <img alt="Elena Thorne" class="w-10 h-10 rounded-full bg-surface-container-high"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjef4BHipMUY1aevBGr9vkL7X9_okJDAYtysyI3uGMyCepAW75GHRNk6X1jahmNEh6B2d6ZiX-odC8UNqVya9RCtGK1UgK74jnMsv2isg-cAcqO5PSnZBQ9TxlWCeviaHVtkUYcIogNIFw0XbOuu9JcYCqnztEKFU8PzkOQfYx2nECxv_XzHk7R1K7YwT7IfyGPdMv4NqqkvClGqmlZL-XnP5m-J5T9B9FiB6qQ71QmtXMKc-v5YJttHDC_2KxOi0SBbyI5XGDIU5c" />
-                                <div>
-                                    <p class="font-ui-label text-ui-label text-on-surface font-bold">Elena Thorne</p>
-                                    <p class="text-metadata font-metadata text-secondary">5 articles on Typography</p>
-                                </div>
-                            </div>
-                            <button
-                                class="text-primary hover:underline font-ui-label text-metadata font-bold">Follow</button>
-                        </div>
+                        @endforeach
                     </div>
                 </section>
                 <!-- Related Tags -->
@@ -197,18 +178,10 @@
                         class="font-ui-label text-ui-label font-bold text-on-surface uppercase tracking-wider mb-6 pb-2 border-b border-outline">
                         Related Tags</h3>
                     <div class="flex flex-wrap gap-2">
-                        <a class="px-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-ui-label font-ui-label text-on-surface-variant hover:border-primary hover:text-primary transition-all"
-                            href="#">Typography</a>
-                        <a class="px-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-ui-label font-ui-label text-on-surface-variant hover:border-primary hover:text-primary transition-all"
-                            href="#">Bauhaus</a>
-                        <a class="px-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-ui-label font-ui-label text-on-surface-variant hover:border-primary hover:text-primary transition-all"
-                            href="#">UX Design</a>
-                        <a class="px-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-ui-label font-ui-label text-on-surface-variant hover:border-primary hover:text-primary transition-all"
-                            href="#">Productivity</a>
-                        <a class="px-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-ui-label font-ui-label text-on-surface-variant hover:border-primary hover:text-primary transition-all"
-                            href="#">Stationery</a>
-                        <a class="px-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-ui-label font-ui-label text-on-surface-variant hover:border-primary hover:text-primary transition-all"
-                            href="#">Modernism</a>
+                        @foreach ($relatedTags as $tag)
+                            <a class="px-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-ui-label font-ui-label text-on-surface-variant hover:border-primary hover:text-primary transition-all"
+                                href="{{ route('tags.show', $tag->slug) }}">{{ $tag->name }}</a>
+                        @endforeach
                     </div>
                 </section>
                 <!-- Newsletter Card -->
