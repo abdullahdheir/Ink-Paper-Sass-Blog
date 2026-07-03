@@ -27,9 +27,15 @@
     </style>
 </head>
 
-<body class="font-body-md text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<body class="font-body-md text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed"
+    @auth data-auth-user @endauth>
     @yield('content')
     @vite(['resources/js/app.js'])
+
+    {{-- Toast Notifications --}}
+    @auth
+        @include('components.toast-container')
+    @endauth
 
     @yield('scripts')
     @stack('scripts')

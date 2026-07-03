@@ -18,8 +18,8 @@
                 class="hidden lg:flex items-center bg-surface-container border border-outline-variant rounded-full px-4 py-1.5 gap-2">
                 <span class="material-symbols-outlined text-secondary">search</span>
                 <input name="q" value="{{ request('q') }}"
-                    class="bg-transparent border-0 outline-0 text-ui-label font-ui-label w-48"
-                    placeholder="Search..." type="search" />
+                    class="bg-transparent border-0 outline-0 text-ui-label font-ui-label w-48" placeholder="Search..."
+                    type="search" />
             </form>
             <div class="flex items-center gap-2">
                 @auth
@@ -39,7 +39,7 @@
                             <div
                                 class="w-9 h-9 rounded-full overflow-hidden border-2 border-outline-variant hover:border-primary transition-colors">
                                 <img alt="{{ auth()->user()->name ?? 'User' }}" class="w-full h-full object-cover"
-                                    src="{{ auth()->user()->avatar_path ? Storage::url(auth()->user()->avatar_path) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name ?? 'U') . '&background=6750A4&color=fff&size=128' }}" />
+                                    src="{{ auth()->user()->avatar }}" />
                             </div>
                         </button>
                         <!-- Dropdown Menu -->

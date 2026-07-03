@@ -118,7 +118,7 @@ class Article extends Model
     public function scopePublished(Builder $query)
     {
         return $query->where('status', ArticleStatus::PUBLISHED)
-            ->where('published_at', '<=', now()->toIso8601String());
+            ->where('published_at', '<=', now());
     }
 
     public function scopeDrafts(Builder $query)

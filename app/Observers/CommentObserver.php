@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\CommentPosted;
 use App\Models\Comment;
 
 class CommentObserver
@@ -12,6 +13,8 @@ class CommentObserver
     public function created(Comment $comment): void
     {
         $comment->article()->increment('comments_count');
+        // Dispatch notification event
+        CommentPosted::dispatch($comment);
     }
 
     /**

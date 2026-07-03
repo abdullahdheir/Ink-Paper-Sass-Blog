@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Actions\Tags\CreateNewTag;
+use App\Events\ArticleLiked;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use App\Models\Bookmark;
@@ -158,6 +159,9 @@ class ArticleService
             ]);
 
             $article->increment('likes_count');
+
+            // Dispatch notification event
+            ArticleLiked::dispatch($article, $user);
 
             return $like;
         } catch (Throwable $err) {

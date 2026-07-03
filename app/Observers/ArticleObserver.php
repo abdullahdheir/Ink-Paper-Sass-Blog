@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Enums\ArticleStatus;
+use App\Events\ArticlePublished;
 use App\Models\Article;
 
 class ArticleObserver
@@ -36,6 +37,14 @@ class ArticleObserver
         if ($article->isDirty('content')) {
             $article->reading_time = Article::estimateReadingTime($article->content);
         }
+
+        if ($article->isDirty('status')) {
+            Article::withoutEvents(function () use ($article) {
+                $article->update([
+                    'published_at' => $article->status === ArticleStatus::PUBLISHED ? now() : null,
+                ]);
+            });
+        }
     }
 
     /**
@@ -47,6 +56,8 @@ class ArticleObserver
             if ($article->status === ArticleStatus::PUBLISHED) {
                 $article->author->stats()->increment('articles_count');
                 $article->tags()->get()->map(fn($t) => $t->incrementArticlesCount());
+                // Dispatch notification event for followers
+                ArticlePublished::dispatch($article);
             }
 
             if ($article->getOriginal('status') === ArticleStatus::PUBLISHED && $article->status !== ArticleStatus::PUBLISHED) {

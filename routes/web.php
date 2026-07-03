@@ -7,6 +7,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
@@ -107,4 +108,15 @@ Route::middleware('auth:web')->group(function () {
 
     Route::get('tags/search', [TagController::class, 'search'])->name('tags.search');
     Route::resource('tags', TagController::class)->except(['edit', 'create']);
+
+    Route::prefix('notifications')->name('notifications.')->controller(NotificationController::class)->group(function () {
+    Route::get('', 'index')->name('index');
+    Route::get('unread-count', 'unreadCount')->name('unread-count');
+    Route::get('unread', 'unread')->name('unread');
+    Route::post('{notification}/mark-as-read', 'markAsRead')->name('mark-as-read');
+    Route::post('{notification}/mark-as-unread', 'markAsUnread')->name('mark-as-unread');
+    Route::post('mark-all-as-read', 'markAllAsRead')->name('mark-all-as-read');
+    Route::delete('{notification}', 'destroy')->name('destroy');
+    Route::delete('', 'deleteAll')->name('delete-all');
+});
 });
