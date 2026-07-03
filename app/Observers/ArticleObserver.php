@@ -39,11 +39,7 @@ class ArticleObserver
         }
 
         if ($article->isDirty('status')) {
-            Article::withoutEvents(function () use ($article) {
-                $article->update([
-                    'published_at' => $article->status === ArticleStatus::PUBLISHED ? now() : null,
-                ]);
-            });
+            $article->published_at = $article->status === ArticleStatus::PUBLISHED ? now() : null;
         }
     }
 
