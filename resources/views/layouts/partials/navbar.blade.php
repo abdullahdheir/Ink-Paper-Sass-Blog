@@ -18,7 +18,7 @@
                 class="hidden lg:flex items-center bg-surface-container border border-outline-variant rounded-full px-4 py-1.5 gap-2">
                 <span class="material-symbols-outlined text-secondary">search</span>
                 <input name="q" value="{{ request('q') }}"
-                    class="bg-transparent border-0 border-none focus:border-0 focus:ring-0 text-ui-label font-ui-label w-48"
+                    class="bg-transparent border-0 outline-0 text-ui-label font-ui-label w-48"
                     placeholder="Search..." type="search" />
             </form>
             <div class="flex items-center gap-2">
