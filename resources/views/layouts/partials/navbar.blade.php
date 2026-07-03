@@ -23,9 +23,8 @@
             </form>
             <div class="flex items-center gap-2">
                 @auth
-                    <button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
-                        <span class="material-symbols-outlined">notifications</span>
-                    </button>
+                    {{-- Notification Bell --}}
+                    @include('components.notification-bell')
                     <button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
                         <span class="material-symbols-outlined">bookmark</span>
                     </button>

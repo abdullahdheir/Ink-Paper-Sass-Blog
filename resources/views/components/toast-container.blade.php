@@ -59,10 +59,10 @@
      * Show notification toast - triggered by API responses
      */
     window.showNotificationToast = function(notification) {
-        const data = JSON.parse(notification.data);
+        const data = notification.data;
         let message = '';
 
-        switch (notification.type) {
+        switch (data.type) {
             case 'article_published':
                 message = `📰 ${data.author_name} published "${data.article_title}"`;
                 break;
@@ -92,14 +92,12 @@
 
     async function pollNotifications() {
         try {
-            const response = await fetch('/notifications/unread?per_page=100');
-            const data = await response.json();
+            const response = await ajax.get('/notifications/unread?per_page=100');
+            const data = response.data;
 
-            if (data.data && data.data.data) {
-                data.data.data.forEach(notification => {
-                    if (!lastNotificationIds.has(notification.id)) {
-                        lastNotificationIds.add(notification.id);
-                        // Show toast only for new notifications
+            if (data.data) {
+                data.data.forEach(notification => {
+                    if (notification.read_at == null) {
                         window.showNotificationToast(notification);
                     }
                 });

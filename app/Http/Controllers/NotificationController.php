@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ResponseStatus;
 use App\Models\Notification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+
+    public function view()
+    {
+        $notifications = auth()->user()->notifications()->latest()->get();
+
+        return view('public.notifications', compact('notifications'));
+    }
+
     /**
      * Get all notifications for the authenticated user (paginated)
      */
@@ -19,10 +28,7 @@ class NotificationController extends Controller
             ->latest()
             ->paginate($perPage);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $notifications,
-        ]);
+        return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'The notifications have been fetched successfully', [], $notifications);
     }
 
     /**
@@ -50,10 +56,7 @@ class NotificationController extends Controller
             ->latest()
             ->paginate($perPage);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $notifications,
-        ]);
+        return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'The unread notifications have been fetched successfully', [], $notifications);
     }
 
     /**
@@ -62,20 +65,13 @@ class NotificationController extends Controller
     public function markAsRead(Notification $notification): JsonResponse
     {
         // Authorize: only the user who received the notification can mark it
-        if ($notification->user_id !== auth()->id()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ], 403);
+        if ($notification->notifiable_id !== auth()->id()) {
+            return $this->respondGeneral(ResponseStatus::ERROR, 403, 'Unauthorized', [], []);
         }
 
         $notification->update(['read_at' => now()]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Notification marked as read',
-            'data' => $notification,
-        ]);
+        return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'The Notification marked as read', [], $notification);
     }
 
     /**
@@ -84,20 +80,13 @@ class NotificationController extends Controller
     public function markAsUnread(Notification $notification): JsonResponse
     {
         // Authorize
-        if ($notification->user_id !== auth()->id()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ], 403);
+        if ($notification->notifiable_id !== auth()->id()) {
+            return $this->respondGeneral(ResponseStatus::ERROR, 403, 'Unauthorized', [], []);
         }
 
         $notification->update(['read_at' => null]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Notification marked as unread',
-            'data' => $notification,
-        ]);
+        return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'The Notification marked as unread', [], $notification);
     }
 
     /**
@@ -110,10 +99,7 @@ class NotificationController extends Controller
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'All notifications marked as read',
-        ]);
+        return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'The All notifications marked as read');
     }
 
     /**
@@ -122,19 +108,13 @@ class NotificationController extends Controller
     public function destroy(Notification $notification): JsonResponse
     {
         // Authorize
-        if ($notification->user_id !== auth()->id()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ], 403);
+        if ($notification->notifiable_id !== auth()->id()) {
+            return $this->respondGeneral(ResponseStatus::ERROR, 403, 'Unauthorized');
         }
 
         $notification->delete();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Notification deleted',
-        ]);
+        return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'The notification has been deleted successfully');
     }
 
     /**
@@ -144,9 +124,6 @@ class NotificationController extends Controller
     {
         auth()->user()->notifications()->delete();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'All notifications deleted',
-        ]);
+        return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'The notifications have been deleted successfully');
     }
 }

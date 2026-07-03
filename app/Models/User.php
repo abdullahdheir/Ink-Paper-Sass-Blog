@@ -123,7 +123,7 @@ class User extends Authenticatable
             'follows',
             'following_id',
             'follower_id'
-        )->withTimestamps();
+        )->withTimestamps(updatedAt: false);
     }
 
     public function isFollowing(User $user): bool
@@ -180,28 +180,12 @@ class User extends Authenticatable
     }
 
     // -------------------------------------------------------------------------
-    // Notifications
-    // -------------------------------------------------------------------------
-
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class)->latest();
-    }
-
-    public function unreadNotifications()
-    {
-        return $this->hasMany(Notification::class)->whereNull('read_at');
-    }
-
-    // -------------------------------------------------------------------------
     // Scopes
     // -------------------------------------------------------------------------
 
     public function scopeAuthors(Builder $query)
     {
-        return $query->whereHas('articles', function ($query) {
-            $query->where('status', 'published');
-        });
+        return $query;
     }
 
     public function scopeActive(Builder $query)

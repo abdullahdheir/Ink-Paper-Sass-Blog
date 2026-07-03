@@ -5,10 +5,9 @@ namespace App\Notifications;
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class ArticleLikedNotification extends Notification implements ShouldQueue
+class ArticleLikedNotification extends Notification
 {
     use Queueable;
 
@@ -17,7 +16,6 @@ class ArticleLikedNotification extends Notification implements ShouldQueue
      */
     public function __construct(public Article $article, public User $liker)
     {
-        //
     }
 
     /**
@@ -31,9 +29,11 @@ class ArticleLikedNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the database representation of the notification.
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
      */
-    public function toDatabase(object $notifiable): array
+    public function toArray(object $notifiable): array
     {
         return [
             'type' => 'article_liked',

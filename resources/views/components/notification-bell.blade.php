@@ -26,7 +26,7 @@
 
         <!-- Footer with View All Link -->
         <div class="p-3 border-t border-outline-variant text-center">
-            <a href="{{ route('dashboard.notifications', [], false) }}"
+            <a href="{{ route('notifications.view', [], false) }}"
                 class="text-sm text-primary hover:underline">View all notifications</a>
         </div>
     </div>
@@ -61,16 +61,16 @@
         // Load notifications
         async function loadNotifications() {
             try {
-                const response = await fetch('/notifications/unread');
-                const data = await response.json();
+                const response = await ajax.get('/notifications/unread');
+                const data = response.data;
 
-                if (data.data.data.length === 0) {
+                if (data.data.length === 0) {
                     list.innerHTML = '<div class="p-4 text-center text-secondary">No notifications</div>';
                     return;
                 }
 
                 // Check for new notifications and show toasts
-                data.data.data.forEach(notif => {
+                data.data.forEach(notif => {
                     if (!trackedNotificationIds.has(notif.id)) {
                         trackedNotificationIds.add(notif.id);
                         // Show toast for new notification (if window.showNotificationToast is available)
@@ -80,12 +80,12 @@
                     }
                 });
 
-                list.innerHTML = data.data.data.map(notif => `
+                list.innerHTML = data.data.map(notif => `
                 <div class="p-3 border-b border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer notification-item" data-id="${notif.id}">
                     <div class="flex justify-between items-start gap-2">
                         <div class="flex-1">
                             <p class="font-ui-label text-ui-label text-on-surface">${notif.type.replace(/_/g, ' ')}</p>
-                            <p class="text-sm text-on-surface-variant mt-1">${JSON.parse(notif.data).article_title || JSON.parse(notif.data).follower_name || 'New notification'}</p>
+                            <p class="text-sm text-on-surface-variant mt-1">${notif.data.article_title || notif.data.follower_name || 'New notification'}</p>
                             <p class="text-xs text-secondary mt-1">${new Date(notif.created_at).toLocaleDateString()}</p>
                         </div>
                         <button class="text-secondary hover:text-primary delete-notif" data-id="${notif.id}">×</button>
@@ -114,8 +114,8 @@
         // Update unread count
         async function updateUnreadCount() {
             try {
-                const response = await fetch('/notifications/unread-count');
-                const data = await response.json();
+                const response = await ajax.get('/notifications/unread-count');
+                const data = response.data;
                 const count = data.unread_count;
 
                 countEl.textContent = count;
@@ -132,9 +132,7 @@
         // Mark as read
         async function markAsRead(id) {
             try {
-                await fetch(`/notifications/${id}/mark-as-read`, {
-                    method: 'POST'
-                });
+                await ajax.post(`/notifications/${id}/mark-as-read`);
                 updateUnreadCount();
                 loadNotifications();
             } catch (error) {
@@ -145,9 +143,7 @@
         // Mark all as read
         markAllBtn.addEventListener('click', async () => {
             try {
-                await fetch('/notifications/mark-all-as-read', {
-                    method: 'POST'
-                });
+                await ajax.post('/notifications/mark-all-as-read');
                 updateUnreadCount();
                 loadNotifications();
             } catch (error) {
@@ -158,9 +154,7 @@
         // Delete notification
         async function deleteNotification(id) {
             try {
-                await fetch(`/notifications/${id}`, {
-                    method: 'DELETE'
-                });
+                await ajax.delete(`/notifications/${id}`);
                 updateUnreadCount();
                 loadNotifications();
             } catch (error) {

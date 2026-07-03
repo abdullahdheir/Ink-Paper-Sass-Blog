@@ -4,12 +4,9 @@ namespace App\Listeners;
 
 use App\Events\UserFollowed;
 use App\Notifications\UserFollowedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
-class SendUserFollowedNotification implements ShouldQueue
+class SendUserFollowedNotification
 {
-    use InteractsWithQueue;
 
     public function handle(UserFollowed $event): void
     {

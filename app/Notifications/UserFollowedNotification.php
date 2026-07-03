@@ -4,20 +4,16 @@ namespace App\Notifications;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class UserFollowedNotification extends Notification implements ShouldQueue
+class UserFollowedNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(public User $follower)
-    {
-        //
-    }
+    public function __construct(public User $follower) {}
 
     /**
      * Get the notification's delivery channels.
@@ -30,9 +26,11 @@ class UserFollowedNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the database representation of the notification.
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
      */
-    public function toDatabase(object $notifiable): array
+    public function toArray(object $notifiable): array
     {
         return [
             'type' => 'user_followed',

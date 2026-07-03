@@ -110,13 +110,14 @@ Route::middleware('auth:web')->group(function () {
     Route::resource('tags', TagController::class)->except(['edit', 'create']);
 
     Route::prefix('notifications')->name('notifications.')->controller(NotificationController::class)->group(function () {
-    Route::get('', 'index')->name('index');
-    Route::get('unread-count', 'unreadCount')->name('unread-count');
-    Route::get('unread', 'unread')->name('unread');
-    Route::post('{notification}/mark-as-read', 'markAsRead')->name('mark-as-read');
-    Route::post('{notification}/mark-as-unread', 'markAsUnread')->name('mark-as-unread');
-    Route::post('mark-all-as-read', 'markAllAsRead')->name('mark-all-as-read');
-    Route::delete('{notification}', 'destroy')->name('destroy');
-    Route::delete('', 'deleteAll')->name('delete-all');
+        Route::get('', 'index')->name('index');
+        Route::get('index', 'view')->name('view');
+        Route::get('unread-count', 'unreadCount')->name('unread-count');
+        Route::get('unread', 'unread')->name('unread');
+        Route::post('{notification}/mark-as-read', 'markAsRead')->name('mark-as-read');
+        Route::post('{notification}/mark-as-unread', 'markAsUnread')->name('mark-as-unread');
+        Route::post('mark-all-as-read', 'markAllAsRead')->name('mark-all-as-read');
+        Route::delete('{notification}', 'destroy')->name('destroy');
+        Route::delete('', 'deleteAll')->name('delete-all');
 });
 });

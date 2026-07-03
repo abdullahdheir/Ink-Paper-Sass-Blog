@@ -7,9 +7,8 @@ use App\Notifications\ArticleLikedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendArticleLikedNotification implements ShouldQueue
+class SendArticleLikedNotification 
 {
-    use InteractsWithQueue;
 
     public function handle(ArticleLiked $event): void
     {

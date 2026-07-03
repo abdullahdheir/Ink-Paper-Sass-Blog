@@ -13,7 +13,7 @@ class UpdateArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return $this->user()?->id == $this->route('article.user_id') ;
     }
 
     /**
@@ -25,7 +25,7 @@ class UpdateArticleRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:articles,slug,' . $this->route('article')->id . ',id',
+            'slug' => 'nullable|string|max:255|unique:articles,slug,' . $this->route('article.id') . ',id',
             'excerpt' => 'nullable|string',
             'content' => 'nullable|string',
             'reading_time' => 'nullable|integer',

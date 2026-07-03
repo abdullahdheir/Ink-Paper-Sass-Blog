@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.public')
 
 @section('title', 'Notifications - Ink & Paper')
 
-@section('content')
-    <div class="max-w-container-max mx-auto px-gutter py-section-gap">
+@section('page-content')
+    <div class="max-w-container-max mx-auto px-gutter">
         <!-- Header -->
-        <div class="mb-12">
+        <div class="mb-2">
             <h1 class="font-display-lg text-display-lg text-on-surface mb-2">Notifications</h1>
             <p class="text-on-surface-variant">Stay updated with all your activity</p>
         </div>
@@ -93,18 +93,18 @@
             const endpoint = currentFilter === 'unread' ? '/notifications/unread' : '/notifications';
 
             try {
-                const response = await fetch(`${endpoint}?page=${currentPage}&per_page=10`);
-                const data = await response.json();
+                const response = await ajax.get(`${endpoint}?page=${currentPage}&per_page=10`);
+                const data =response.data;
 
-                if (data.data.data.length === 0) {
+                if (data.data.length === 0) {
                     grid.innerHTML =
                         '<div class="text-center py-12 col-span-full"><p class="text-on-surface-variant">No notifications found</p></div>';
                     document.getElementById('pagination').innerHTML = '';
                     return;
                 }
 
-                grid.innerHTML = data.data.data.map(notif => {
-                    const notifData = JSON.parse(notif.data);
+                grid.innerHTML = data.data.map(notif => {
+                    const notifData = notif.data;
                     const getTypeColor = (type) => {
                         switch (type) {
                             case 'article_published':
@@ -124,11 +124,11 @@
                 <div class="notification-card ${notif.read_at ? 'read' : 'unread'}">
                     <div class="flex justify-between items-start gap-4">
                         <div class="flex-1">
-                            <span class="inline-block px-2 py-1 rounded text-xs font-bold ${getTypeColor(notif.type)} mb-2">
-                                ${notif.type.replace(/_/g, ' ').toUpperCase()}
+                            <span class="inline-block px-2 py-1 rounded text-xs font-bold ${getTypeColor(notif.data.type)} mb-2">
+                                ${notif.data.type.replace(/_/g, ' ').toUpperCase()}
                             </span>
                             <p class="font-headline-sm text-headline-sm text-on-surface mt-2">
-                                ${getNotificationMessage(notif.type, notifData)}
+                                ${getNotificationMessage(notif.data, notifData)}
                             </p>
                             <p class="text-metadata font-metadata text-secondary mt-2">
                                 ${formatDate(notif.created_at)}
@@ -173,8 +173,8 @@
             }
         }
 
-        function getNotificationMessage(type, data) {
-            switch (type) {
+        function getNotificationMessage(data) {
+            switch (data.type) {
                 case 'article_published':
                     return `${data.author_name} published "${data.article_title}"`;
                 case 'comment_posted':

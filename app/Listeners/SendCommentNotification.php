@@ -4,12 +4,9 @@ namespace App\Listeners;
 
 use App\Events\CommentPosted;
 use App\Notifications\CommentPostedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
-class SendCommentNotification implements ShouldQueue
+class SendCommentNotification
 {
-    use InteractsWithQueue;
 
     public function handle(CommentPosted $event): void
     {

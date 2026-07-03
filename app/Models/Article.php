@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Mews\Purifier\Facades\Purifier;
 
-#[ScopedBy(OwnedByAuthScope::class)]
 class Article extends Model
 {
     /** @use HasFactory<ArticleFactory> */

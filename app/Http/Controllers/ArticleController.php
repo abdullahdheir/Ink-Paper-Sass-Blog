@@ -93,7 +93,7 @@ class ArticleController extends Controller
      */
     public function edit(string $id)
     {
-        $article = Article::with('tags')->where('user_id', '=', auth()->id())->findOrFail($id);
+        $article = Article::with('tags')->ownedByAuth()->findOrFail($id);
         $categories = Category::all();
         $tags = Tag::all();
         $statuses = ArticleStatus::cases();
@@ -116,16 +116,17 @@ class ArticleController extends Controller
      */
     public function destroy(string $id)
     {
-        $article = Article::findOrFail($id);
+        $article = Article::ownedByAuth()->findOrFail($id);
         $article->delete();
 
         return redirect()->route('articles.index')
             ->with('success', 'Article deleted successfully.');
     }
 
-    public function publish(Article $article)
+    public function publish(string $id)
     {
         try {
+            $article = Article::ownedByAuth()->findOrFail($id);
             $article->publish();
             return redirect()->route('dashboard.drafts')->with('success', 'Article published successfully.');
         } catch (Throwable $err) {
@@ -133,9 +134,10 @@ class ArticleController extends Controller
         }
     }
 
-    public function unpublish(Article $article)
+    public function unpublish(string $id)
     {
         try {
+            $article = Article::ownedByAuth()->findOrFail($id);
             $article->unpublish();
             return redirect()->route('dashboard.drafts')->with('success', 'Article moved back to drafts.');
         } catch (Throwable $err) {
