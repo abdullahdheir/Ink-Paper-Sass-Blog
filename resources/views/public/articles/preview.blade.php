@@ -16,16 +16,9 @@
                             <span
                                 class="font-ui-label text-ui-label font-bold text-on-surface">{{ $article->author->name }}</span>
                             <span class="text-secondary-fixed-dim">•</span>
-                            <button data-following="{{ $article->author->is_followed_by_auth_user ? 'true' : 'false' }}"
-                                data-username="{{ $article->author->username }}"
-                                class="text-primary font-ui-label text-ui-label font-semibold hover:underline cursor-pointer">
-                                <span class="follow-label">
-                                    {{ $article->author->is_followed_by_auth_user ? 'Following' : 'Follow' }}
-                                </span>
-                            </button>
                         </div>
                         <p class="font-metadata text-metadata text-secondary">
-                            {{ $article->published_at ? $article->published_at?->format('M d YYYY') . ' .' : '' }}
+                            {{ $article->published_at ? $article->published_at?->format('M d Y') . ' .' : '' }}
                             {{ $article->reading_time }} min read</p>
                     </div>
                 </div>
