@@ -120,12 +120,12 @@ class PageController extends Controller
 
     public function members()
     {
-        return view('management.members');
+        return view('admin.members');
     }
 
     public function memberSarah()
     {
-        return view('management.member-sarah');
+        return view('admin.member-sarah');
     }
 
     public function invite()
