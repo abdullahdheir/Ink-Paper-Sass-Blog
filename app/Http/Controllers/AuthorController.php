@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ResponseStatus;
 use App\Events\AuthorViewed;
 use App\Models\Article;
+use App\Models\Scopes\OwnedByAuthScope;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class AuthorController extends Controller
     public function profile(Request $request, User $author)
     {
         AuthorViewed::dispatch($author);
-        $articles = Article::published()->where('user_id', '=', $author->id)->with('category', 'tags')->latest()->paginate(1)->withQueryString();
+        $articles = Article::withoutGlobalScope(OwnedByAuthScope::class)->published()->where('user_id', '=', $author->id)->with('category', 'tags')->latest()->paginate(5)->withQueryString();
         return view('public.author-profile', compact('author', 'articles'));
     }
 

@@ -2,7 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Article;
+use App\Models\Category;
+use App\Models\Comment;
 use App\Models\User;
+use App\Observers\ArticleObserver;
+use App\Observers\CategoryObserver;
+use App\Observers\CommentObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,5 +28,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         User::observe(UserObserver::class);
+        Article::observe(ArticleObserver::class);
+        Comment::observe(CommentObserver::class);
+        Category::observe(CategoryObserver::class);
     }
 }

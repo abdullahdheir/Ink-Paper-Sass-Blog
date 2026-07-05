@@ -13,7 +13,13 @@
 
 @import 'quill/dist/quill.core.css';
 @import 'quill/dist/quill.snow.css';
+@import 'tom-select/dist/css/tom-select.css';
 @import './font.css';
+@import './article.css';
+
+button{
+    cursor: pointer;
+}
 
 .ql-toolbar.ql-snow {
     border: 1px solid rgba(148, 163, 184, 0.3);
@@ -37,4 +43,8 @@
 
 .ql-editor p {
     margin: 0;
+}
+
+.fill{
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48 !important;
 }

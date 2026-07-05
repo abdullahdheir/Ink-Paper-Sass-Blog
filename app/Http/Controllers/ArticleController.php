@@ -7,6 +7,8 @@ use App\Actions\Tags\CreateNewTag;
 use App\Enums\ArticleStatus;
 use App\Enums\ResponseStatus;
 use App\Events\ArticleViewed;
+use App\Http\Requests\AutoSaveArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Category;
 use App\Models\Article;
 use App\Models\Tag;
@@ -33,8 +35,10 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $tags = Tag::where('user_id', auth()->id())->get();
-        return view('dashboard.articles.create', compact('categories', 'tags'));
+        $statuses = ArticleStatus::cases();
+        $tags = Tag::all();
+
+        return view('dashboard.articles.editor', compact('categories', 'statuses', 'tags'));
     }
 
     /**
@@ -57,16 +61,15 @@ class ArticleController extends Controller
             'title' => $request->input('title'),
             'content' => $request->input('content'),
             'category_id' => $request->input('category_id'),
-            'status' => $request->input('draft') === 'on' ? ArticleStatus::DRAFT->value : ArticleStatus::PUBLISHED->value,
+            'status' => $request->input('status'),
             'user_id' => auth()->id(),
             'published_at' => $request->input('published_at'),
             'cover_image' => $request->file('cover_image'),
             'tags' => $request->array('tags'),
         ];
         try {
-            CreateNewArticle::create($data);
+            $this->articleService->create($data);
         } catch (\Exception $e) {
-
             return back()->withErrors(['error' => 'Failed to create article: ' . $e->getMessage()])->withInput();
         }
 
@@ -79,10 +82,10 @@ class ArticleController extends Controller
      */
     public function show(string $slug)
     {
-        $article = Article::where('slug', '=', $slug)->firstOrFail();
+        $article = Article::published()->where('slug', '=', $slug)->firstOrFail();
         $article->load('category', 'tags');
         ArticleViewed::dispatch($article);
-        return view('public.article', compact('article'));
+        return view('public.articles.show', compact('article'));
     }
 
     /**
@@ -90,75 +93,21 @@ class ArticleController extends Controller
      */
     public function edit(string $id)
     {
-        $article = Article::with('tags')->findOrFail($id);
+        $article = Article::with('tags')->ownedByAuth()->findOrFail($id);
         $categories = Category::all();
-        $tags = Tag::where('user_id', auth()->id())->get();
-        return view('dashboard.articles.edit', compact('article', 'categories', 'tags'));
+        $tags = Tag::all();
+        $statuses = ArticleStatus::cases();
+        return view('dashboard.articles.editor', compact('article', 'statuses', 'categories', 'tags'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateArticleRequest $request, Article $article)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'category_id' => 'nullable|exists:categories,id',
-            'cover_image' => ['nullable', 'image', 'max:1024'],
-            'tags' => 'nullable|array',
-            'tags.*' => 'required|string|max:155',
-        ]);
+        $this->articleService->update($request->validated(), $article->id);
 
-        $article = Article::findOrFail($id);
-        $article->update([
-            'title' => $request->input('title'),
-            'content' => $request->input('content'),
-            'category_id' => $request->input('category_id'),
-        ]);
-
-        if ($request->hasFile('cover_image')) {
-            $article->cover_image = $request->file('cover_image')->store('cover_images', 'public');
-            $article->save();
-        }
-
-        if ($request->filled('tags')) {
-            $tagNames = $request->input('tags');
-            if (!is_array($tagNames)) {
-                $tagNames = explode(',', $tagNames);
-            }
-
-            $tagIds = [];
-
-            foreach ($tagNames as $tagName) {
-                $tagName = trim($tagName);
-
-                if (!$tagName) continue;
-
-                // Try to find existing tag by name
-                $tag = Tag::where('name', '=', $tagName)->where('user_id', auth()->id())->first();
-
-                if ($tag) {
-                    $tagIds[] = $tag->id;
-                } else {
-                    // Create new tag
-                    $newTag = CreateNewTag::create([
-                        'name' => $tagName,
-                        'user_id' => auth()->id(),
-                        'description' => null,
-                    ]);
-                    $tagIds[] = $newTag->id;
-                }
-            }
-
-            if (!empty($tagIds)) {
-                $article->tags()->sync($tagIds);
-            }
-        } else {
-            $article->tags()->detach();
-        }
-
-        return redirect()->route('articles.index')
+        return redirect()->route('dashboard.index')
             ->with('success', 'Article updated successfully.');
     }
 
@@ -167,11 +116,33 @@ class ArticleController extends Controller
      */
     public function destroy(string $id)
     {
-        $article = Article::findOrFail($id);
+        $article = Article::ownedByAuth()->findOrFail($id);
         $article->delete();
 
         return redirect()->route('articles.index')
             ->with('success', 'Article deleted successfully.');
+    }
+
+    public function publish(string $id)
+    {
+        try {
+            $article = Article::ownedByAuth()->findOrFail($id);
+            $article->publish();
+            return redirect()->route('dashboard.drafts')->with('success', 'Article published successfully.');
+        } catch (Throwable $err) {
+            return redirect()->back()->withErrors(['error' => $err->getMessage()]);
+        }
+    }
+
+    public function unpublish(string $id)
+    {
+        try {
+            $article = Article::ownedByAuth()->findOrFail($id);
+            $article->unpublish();
+            return redirect()->route('dashboard.drafts')->with('success', 'Article moved back to drafts.');
+        } catch (Throwable $err) {
+            return redirect()->back()->withErrors(['error' => $err->getMessage()]);
+        }
     }
 
     public function like(Article $article)
@@ -212,5 +183,42 @@ class ArticleController extends Controller
         } catch (Throwable $err) {
             return $this->respondGeneral(ResponseStatus::ERROR, $err->getCode() ?: 400, $err->getMessage());
         }
+    }
+
+    public function comments(Article $article)
+    {
+        $comments = $article->comments()->latest()->get();
+        $commentsView = view('public.articles.partials.comments-list', compact('comments'))->render();
+        return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'Successfully fetch the article comments.', [], ['comments' => $commentsView]);
+    }
+
+    public function newAutoSave(AutoSaveArticleRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $data['user_id'] = auth()->id();
+            $article =  $this->articleService->create($data);
+            return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'Successfully auto save the article.', [], ['article_id' => $article->id]);
+        } catch (Throwable $err) {
+            return $this->respondGeneral(ResponseStatus::ERROR, $err->getCode() ?: 400, $err->getMessage());
+        }
+    }
+
+    public function autoSave(AutoSaveArticleRequest $request, Article $article)
+    {
+        try {
+            $data = $request->validated();
+            $data['user_id'] = auth()->id();
+            $article =  $this->articleService->autosave($data, $article->id);
+            return $this->respondGeneral(ResponseStatus::SUCCESS, 200, 'Successfully auto save the article.', [], ['article_id' => $article->id]);
+        } catch (Throwable $err) {
+            return $this->respondGeneral(ResponseStatus::ERROR, $err->getCode() ?: 400, $err->getMessage());
+        }
+    }
+
+    public function preview(Article $article)
+    {
+        $article->load('category', 'tags');
+        return view('public.articles.preview', compact('article'));
     }
 }

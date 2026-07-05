@@ -6,11 +6,14 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>@yield('title', 'Ink & Paper')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @yield('head')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap"
         rel="stylesheet" />
+
+    @stack('styles')
+    @yield('head')
+    @vite(['resources/css/app.css'])
+
     <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -24,9 +27,18 @@
     </style>
 </head>
 
-<body class="font-body-md text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<body class="font-body-md text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed"
+    @auth data-auth-user @endauth>
     @yield('content')
+    @vite(['resources/js/app.js'])
+
+    {{-- Toast Notifications --}}
+    @auth
+        @include('components.toast-container')
+    @endauth
+
     @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>

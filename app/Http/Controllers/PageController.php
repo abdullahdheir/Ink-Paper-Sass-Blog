@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
     // Public pages
-   
+
     public function article($id)
     {
         return view('public.article');
@@ -31,11 +32,6 @@ class PageController extends Controller
     public function tagArchive($slug)
     {
         return view('public.tag-archive');
-    }
-
-    public function search()
-    {
-        return view('public.search-results');
     }
 
     public function completeSubscription()
@@ -124,12 +120,12 @@ class PageController extends Controller
 
     public function members()
     {
-        return view('management.members');
+        return view('admin.members');
     }
 
     public function memberSarah()
     {
-        return view('management.member-sarah');
+        return view('admin.member-sarah');
     }
 
     public function invite()

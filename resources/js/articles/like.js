@@ -9,7 +9,7 @@ import { articles } from "../utils/ajax.js";
  * @param {HTMLButtonElement} btn
  * @param {*} id
  */
-export async function toggleLike(btn, id) {
+export async function toggleArticleLike(btn, id) {
     const isLiked = btn.dataset.liked === "true";
     try {
         if (!isLiked) {

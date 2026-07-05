@@ -98,12 +98,16 @@
         <div class="space-y-12">
             @forelse ($articles as $article)
                 <x-article :article="$article" />
-                <div class="h-px bg-outline-variant"></div>
+                @if ($articles->last()->id != $article->id)
+                    <div class="h-px bg-outline-variant"></div>
+                @endif
             @empty
                 <h2 class="text-center mb-5">The author has not published any articles yet.</h2>
             @endforelse
         </div>
         <!-- Pagination/Load More -->
-        {{ $articles->links() }}
+        <div class="my-5">
+            {{ $articles->links() }}
+        </div>
     </div>
 @endsection

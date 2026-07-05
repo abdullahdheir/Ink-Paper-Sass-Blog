@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\SubscriptionPlan;
+use App\Events\UserFollowed;
 use App\Observers\UserObserver;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -17,14 +18,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Override;
+use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password', 'username', 'subscription_plan', 'is_verified', 'is_active', 'email_verified_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, HasApiTokens, HasRoles;
 
     protected $appends = [
         'avatar',
@@ -121,7 +124,7 @@ class User extends Authenticatable
             'follows',
             'following_id',
             'follower_id'
-        )->withTimestamps();
+        )->withTimestamps(updatedAt: false);
     }
 
     public function isFollowing(User $user): bool
@@ -137,6 +140,9 @@ class User extends Authenticatable
 
         $this->stats()->increment('following_count');
         $user->stats()->increment('followers_count');
+
+        // Dispatch notification event
+        UserFollowed::dispatch($this, $user);
     }
 
     public function unfollow(User $user): void
@@ -175,26 +181,12 @@ class User extends Authenticatable
     }
 
     // -------------------------------------------------------------------------
-    // Notifications
-    // -------------------------------------------------------------------------
-
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class)->latest();
-    }
-
-    public function unreadNotifications()
-    {
-        return $this->hasMany(Notification::class)->whereNull('read_at');
-    }
-
-    // -------------------------------------------------------------------------
     // Scopes
     // -------------------------------------------------------------------------
 
     public function scopeAuthors(Builder $query)
     {
-        return $query->whereIn('role', ['author', 'editor', 'admin']);
+        return $query;
     }
 
     public function scopeActive(Builder $query)

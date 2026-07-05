@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        $articles = Article::publish()->latest()->limit(5)->get();
+        $articles = Article::latest()->paginate(5);
 
         return view('dashboard.index', compact('articles'));
     }
@@ -21,7 +21,11 @@ class DashboardController extends Controller
 
     public function drafts()
     {
-        $articles = Article::draft()->get();
-        return view('dashboard.drafts');
+        $articles = Article::drafts()->latest()->paginate(5);
+
+        // Featured drafts to show in the "Focus Pieces" section
+        $focusPieces = Article::drafts()->where('is_featured', true)->latest()->take(2)->get();
+
+        return view('dashboard.drafts', compact('articles', 'focusPieces'));
     }
 }

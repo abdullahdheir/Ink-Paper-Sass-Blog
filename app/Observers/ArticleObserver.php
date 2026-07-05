@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use App\Enums\ArticleStatus;
+use App\Events\ArticlePublished;
 use App\Models\Article;
 
 class ArticleObserver
@@ -13,13 +15,23 @@ class ArticleObserver
     {
         $article->slug         = $article->slug ?? Article::generateSlug($article->title);
         $article->reading_time = Article::estimateReadingTime($article->content);
-        $article->published_at = $article->status === 'published' ? now() : null;
+        $article->published_at = $article->status === ArticleStatus::PUBLISHED ? now() : null;
     }
 
     /**
      * Handle the Article "created" event.
      */
-    public function created(Article $article): void {}
+    public function created(Article $article): void
+    {
+        if ($article->status === ArticleStatus::PUBLISHED) {
+            $article->author->stats()->increment('articles_count');
+            $article->tags()->get()->map(fn($t) => $t->incrementArticlesCount());
+        }
+
+        if ($article->category_id) {
+            $article->category->increment('articles_count');
+        }
+    }
 
     /**
      * Handle the Article "updating" event.
@@ -29,6 +41,10 @@ class ArticleObserver
         if ($article->isDirty('content')) {
             $article->reading_time = Article::estimateReadingTime($article->content);
         }
+
+        if ($article->isDirty('status')) {
+            $article->published_at = $article->status === ArticleStatus::PUBLISHED ? now() : null;
+        }
     }
 
     /**
@@ -36,7 +52,23 @@ class ArticleObserver
      */
     public function updated(Article $article): void
     {
-        //
+        if ($article->isDirty('status')) {
+            if ($article->status === ArticleStatus::PUBLISHED) {
+                $article->author->stats()->increment('articles_count');
+                $article->tags()->get()->map(fn($t) => $t->incrementArticlesCount());
+                // Dispatch notification event for followers
+                ArticlePublished::dispatch($article);
+            }
+
+            if ($article->getOriginal('status') === ArticleStatus::PUBLISHED && $article->status !== ArticleStatus::PUBLISHED) {
+                $article->author->stats()->decrement('articles_count');
+                $article->tags()->get()->map(fn($t) => $t->decrementArticlesCount());
+            }
+        }
+
+        if ($article->category_id) {
+            $article->category->increment('articles_count');
+        }
     }
 
     /**
@@ -44,7 +76,11 @@ class ArticleObserver
      */
     public function deleted(Article $article): void
     {
-        //
+        $article->author->stats()->decrement('articles_count');
+        $article->tags()->get()->map(fn($t) => $t->decrementArticlesCount());
+        if ($article->category_id) {
+            $article->category->decrement('articles_count');
+        }
     }
 
     /**
@@ -52,7 +88,12 @@ class ArticleObserver
      */
     public function restored(Article $article): void
     {
-        //
+        $article->author->stats()->increment('articles_count');
+        $article->tags()->get()->map(fn($t) => $t->incrementArticlesCount());
+
+        if ($article->category_id) {
+            $article->category->increment('articles_count');
+        }
     }
 
     /**
@@ -60,6 +101,13 @@ class ArticleObserver
      */
     public function forceDeleted(Article $article): void
     {
-        //
+        if (! $article->trashed()) {
+            $article->author->stats()->decrement('articles_count');
+            $article->tags()->get()->map(fn($t) => $t->decrementArticlesCount());
+
+            if ($article->category_id) {
+                $article->category->decrement('articles_count');
+            }
+        }
     }
 }
